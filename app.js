@@ -115,7 +115,10 @@ wide.addEventListener('change', () => {
 
 /* Panels */
 
-const panels = [...document.querySelectorAll('.panel')]
+// the box stays out of the page, for no-script readers too, until it can really deliver
+if (SUGGEST_URL) document.querySelectorAll('[href="#suggest"], #suggest').forEach(item => { item.hidden = false })
+
+const panels = [...document.querySelectorAll('.panel:not([hidden])')]
 const navLinks = [...document.querySelectorAll('nav a')]
 const gameButtons = [...document.querySelectorAll('.game')]
 const arena = document.querySelector('#arena')
@@ -198,8 +201,6 @@ copy.addEventListener('click', async () => {
 })
 
 /* Suggest */
-
-document.querySelector('[href="#suggest"]').hidden = !SUGGEST_URL
 
 const form = document.querySelector('#suggestion')
 const sent = document.querySelector('#sent')
