@@ -10,7 +10,6 @@
   --font: "MonoLisa", "JetBrains Mono", ui-monospace, Consolas, monospace;
   --edge: clamp(1.25rem, 3.4vw, 3rem);
   --line: min(1.5rem, calc((100svh - 6.75rem) / 32));
-  --glide: cubic-bezier(0.22, 0.9, 0.2, 1);
 }
 
 :root, [data-theme="dark"] {
@@ -71,7 +70,6 @@ nav a[aria-current] { text-decoration: underline; text-decoration-color: var(--r
 .art-off #art { display: none; }
 
 .control { width: 100%; }
-.hint { display: none; }
 .kept { display: flex; justify-content: space-between; gap: 1rem; color: var(--ink); }
 .how { color: var(--soft); opacity: 0.7; }
 #detail { appearance: none; display: block; width: 100%; height: 2.75rem; margin: 0; background: transparent; cursor: grab; }
@@ -100,31 +98,42 @@ nav a[aria-current] { text-decoration: underline; text-decoration-color: var(--r
 #copy:hover { color: var(--ink); }
 
 .js .panel { display: none; }
-.js .panel.open { display: block; animation: arrive 0.5s var(--glide) both; }
+.js .panel.open { display: block; }
 .js .open ~ .lines, .js .text:has(.panel.open) .lines { display: none; }
-
-@keyframes arrive {
-  from { opacity: 0; transform: translate3d(0, 0.6rem, 0); }
-}
 
 /* Play */
 
 .games { display: grid; gap: 0.25rem; margin-top: 1.25rem; }
 .game { display: grid; gap: 0 1.25rem; padding-block: 0.5rem; border-bottom: 1px solid var(--hair); text-align: left; transition: border-color 0.25s; }
-.game:hover, .game[aria-pressed="true"] { border-color: var(--red); }
+.game:hover { border-color: var(--red); }
 .game span { color: var(--soft); }
-.arena { margin-top: 1.25rem; }
-.arena canvas { display: block; width: 100%; touch-action: none; }
-.arena canvas:focus-visible { outline-color: var(--hair); }
-.arena p { margin-top: 0.75rem; }
+.arena { position: fixed; inset: 0; z-index: 20; display: flex; flex-direction: column; padding: 1.15rem var(--edge) 1.25rem; background: var(--ground); }
+html:has(.arena:not([hidden])) { overflow: hidden; }
+#leave { align-self: flex-end; padding-block: 0.25rem; color: var(--soft); text-decoration: underline; text-decoration-color: var(--red); text-underline-offset: 0.22em; }
+.game-space { flex: 1; min-height: 0; display: flex; flex-direction: column; gap: 0.75rem; }
+.game-space > canvas { flex: 1 1 0; min-height: 0; width: 100%; touch-action: none; }
+.game-space > canvas:focus-visible { outline: none; }
 .score { color: var(--ink); }
 
-.fish-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.5rem; margin-top: 0.75rem; }
-.fish-grid button { padding: 0.5rem; border: 1px solid var(--hair); color: var(--soft); transition: border-color 0.2s, color 0.2s; }
-.fish-grid button:hover { border-color: var(--ink); color: var(--ink); }
-.fish-grid .right { border-color: var(--blue); color: var(--blue); }
-.fish-grid .wrong { border-color: var(--red); color: var(--red); }
-.fish-grid svg { display: block; width: 100%; }
+.plates { display: grid; gap: 1rem; flex: 1; min-height: 0; align-content: center; }
+.plates canvas { display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: cover; }
+.plates figcaption { margin-top: 0.4rem; color: var(--ink); }
+
+.fish-grid { flex: 1; min-height: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-rows: minmax(0, 1fr); gap: 0.25rem; }
+.fish-grid button { min-height: 0; color: var(--ink); transition: opacity 0.3s; }
+.fish-grid svg { display: block; width: 100%; height: 100%; transition: filter 0.3s; }
+.fish-grid .head { stop-color: var(--blue); }
+.fish-grid .middle { stop-color: var(--soft); }
+.fish-grid .tail { stop-color: var(--red); }
+.fish-grid .stripe { stroke: var(--red); stroke-width: 1.1; }
+.fish-grid button:hover svg { filter: brightness(1.3); }
+.fish-grid:has(.right) button:not(.right, .wrong) { opacity: 0.2; }
+.fish-grid .right svg { filter: drop-shadow(0 0 0.5rem var(--blue)); }
+.fish-grid .wrong svg { filter: drop-shadow(0 0 0.5rem var(--red)); }
+
+@keyframes swim {
+  to { transform: translate3d(2%, -3%, 0) rotate(-1.5deg); }
+}
 
 /* Suggest */
 
@@ -148,24 +157,33 @@ textarea:focus-visible { border-color: var(--ink); outline: none; }
   .lines li { line-height: var(--line); }
   .js .panel { height: 100%; overflow-y: auto; font-size: 0.875rem; }
   .game { grid-template-columns: 11rem minmax(0, 1fr); }
+  .plates { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .plates canvas { aspect-ratio: 3 / 2; }
+  .fish-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
 
-/* Narrow screens: the page scrolls and the control stays under the thumb */
+/* Narrow screens: the figure fills the first screen and the text scrolls over it */
 
 @media not all and (min-width: 62.5rem) {
-  .control { position: fixed; z-index: 5; inset: auto 0 0; padding: 0.5rem var(--edge) 0.25rem; background: var(--ground); border-top: 1px solid var(--hair); }
+  .stage { padding-bottom: 3rem; }
+  .top, .text, .control { position: relative; z-index: 1; }
+  .figure { min-height: 66svh; align-content: end; }
+  #art { position: fixed; top: 2.5rem; left: 50%; z-index: 0; width: min(124vw, 74lvh); translate: -50% 0; transition: opacity 0.2s linear; }
+  #detail, .how { display: none; }
+  .hint { margin-bottom: 0.5rem; }
   .lines li { padding-block: 0.3rem; }
-  .how { display: none; }
+  html:has(.panel.open) .figure { min-height: 44svh; }
   html:has(.panel.open) .control { display: none; }
+  .art-off .figure { min-height: 0; }
 }
 
 html:not(.js) .figure, html:not(.js) #theme, html:not(.js) .games { display: none; }
 
-/* Theme: a circular reveal from the switch */
+/* Every change of view: a circular reveal from where it was asked for */
 
-html[data-vt="theme"]::view-transition-old(root), html[data-vt="theme"]::view-transition-new(root) { animation: none; mix-blend-mode: normal; }
-html[data-vt="theme"]::view-transition-old(root) { z-index: 1; }
-html[data-vt="theme"]::view-transition-new(root) { z-index: 2; }
+html[data-vt="reveal"]::view-transition-old(root), html[data-vt="reveal"]::view-transition-new(root) { animation: none; mix-blend-mode: normal; }
+html[data-vt="reveal"]::view-transition-old(root) { z-index: 1; }
+html[data-vt="reveal"]::view-transition-new(root) { z-index: 2; }
 
 @keyframes settle {
   from { opacity: 0; }
@@ -173,4 +191,8 @@ html[data-vt="theme"]::view-transition-new(root) { z-index: 2; }
 
 @media (prefers-reduced-motion: reduce) {
   .js .panel.open { animation: settle 0.25s ease both; }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .fish-grid svg { animation: swim 3.2s ease-in-out infinite alternate; animation-delay: calc(var(--turn) * -0.9s); }
 }

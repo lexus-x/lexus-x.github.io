@@ -7,6 +7,7 @@ const TOP = LEVELS - 1
 const GLIDE = 9 // how quickly the level closes on its goal, per second
 const WHEEL = 0.005 // levels per wheel pixel
 const SETTLE_MS = 130
+const BEAT_MS = 400 // one doubling per beat as the page arrives
 
 const root = document.documentElement
 const calm = matchMedia('(prefers-reduced-motion: reduce)').matches
@@ -19,13 +20,14 @@ const labels = rows.map(row => row.querySelector('span'))
 const slider = document.querySelector('#detail')
 const readout = document.querySelector('#kept')
 
-const art = startArt(document.querySelector('#art'), { calm, light: root.dataset.theme === 'light' })
+const canvas = document.querySelector('#art')
+const art = startArt(canvas, { calm, light: root.dataset.theme === 'light' })
 if (!art) root.classList.add('art-off')
 
 /* Levels */
 
-let level = 0
-let goal = 0
+let level = calm ? TOP : 0
+let goal = level
 let dragging = false
 let heights = []
 let spaceHeight = 0
@@ -71,13 +73,26 @@ function frame(time) {
     place()
   }
   // the glide follows the visitor's own hand, so it stays under reduced motion; only the self-playing arm stops
-  if (!calm || moving) draw(dt)
+  if ((!calm || moving) && !stopGame) draw(dt)
 }
 
 const draw = dt => art?.step(dt, 2 * level + 1) // numbers are then lines squared: 1 line, 1 number and 32 lines, 1,024
 
 function setGoal(value) {
   goal = clamp(value)
+}
+
+// one line holds a single pose, so the page opens by itself and rests on the full plate
+const opening = calm ? 0 : setInterval(() => {
+  setGoal(goal + 1)
+  if (goal === TOP) clearInterval(opening)
+}, BEAT_MS)
+
+for (const name of ['wheel', 'pointerdown', 'keydown']) {
+  addEventListener(name, () => {
+    clearInterval(opening)
+    setGoal(TOP)
+  }, { once: true, capture: true, passive: true })
 }
 
 slider.addEventListener('input', () => {
@@ -101,10 +116,14 @@ addEventListener('wheel', event => {
   if (!wide.matches || location.hash.length > 1 || event.ctrlKey) return
   event.preventDefault()
   const pixels = event.deltaMode ? event.deltaY * 33 : event.deltaY
-  goal = clamp(goal + pixels * WHEEL)
+  goal = clamp(goal - pixels * WHEEL) // the page rests fully open, so scrolling down distils it
   clearTimeout(settling)
-  settling = setTimeout(() => setGoal(pixels > 0 ? Math.ceil(goal - 0.1) : Math.floor(goal + 0.1)), SETTLE_MS)
+  settling = setTimeout(() => setGoal(pixels > 0 ? Math.floor(goal + 0.1) : Math.ceil(goal - 0.1)), SETTLE_MS)
 }, { passive: false })
+
+addEventListener('scroll', () => {
+  canvas.style.opacity = wide.matches ? '' : Math.max(0.14, 1 - scrollY / (0.7 * innerHeight)) // on a phone the text scrolls over the figure
+}, { passive: true })
 
 new ResizeObserver(measure).observe(list.parentElement)
 document.fonts?.ready.then(measure)
@@ -122,7 +141,41 @@ const panels = [...document.querySelectorAll('.panel:not([hidden])')]
 const navLinks = [...document.querySelectorAll('nav a')]
 const gameButtons = [...document.querySelectorAll('.game')]
 const arena = document.querySelector('#arena')
+const gameSpace = document.querySelector('#game')
+const leave = document.querySelector('#leave')
 let stopGame = null
+let opener = null
+let pointX = innerWidth / 2
+let pointY = innerHeight / 2
+
+addEventListener('pointerdown', event => {
+  pointX = event.clientX
+  pointY = event.clientY
+}, { passive: true })
+
+// every change of view opens as a circle from where it was asked for
+function reveal(change, x = pointX, y = pointY) {
+  if (calm || !document.startViewTransition) {
+    change()
+    return
+  }
+  root.dataset.vt = 'reveal'
+  const run = document.startViewTransition(change)
+  run.finished.finally(() => delete root.dataset.vt)
+  run.ready.then(() => {
+    const radius = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y))
+    root.animate(
+      { clipPath: [`circle(0 at ${x}px ${y}px)`, `circle(${radius}px at ${x}px ${y}px)`] },
+      { duration: 800, easing: 'cubic-bezier(.7, 0, .15, 1)', pseudoElement: '::view-transition-new(root)' },
+    )
+  }, () => {}) // a skipped animation still made the change
+}
+
+function closeGame() {
+  stopGame?.()
+  stopGame = null
+  arena.hidden = true
+}
 
 function route() {
   const open = panels.find(panel => `#${panel.id}` === location.hash)
@@ -131,18 +184,16 @@ function route() {
     if (open && link.hash === location.hash) link.setAttribute('aria-current', 'page')
     else link.removeAttribute('aria-current')
   })
-  if (open?.id !== 'play') {
-    stopGame?.()
-    stopGame = null
-    gameButtons.forEach(button => button.removeAttribute('aria-pressed'))
-  }
+  if (open?.id !== 'play') closeGame()
   if (open) open.querySelector('h2').focus({ preventScroll: true })
   else measure()
 }
 
-addEventListener('hashchange', route)
+addEventListener('hashchange', () => reveal(route))
 addEventListener('keydown', event => {
-  if (event.key === 'Escape' && location.hash.length > 1) location.hash = ''
+  if (event.key !== 'Escape') return
+  if (stopGame) leave.click()
+  else if (location.hash.length > 1) location.hash = ''
 })
 
 /* Theme: a darkroom flip between the negative and the print */
@@ -167,23 +218,8 @@ function applyTheme(theme) {
 
 toggle.addEventListener('click', () => {
   const next = root.dataset.theme === 'light' ? 'dark' : 'light'
-  if (calm || !document.startViewTransition) {
-    applyTheme(next)
-    return
-  }
   const box = toggle.getBoundingClientRect()
-  const x = box.left + box.width / 2
-  const y = box.top + box.height / 2
-  root.dataset.vt = 'theme'
-  const run = document.startViewTransition(() => applyTheme(next))
-  run.finished.finally(() => delete root.dataset.vt)
-  run.ready.then(() => {
-    const radius = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y))
-    root.animate(
-      { clipPath: [`circle(0 at ${x}px ${y}px)`, `circle(${radius}px at ${x}px ${y}px)`] },
-      { duration: 800, easing: 'cubic-bezier(.7, 0, .15, 1)', pseudoElement: '::view-transition-new(root)' },
-    )
-  }, () => {}) // a skipped animation still changed the theme
+  reveal(() => applyTheme(next), box.left + box.width / 2, box.top + box.height / 2)
 })
 
 /* Contact */
@@ -227,9 +263,16 @@ form.addEventListener('submit', async event => {
 
 gameButtons.forEach(button => button.addEventListener('click', async () => {
   const { startDelay, startFish } = await import('./games.js')
-  stopGame?.()
-  gameButtons.forEach(other => other.setAttribute('aria-pressed', other === button))
-  stopGame = (button.dataset.game === 'delay' ? startDelay : startFish)(arena)
+  opener = button
+  reveal(() => {
+    arena.hidden = false
+    stopGame = (button.dataset.game === 'delay' ? startDelay : startFish)(gameSpace)
+  })
+}))
+
+leave.addEventListener('click', () => reveal(() => {
+  closeGame()
+  opener.focus({ preventScroll: true })
 }))
 
 measure()

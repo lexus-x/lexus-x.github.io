@@ -175,7 +175,8 @@ export function startArt(canvas, { calm, light }) {
   }
 
   function size() {
-    const side = Math.round(canvas.getBoundingClientRect().width * Math.min(devicePixelRatio || 1, 2))
+    const density = Math.min(devicePixelRatio || 1, innerWidth < 1000 ? 1.5 : 2) // a phone's figure is large for its GPU
+    const side = Math.round(canvas.getBoundingClientRect().width * density)
     if (!side || side === canvas.width) return
     canvas.width = side
     canvas.height = side

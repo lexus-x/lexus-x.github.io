@@ -83,7 +83,6 @@
           <button class="game" type="button" data-game="delay"><b>Beat the delay</b><span>Move a robot arm that lags behind you, then again with a 6× faster head.</span></button>
           <button class="game" type="button" data-game="fish"><b>Zero-shot fish</b><span>Name species you have never seen from a description alone.</span></button>
         </div>
-        <div class="arena" id="arena"></div>
       </section>
 
       <section class="panel" id="contact" aria-labelledby="contact-title">
@@ -108,5 +107,10 @@
       </section>
     </div>
   </main>
+
+  <div class="arena" id="arena" hidden>
+    <button id="leave" type="button">back</button>
+    <div class="game-space" id="game"></div>
+  </div>
 </body>
 </html>
