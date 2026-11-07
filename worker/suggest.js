@@ -23,12 +23,13 @@ export default {
     const note = typeof text === 'string' ? text.trim() : ''
     if (!note || note.length > MAX_LENGTH) return reply(400, 'Empty or too long')
 
-    const counter = `count:${new Date().toISOString().slice(0, 10)}`
+    const day = new Date().toISOString().slice(0, 10) // no finer, an exact time could be matched to a visit
+    const counter = `count:${day}`
     const today = Number(await env.SUGGESTIONS.get(counter)) || 0
     if (today >= DAILY_LIMIT) return reply(429, 'Too many today')
 
     await env.SUGGESTIONS.put(counter, String(today + 1), { expirationTtl: TWO_DAYS })
-    await env.SUGGESTIONS.put(`note:${Date.now()}:${crypto.randomUUID()}`, note)
+    await env.SUGGESTIONS.put(`note:${day}:${crypto.randomUUID()}`, note)
     return reply(204)
   },
 }
