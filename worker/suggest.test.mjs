@@ -23,7 +23,7 @@ test('keeps the text and nothing about the sender', async () => {
   assert.equal(answer.status, 204)
   const [key] = notes(kv)
   assert.equal(kv.items.get(key), 'better colours')
-  assert.match(key, /^note:\d+:[0-9a-f-]+$/)
+  assert.match(key, /^note:\d{4}-\d{2}-\d{2}:[0-9a-f-]+$/)
 })
 
 test('refuses other sites, empty notes and notes that are too long', async () => {
