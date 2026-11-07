@@ -83,17 +83,19 @@ function setGoal(value) {
 }
 
 // one line holds a single pose, so the page opens by itself and rests on the full plate
-const opening = calm ? 0 : setInterval(() => {
+let opening = calm ? 0 : setInterval(() => {
   setGoal(goal + 1)
-  if (goal === TOP) clearInterval(opening)
+  if (goal === TOP) endOpening()
 }, BEAT_MS)
 
-for (const name of ['wheel', 'pointerdown', 'keydown']) {
-  addEventListener(name, () => {
-    clearInterval(opening)
-    setGoal(TOP)
-  }, { once: true, capture: true, passive: true })
+function endOpening() {
+  if (!opening) return // the first input after the opening must not undo what the visitor has set
+  clearInterval(opening)
+  opening = 0
+  setGoal(TOP)
 }
+
+for (const name of ['wheel', 'pointerdown', 'keydown']) addEventListener(name, endOpening, { once: true, capture: true, passive: true })
 
 slider.addEventListener('input', () => {
   dragging = true
@@ -143,6 +145,7 @@ const gameButtons = [...document.querySelectorAll('.game')]
 const arena = document.querySelector('#arena')
 const gameSpace = document.querySelector('#game')
 const leave = document.querySelector('#leave')
+const behindGame = [document.querySelector('.top'), document.querySelector('main')]
 let stopGame = null
 let opener = null
 let pointX = innerWidth / 2
@@ -175,6 +178,7 @@ function closeGame() {
   stopGame?.()
   stopGame = null
   arena.hidden = true
+  behindGame.forEach(part => { part.inert = false })
 }
 
 function route() {
@@ -266,7 +270,9 @@ gameButtons.forEach(button => button.addEventListener('click', async () => {
   opener = button
   reveal(() => {
     arena.hidden = false
+    behindGame.forEach(part => { part.inert = true })
     stopGame = (button.dataset.game === 'delay' ? startDelay : startFish)(gameSpace)
+    if (!arena.contains(document.activeElement)) leave.focus({ preventScroll: true })
   })
 }))
 

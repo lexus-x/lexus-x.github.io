@@ -172,7 +172,7 @@ textarea:focus-visible { border-color: var(--ink); outline: none; }
   #detail, .how { display: none; }
   .hint { margin-bottom: 0.5rem; }
   .lines li { padding-block: 0.3rem; }
-  html:has(.panel.open) .figure { min-height: 44svh; }
+  html:has(.panel.open) .figure { min-height: 50svh; }
   html:has(.panel.open) .control { display: none; }
   .art-off .figure { min-height: 0; }
 }
