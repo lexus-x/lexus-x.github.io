@@ -1,0 +1,7 @@
+name = "lexus-suggest"
+main = "suggest.js"
+compatibility_date = "2026-11-01"
+
+# no id on purpose: the first deploy creates this store in the account that is logged in
+[[kv_namespaces]]
+binding = "SUGGESTIONS"
