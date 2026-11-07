@@ -328,7 +328,7 @@ html:not(.js) .panel[hidden] { display: block !important; }
 
 /* View transitions */
 
-html[data-vt="tab"] main, html[data-vt="tab"] .foot { view-transition-name: page; }
+html[data-vt="tab"] main { view-transition-name: page; }
 html[data-vt] ::view-transition-old(root), html[data-vt] ::view-transition-new(root) { animation: none; mix-blend-mode: normal; }
 
 ::view-transition-old(page) { animation: blur-out 0.35s ease both; }

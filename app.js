@@ -33,6 +33,7 @@ function transition(kind, update) {
   }
   root.dataset.vt = kind
   const run = document.startViewTransition(update)
+  run.ready.catch(() => {}) // a skipped animation still runs update, so there is nothing to report
   run.finished.finally(() => delete root.dataset.vt)
   return run
 }
