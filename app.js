@@ -1,4 +1,5 @@
-import { startPlotter } from './plotter.js'
+import { startLines } from './lines.js'
+import { ALBUMS, pick } from './albums.mjs'
 
 const EMAIL = 'zailalith@gmail.com'
 // shortcut: the review tile and panel stay hidden until the Worker in worker/ is deployed, then this holds its URL.
@@ -9,24 +10,45 @@ const root = document.documentElement
 const calm = matchMedia('(prefers-reduced-motion: reduce)').matches
 const main = document.querySelector('main')
 
-/* Opening: a plotter arm writes the name, then the line beneath it appears */
+/* Opening: the name rises out of signal lines in this visit's album colours */
 
-const hero = document.querySelector('.hero')
-const plotter = startPlotter(document.querySelector('#plot'), () => hero.classList.remove('writing'))
+const lines = startLines(document.querySelector('#lines'))
+document.fonts?.load(`400 100px ${getComputedStyle(root).getPropertyValue('--heavy')}`).then(() => lines.restyle(), () => {}) // rebuild once the real face arrives
+lines.play()
 
-function write() {
-  hero.classList.add('writing')
-  plotter.play()
-  setTimeout(() => hero.classList.remove('writing'), 4000) // the text never stays hidden, whatever happens to the drawing
+/* Album: index.html already picked one; a song from it goes in the corner, and shuffle moves to another */
+
+const now = document.querySelector('#now')
+const themeColor = document.querySelector('meta[name="theme-color"]')
+const memes = [...document.querySelectorAll('.meme')]
+
+function wear(id) {
+  root.dataset.album = id
+  const album = ALBUMS[id]
+  const track = pick(album.tracks)
+  now.href = `https://open.spotify.com/search/${encodeURIComponent(`${track} ${album.artist}`)}`
+  now.querySelector('span').textContent = `on rotation · ${track} · ${album.artist}`
+  now.setAttribute('aria-label', `On rotation: ${track} by ${album.artist}, from ${album.name}. Opens Spotify.`)
+  themeColor.content = getComputedStyle(root).getPropertyValue('--ground').trim()
+  const meme = pick(memes)
+  memes.forEach(item => { item.hidden = item !== meme })
+  try {
+    localStorage.setItem('album', id) // the next visit gets a different one
+  } catch {
+    // private windows can refuse storage; the next visit is just random
+  }
 }
 
-const serif = document.fonts ? document.fonts.load(`400 100px ${getComputedStyle(root).getPropertyValue('--serif')}`) : Promise.resolve()
-serif.then(() => plotter.restyle(), () => {}) // whenever the real face arrives, the name is rebuilt in it
-Promise.race([serif.catch(() => {}), new Promise(done => setTimeout(done, 1200))]).then(() => {
-  if (!calm) write()
+const shuffle = document.querySelector('#shuffle')
+shuffle.addEventListener('click', () => {
+  const box = shuffle.getBoundingClientRect()
+  const next = pick(Object.keys(ALBUMS).filter(id => id !== root.dataset.album))
+  reveal(() => {
+    wear(next)
+    lines.restyle() // inside the transition, so the new picture already wears the new colours
+    lines.play()
+  }, box.left + box.width / 2, box.top + box.height / 2)
 })
-// the replay is asked for, so it runs even with reduced motion
-document.querySelector('#again').addEventListener('click', write)
 
 /* Panels: each tile opens its panel as a circle from where it was touched */
 
@@ -105,30 +127,6 @@ addEventListener('keydown', event => {
   else if (location.hash.length > 1) location.hash = ''
 })
 
-/* Theme */
-
-const toggle = document.querySelector('#theme')
-const themeColor = document.querySelector('meta[name="theme-color"]')
-
-function applyTheme(theme) {
-  root.dataset.theme = theme
-  const other = theme === 'light' ? 'dark' : 'light'
-  toggle.textContent = other
-  toggle.setAttribute('aria-label', `Switch to ${other} theme`)
-  themeColor.content = theme === 'light' ? '#f7f7f7' : '#000000'
-  plotter.restyle() // inside the transition, so the new picture already has the new ink
-  try {
-    localStorage.setItem('theme', theme)
-  } catch {
-    // private windows can refuse storage, the toggle still works for this visit
-  }
-}
-
-toggle.addEventListener('click', () => {
-  const box = toggle.getBoundingClientRect()
-  reveal(() => applyTheme(root.dataset.theme === 'light' ? 'dark' : 'light'), box.left + box.width / 2, box.top + box.height / 2)
-})
-
 /* Contact: the address fills the screen and one tap copies it */
 
 const mail = document.querySelector('#mail')
@@ -197,4 +195,4 @@ leave.addEventListener('click', () => reveal(() => {
 }))
 
 route()
-applyTheme(root.dataset.theme)
+wear(root.dataset.album in ALBUMS ? root.dataset.album : 'up')

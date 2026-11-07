@@ -1,31 +1,42 @@
 :root {
   --serif: "Instrument Serif", Georgia, "Times New Roman", serif;
+  --heavy: "Archivo Black", "Arial Black", Impact, sans-serif;
   --mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
   --edge: clamp(0.75rem, 2.2vw, 1.5rem);
   --gap: 0.5rem;
   --round: 14px;
 }
 
-:root, [data-theme="dark"] {
+/* One album per visit, chosen in index.html before paint. Colours only, never cover art. --red is the album's accent, --blue its link colour. */
+
+:root, [data-album="up"] { /* Unknown Pleasures, Joy Division; also what readers without script see */
   color-scheme: dark;
-  --ground: #000000;
-  --panel: #0f0f0f;
-  --hair: #2a2a2a;
-  --ink: #ffffff;
-  --soft: #9a9a9a;
-  --red: #ff2a1f;
-  --blue: #3d74ff;
+  --ground: #000000; --panel: #0d0d0d; --hair: #262626; --ink: #f2f2f2; --soft: #8f8f8f; --red: #ffffff; --blue: #ffffff;
+  --letters: #ffffff; --name-case: none;
 }
 
-[data-theme="light"] {
+[data-album="mm"] { /* The Man-Machine, Kraftwerk */
   color-scheme: light;
-  --ground: #f7f7f7;
-  --panel: #ffffff;
-  --hair: #e0e0e0;
-  --ink: #000000;
-  --soft: #666666;
-  --red: #e1251b;
-  --blue: #1a4dff;
+  --ground: #e3242b; --panel: #e8363c; --hair: #b0141b; --ink: #000000; --soft: #000000; --red: #ffffff; --blue: #000000;
+  --letters: #ffffff; --name-case: upper;
+}
+
+[data-album="dsotm"] { /* The Dark Side of the Moon, Pink Floyd */
+  color-scheme: dark;
+  --ground: #050505; --panel: #101010; --hair: #262626; --ink: #f5f5f5; --soft: #8c8c8c; --red: #ff453a; --blue: #0a84ff;
+  --letters: #ff453a #ffcc00 #34c759 #0a84ff #af52de; --name-case: none;
+}
+
+[data-album="brat"] { /* brat, Charli XCX */
+  color-scheme: light;
+  --ground: #8ace00; --panel: #84c600; --hair: #5f8f00; --ink: #000000; --soft: #1f2e00; --red: #000000; --blue: #000000;
+  --letters: #000000; --name-case: lower;
+}
+
+[data-album="cur"] { /* Currents, Tame Impala */
+  color-scheme: dark;
+  --ground: #341a63; --panel: #3c2070; --hair: #5a3a94; --ink: #fdf0e3; --soft: #c9b8e6; --red: #ff4f8b; --blue: #ff7a2f;
+  --letters: #ff7a2f #ff4f8b; --name-case: none;
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -72,21 +83,41 @@ button { padding: 0; border: 0; background: none; color: inherit; font: inherit;
 a.tile:hover { color: var(--ink); border-color: var(--ink); }
 .tile b { font: 400 clamp(2.4rem, 11vw, 4rem)/0.95 var(--serif); letter-spacing: -0.01em; }
 .tile span { color: var(--soft); font-size: 0.8125rem; line-height: 1.45; }
-.hero, .play-tile, .mail-tile { grid-column: 1 / -1; }
+.hero, .play-tile, .mail-tile, .meme-tile { grid-column: 1 / -1; }
 .mail-tile b { font-size: clamp(1.6rem, 8vw, 3rem); overflow-wrap: anywhere; }
+.mail-tile > a { color: inherit; text-decoration: none; }
+.mail-tile > a:hover b { color: var(--red); }
+.socials { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.socials a { padding: 0.3rem 0.75rem; border: 1px solid var(--hair); border-radius: 999px; color: var(--ink); font-size: 0.8125rem; text-decoration: none; transition: border-color 0.25s; }
+.socials a:hover { border-color: var(--ink); color: var(--ink); }
+
+/* Memes: drawn here, one per visit */
+.meme-tile { padding: 0.5rem; aspect-ratio: 2 / 1; }
+.meme { display: grid; grid-template-columns: 1fr 1fr; gap: 0.35rem; height: 100%; margin: 0; }
+.meme > div { position: relative; min-height: 0; border: 1px solid var(--hair); border-radius: 9px; background: var(--ground); overflow: hidden; }
+.meme svg { position: absolute; inset: 1.4rem 0 0; width: 100%; height: calc(100% - 1.4rem); fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+.meme .k { stroke: var(--ink); }
+.meme .s { stroke: var(--soft); }
+.meme .a { stroke: var(--red); }
+.meme text { fill: var(--ink); stroke: none; font: 500 9px var(--mono); }
+.meme p { position: absolute; inset: 0.35rem 0.25rem auto; color: #fff; font: 400 clamp(0.7rem, 3.4vw, 0.95rem)/1.05 var(--heavy); text-align: center; text-transform: uppercase; -webkit-text-stroke: 3px #000; paint-order: stroke fill; }
 
 .hero { min-height: 64svh; justify-content: flex-end; padding: 1.25rem; }
-#plot { position: absolute; inset: 0; width: 100%; height: 100%; }
+#lines { position: absolute; inset: 0; width: 100%; height: 100%; }
 .hero h1 { font: 400 clamp(3.5rem, 16vw, 7rem)/1 var(--serif); }
 .js .hero h1 { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; } /* the canvas writes the name */
-.hero-text { position: relative; display: grid; gap: 0.5rem; max-width: 36ch; transition: opacity 0.6s, translate 0.6s; }
-.writing .hero-text { opacity: 0; translate: 0 0.5rem; }
+.hero-text { position: relative; display: grid; gap: 0.5rem; max-width: 36ch; }
 .claim { font-size: clamp(1rem, 4.2vw, 1.3rem); line-height: 1.4; }
 .meta { color: var(--soft); font-size: 0.8125rem; }
-.corner { position: absolute; top: 0.85rem; right: 1rem; display: flex; gap: 1.1rem; }
-.corner button { padding-block: 0.25rem; color: var(--soft); transition: color 0.25s; }
-.corner button:hover { color: var(--ink); }
-html:not(.js) #plot, html:not(.js) .corner, html:not(.js) .mail-hint { display: none; }
+.corner { position: absolute; top: 0.75rem; left: 0.75rem; right: 0.75rem; z-index: 1; display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; }
+.now { display: flex; align-items: center; gap: 0.5rem; min-width: 0; padding: 0.3rem 0.75rem 0.3rem 0.45rem; border: 1px solid var(--hair); border-radius: 999px; background: var(--ground); color: var(--ink); font-size: 0.75rem; text-decoration: none; }
+.now:hover { border-color: var(--ink); color: var(--ink); }
+.now span { color: var(--ink); overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.now i { flex: none; width: 0.9rem; height: 0.9rem; border-radius: 50%; background: radial-gradient(circle, var(--ground) 0 18%, var(--red) 20% 44%, #111 46%); animation: spin 2.4s linear infinite; }
+@keyframes spin { to { rotate: 1turn; } }
+#shuffle { flex: none; padding: 0.3rem 0.25rem; color: var(--soft); transition: color 0.25s; }
+#shuffle:hover { color: var(--ink); }
+html:not(.js) #lines, html:not(.js) .corner, html:not(.js) .mail-hint { display: none; }
 
 /* Wide screens: the whole bento on one screen */
 
@@ -95,7 +126,9 @@ html:not(.js) #plot, html:not(.js) .corner, html:not(.js) .mail-hint { display: 
   .tile { min-height: 0; }
   .hero { grid-column: 1 / 3; grid-row: 1 / 3; min-height: 0; padding: 1.5rem; }
   .mail-tile { grid-column: 1 / 3; grid-row: 3; }
-  .play-tile { grid-column: 3 / 5; }
+  .play-tile { grid-column: 3; }
+  .meme-tile { grid-column: 4; aspect-ratio: auto; }
+  .meme p { font-size: clamp(0.65rem, 1vw, 0.9rem); }
   .tile b { font-size: clamp(3rem, 5vw, 5rem); }
   .mail-tile b { font-size: clamp(2rem, 3.6vw, 3.4rem); }
 }
@@ -205,5 +238,6 @@ html[data-vt="reveal"]::view-transition-new(root) { z-index: 2; }
 
 @media (prefers-reduced-motion: reduce) {
   .js .panel.open { animation: settle 0.25s ease both; }
-  .hero-text, .flash { transition: none; }
+  .flash { transition: none; }
+  .now i { animation: none; }
 }

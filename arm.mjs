@@ -1,4 +1,4 @@
-// Two-link planar arm, drawn by the plotter that writes the name and by the delay game.
+// Two-link planar arm, drawn by the delay game.
 
 // Elbow and tool tip for a base at (bx, by) reaching for (x, y). Out of reach, it stretches toward the target.
 export function reach(bx, by, x, y, a, b) {
