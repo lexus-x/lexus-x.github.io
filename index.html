@@ -1,0 +1,293 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Devireddy Lalith Sai</title>
+  <meta name="description" content="Devireddy Lalith Sai, M.S. researcher in machine learning and computer vision at Changwon National University. Research, projects, papers and CV.">
+  <meta name="theme-color" content="#08090c">
+  <link rel="canonical" href="https://lexus-x.github.io/">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' fill='%2308090c'/%3E%3Cpath fill='none' stroke='%233f7bff' d='M3 14 7 7M4 14l4-7M5 14l4-7'/%3E%3Cpath fill='none' stroke='%23ff3149' d='M7 7l6-3M8 7l6-2'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script>
+    try { document.documentElement.dataset.theme = localStorage.getItem('theme') || 'dark' } catch {}
+    document.documentElement.classList.add('js')
+  </script>
+  <script type="module" src="app.js"></script>
+</head>
+<body>
+  <a class="skip" href="#research">Skip to research</a>
+  <canvas id="art" aria-hidden="true"></canvas>
+  <div class="veil" aria-hidden="true"></div>
+  <div class="progress" aria-hidden="true"></div>
+
+  <header class="top">
+    <a class="brand" href="#main">Lalith Sai</a>
+    <nav class="tabs" aria-label="Pages">
+      <a href="#main">Main</a>
+      <a href="#research">Research</a>
+      <a href="#projects">Projects</a>
+      <a href="#papers">Papers</a>
+      <a href="#cv">CV</a>
+      <span class="marker" aria-hidden="true"></span>
+    </nav>
+    <button id="theme" type="button" aria-label="Switch to light theme">Light</button>
+  </header>
+
+  <main>
+    <section id="main" class="panel" data-title="Main">
+      <div class="hero">
+        <h1 tabindex="-1"><span>Devireddy</span> <span>Lalith Sai</span></h1>
+        <div class="hero-foot">
+          <div>
+            <p>M.S. researcher in machine learning and computer vision at Changwon National University. I work on vision-language-action models, which turn camera images and a text instruction into robot motion.</p>
+            <p class="soft">M.S. expected February 2027. Open to research collaborations and engineering roles.</p>
+            <p class="links"><a href="#research">Research</a> <a href="Devireddy_Lalith_Sai_CV.pdf">Download CV</a></p>
+          </div>
+          <p class="plate-note"><i>Plate I.</i> A robot arm in long exposure.<span class="live"> Move your pointer to steer it, and click or tap to fire the strobe.</span></p>
+        </div>
+      </div>
+
+      <section id="wave" class="wave" aria-labelledby="wave-title">
+        <div class="pin">
+          <div class="wave-head">
+            <h2 id="wave-title"><i>Plate II.</i> One motion, rebuilt from its wavelet numbers</h2>
+            <p class="count"><span id="kept">1</span> <small>of 1,024 numbers</small></p>
+          </div>
+          <div class="wave-foot">
+            <div class="steps">
+              <p class="step on">One number holds one pose, frozen as if by a single strobe flash.</p>
+              <p class="step">Every level doubles the numbers, and with them the exposures of the arm.</p>
+              <p class="step">At 1,024 numbers the exposures fuse, and the grasp and release turn sharp.</p>
+            </div>
+            <div class="control">
+              <label for="keep">Wavelet levels kept</label>
+              <input id="keep" type="range" min="1" max="11" step="1" value="1">
+            </div>
+            <p class="soft note">A synthetic pick and place, showing the idea behind my thesis head. Keep scrolling or drag the line.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="statement reveal" aria-label="Highlights">
+        <p>A robot action head <a class="to-blue" href="#thesis">11.8× smaller</a> and <a class="to-blue" href="#thesis">62× faster per chunk</a> than the expert it replaces. <a class="to-red" href="#fishonet">3rd of 103</a> on 17,393 fish species, 11,598 of them with no photos. And <a href="#failures">a record of what didn't work</a>, kept as carefully as what did.</p>
+      </section>
+    </section>
+
+    <section id="research" class="panel" data-title="Research" hidden>
+      <div class="page-head">
+        <h2 tabindex="-1">Research</h2>
+      </div>
+
+      <article id="thesis" class="entry reveal">
+        <p class="when">M.S. thesis</p>
+        <div>
+          <h3>A wavelet action head for robot models</h3>
+          <p>SmolVLA generates robot actions with a 99.88M-parameter flow-matching expert. I designed a head that replaces it with a Wavelet Neural Operator and produces each action chunk in a single pass, built on prior project work.</p>
+          <div class="compare">
+            <div class="segments" role="group" aria-label="Compare the two heads by">
+              <button type="button" aria-pressed="true" data-ratio="11.8" data-expert="99.88M" data-head="8.43M">Size</button>
+              <button type="button" aria-pressed="false" data-ratio="62" data-expert="Baseline" data-head="62× faster">Per chunk</button>
+              <button type="button" aria-pressed="false" data-ratio="6" data-expert="Baseline" data-head="6× faster">End to end</button>
+            </div>
+            <dl class="scale">
+              <div>
+                <dt>Flow-matching expert</dt>
+                <dd><span class="meter" style="--size: 100%"></span><span id="expert">99.88M</span></dd>
+              </div>
+              <div>
+                <dt>Wavelet head</dt>
+                <dd><span class="meter" id="head-bar" style="--size: 8.47%"></span><span id="head">8.43M</span></dd>
+              </div>
+            </dl>
+          </div>
+          <p>Success is less clear. A pre-registered paired test of one seed on 8,000 new LIBERO placements gave 83.2% against the expert's 80.8%, but another seed had the expert ahead. A regression head of the same size could not be distinguished from mine, and 2 of 5 benchmarks passed non-inferiority.</p>
+        </div>
+      </article>
+
+      <article id="failures" class="entry reveal">
+        <p class="when">M.S. research</p>
+        <div>
+          <h3>Why robot policies fail, and what doesn't fix it</h3>
+          <p>I built a reproducible baseline for the public SmolVLA checkpoint on LIBERO-Long: 42.3% ± 2.1% success over 3 seeds and 600 episodes. A one-seed pilot review of 53 failed rollouts, labeled by vision models, found 30% missed grasps and 28% that stalled after the first subtask.</p>
+          <p>Probes on the frozen policy's latent layers detected the first object placement with 0.876 held-out ROC-AUC (shuffled control 0.49), so the signal is there. Acting on it was harder. Both modules I tested missed their pre-registered gates: an oracle-triggered retry pilot gained 3.3 points against a 5-point bar, and stage feedback lost 11.7 points.</p>
+        </div>
+      </article>
+
+      <article id="fishonet" class="entry reveal">
+        <p class="when">2026</p>
+        <div>
+          <h3>FishONet: 3rd place, CV4Ecology 2026 Challenge</h3>
+          <p>I led the four-person team CWNU AIX to 3rd on the leaderboard among 103 participants. The benchmark covers 17,393 fish species, 11,598 of them with no photos. We scored 53.761% overall: 77.00% on photographed species and 23.77% on unseen ones.</p>
+          <p>The system ensembles three BioCLIP-2.5 backbones and joins closed-set classification with open-set retrieval through a 12-feature logistic router. A validation leak showed a +13.374-point proxy gain for a change worth +0.006 on the real score. We removed the leak and obtained a confirmed +0.213 leaderboard gain.</p>
+          <p class="links"><a href="https://github.com/lexus-x/FishONet">Code on GitHub</a> <a href="https://fishonet.lalithsai00.workers.dev/">Project site</a></p>
+        </div>
+      </article>
+    </section>
+
+    <section id="projects" class="panel" data-title="Projects" hidden>
+      <div class="page-head">
+        <h2 tabindex="-1">Projects</h2>
+      </div>
+
+      <figure class="feature reveal">
+        <canvas data-seed="FishONet" data-figure="fish" aria-hidden="true"></canvas>
+        <figcaption>
+          <h3>FishONet</h3>
+          <p>Generalized zero-shot recognition across 17,393 fish species. 3rd place at the CV4Ecology 2026 Challenge with team CWNU AIX. 53.761% overall, 77.00% photographed, 23.77% unseen.</p>
+          <p class="links"><a href="https://fishonet.lalithsai00.workers.dev/">Project site</a> <a href="https://github.com/lexus-x/FishONet">Code on GitHub</a></p>
+        </figcaption>
+      </figure>
+
+      <div class="chips" role="group" aria-label="Filter projects">
+        <button class="chip" type="button" aria-pressed="true" data-kind="all">All</button>
+        <button class="chip" type="button" aria-pressed="false" data-kind="robot">Robot learning</button>
+        <button class="chip" type="button" aria-pressed="false" data-kind="perception">Perception and language</button>
+        <button class="chip" type="button" aria-pressed="false" data-kind="systems">Systems</button>
+      </div>
+
+      <div class="wall">
+        <figure class="work reveal" data-kind="robot"><a href="https://github.com/lexus-x/SE3-VLA"><canvas data-seed="SE3-VLA" aria-hidden="true"></canvas><figcaption><h3>SE3-VLA</h3><p class="medium">Python</p><p>SE(3) action head with geodesic loss, flow matching and conformal uncertainty bounds.</p></figcaption></a></figure>
+        <figure class="work reveal" data-kind="robot"><a href="https://github.com/lexus-x/GeoAct"><canvas data-seed="GeoAct" aria-hidden="true"></canvas><figcaption><h3>GeoAct</h3><p class="medium">Python</p><p>Drop-in action head for VLA models that respects SE(3) manifold structure.</p></figcaption></a></figure>
+        <figure class="work reveal" data-kind="systems"><a href="https://github.com/lexus-x/Vectron"><canvas data-seed="Vectron" aria-hidden="true"></canvas><figcaption><h3>Vectron</h3><p class="medium">Python</p><p>Vector similarity search with an HNSW index and Product Quantization.</p></figcaption></a></figure>
+        <figure class="work reveal" data-kind="robot"><a href="https://github.com/lexus-x/arc-vla"><canvas data-seed="ARC-VLA" aria-hidden="true"></canvas><figcaption><h3>ARC-VLA</h3><p class="medium">Python</p><p>Action rate conversion benchmarks: learned rate conditioning against post-hoc resampling, with pre-registered statistics.</p></figcaption></a></figure>
+        <figure class="work reveal" data-kind="perception"><a href="https://github.com/lexus-x/Hybrid-v3"><canvas data-seed="Dark vessels" aria-hidden="true"></canvas><figcaption><h3>Dark vessel detection</h3><p class="medium">Python</p><p>Calibrated open-set detector for ships with no AIS broadcast, using a learned radar and AIS matcher.</p></figcaption></a></figure>
+        <figure class="work reveal" data-kind="robot"><a href="https://github.com/lexus-x/PerturbVLA"><canvas data-seed="PerturbVLA" aria-hidden="true"></canvas><figcaption><h3>PerturbVLA</h3><p class="medium">Python</p><p>Adversarial robustness for VLA policies under perturbation.</p></figcaption></a></figure>
+        <figure class="work reveal" data-kind="systems"><a href="https://github.com/lexus-x/lsm-engine"><canvas data-seed="lsm-engine" aria-hidden="true"></canvas><figcaption><h3>lsm-engine</h3><p class="medium">Rust</p><p>LSM-tree key-value store with learned index models replacing Bloom filters.</p></figcaption></a></figure>
+        <figure class="work reveal" data-kind="robot"><a href="https://github.com/lexus-x/CASTLE"><canvas data-seed="CASTLE" aria-hidden="true"></canvas><figcaption><h3>CASTLE</h3><p class="medium">Python</p><p>Training-free temporal-logic monitor for frozen VLA policies.</p></figcaption></a></figure>
+        <figure class="work reveal" data-kind="robot"><a href="https://github.com/lexus-x/Horizon"><canvas data-seed="Horizon" aria-hidden="true"></canvas><figcaption><h3>Horizon</h3><p class="medium">Python</p><p>Adaptive replan gate for frozen flow-matching VLAs on MetaWorld.</p></figcaption></a></figure>
+        <figure class="work reveal" data-kind="perception"><a href="https://github.com/lexus-x/MDL-Emergent-Language"><canvas data-seed="MDL Emergent Language" aria-hidden="true"></canvas><figcaption><h3>MDL Emergent Language</h3><p class="medium">Python</p><p>Multi-agent systems that develop symbolic communication through compression pressure alone.</p></figcaption></a></figure>
+        <figure class="work reveal" data-kind="systems"><a href="https://github.com/lexus-x/QuantizeKit"><canvas data-seed="QuantizeKit" aria-hidden="true"></canvas><figcaption><h3>QuantizeKit</h3><p class="medium">Python</p><p>Automatic mixed-precision quantization for LLMs.</p></figcaption></a></figure>
+        <figure class="work reveal" data-kind="robot"><a href="https://github.com/lexus-x/SimRealDiag"><canvas data-seed="SimRealDiag" aria-hidden="true"></canvas><figcaption><h3>SimRealDiag</h3><p class="medium">Python</p><p>Compares simulated and physical trajectories across five kinematic metrics.</p></figcaption></a></figure>
+        <figure class="work reveal" data-kind="systems"><a href="https://github.com/lexus-x/CacheForge"><canvas data-seed="CacheForge" aria-hidden="true"></canvas><figcaption><h3>CacheForge</h3><p class="medium">Python</p><p>Adaptive cache replacement with online learning.</p></figcaption></a></figure>
+        <figure class="work reveal" data-kind="robot"><a href="https://github.com/lexus-x/movla"><canvas data-seed="MoVLA" aria-hidden="true"></canvas><figcaption><h3>MoVLA</h3><p class="medium">Python</p><p>Mixture-of-Transformers VLA model with separate experts for vision, language and action.</p></figcaption></a></figure>
+        <figure class="work reveal" data-kind="systems"><a href="https://github.com/lexus-x/Traceweaver"><canvas data-seed="TraceWeaver" aria-hidden="true"></canvas><figcaption><h3>TraceWeaver</h3><p class="medium">Python</p><p>Distributed trace compression and anomaly detection for microservices.</p></figcaption></a></figure>
+        <figure class="work reveal" data-kind="robot"><a href="https://github.com/lexus-x/vla-research"><canvas data-seed="VLA survey" aria-hidden="true"></canvas><figcaption><h3>VLA survey</h3><p class="medium">Python</p><p>Survey of 25+ models covering architectures, action spaces and benchmarks.</p></figcaption></a></figure>
+        <figure class="work reveal" data-kind="systems"><a href="https://github.com/lexus-x/linkforge"><canvas data-seed="LinkForge" aria-hidden="true"></canvas><figcaption><h3>LinkForge</h3><p class="medium">Node.js</p><p>URL shortener with Snowflake IDs, multiple encoders and real-time analytics.</p></figcaption></a></figure>
+      </div>
+
+      <p class="soft more">More on <a href="https://github.com/lexus-x">github.com/lexus-x</a></p>
+    </section>
+
+    <section id="papers" class="panel" data-title="Papers" hidden>
+      <div class="page-head">
+        <h2 tabindex="-1">Papers</h2>
+      </div>
+      <article class="entry reveal">
+        <p class="when accepted">Accepted</p>
+        <div>
+          <h3>Design of a Lightweight Action Head for Vision-Language-Action Models</h3>
+          <p><b>D. Lalith Sai</b> and O. S. Kwon. Korea Multimedia Society Fall Conference, Jeju, Nov. 2026.</p>
+        </div>
+      </article>
+      <article class="entry reveal">
+        <p class="when">Submitted</p>
+        <div>
+          <h3>Single-pass Action Chunk Generation for Vision-Language-Action Models Using a Wavelet Neural Operator</h3>
+          <p><b>D. Lalith Sai</b> and O. S. Kwon. <cite>Journal of Broadcast Engineering</cite>.</p>
+        </div>
+      </article>
+      <article class="entry reveal">
+        <p class="when">Under review</p>
+        <div>
+          <h3>Machine Learning Approaches for Crystal System Classification in Lithium-Ion Battery Cathode Materials</h3>
+          <p>Co-author. <cite>Batteries</cite> (MDPI), 2026.</p>
+        </div>
+      </article>
+      <article class="entry reveal">
+        <p class="when">In preparation</p>
+        <div>
+          <h3>Four-page paper on the WNO action head across five benchmarks</h3>
+          <p>For an IEEE signal processing venue.</p>
+        </div>
+      </article>
+    </section>
+
+    <section id="cv" class="panel" data-title="CV" hidden>
+      <div class="page-head">
+        <h2 tabindex="-1">CV</h2>
+        <p class="links"><a href="Devireddy_Lalith_Sai_CV.pdf">Download CV (PDF)</a></p>
+      </div>
+
+      <section class="group reveal">
+        <h3 class="group-title">Experience</h3>
+        <article class="entry">
+          <p class="when">2025 to present</p>
+          <div>
+            <h4>Graduate Research Assistant, embodied AI and VLA models</h4>
+            <p>Intelligent Systems Lab (ISLab), Changwon National University. Advisor: Prof. Oh-Seol Kwon.</p>
+            <p>Built multi-host GPU evaluation across NVIDIA A100, Blackwell-class and RTX A6000 systems. Mentored four IIT (BHU) interns across four separate VLA projects, defining research goals, experiment protocols and codebase development.</p>
+          </div>
+        </article>
+        <article class="entry">
+          <p class="when">2026</p>
+          <div>
+            <h4>Competitive ML Lead, CV4Ecology FishONet benchmark</h4>
+            <p>Led the 3rd-place solution for a 17,393-species benchmark.</p>
+          </div>
+        </article>
+      </section>
+
+      <section class="group reveal">
+        <h3 class="group-title">Education</h3>
+        <article class="entry">
+          <p class="when">2025 to 2027 (expected)</p>
+          <div>
+            <h4>M.S. in Artificial Intelligence Convergence Engineering</h4>
+            <p>Changwon National University, South Korea. GPA 4.11/4.50.</p>
+            <p>Thesis: A Wavelet Neural Operator Action Head for Vision-Language-Action Models.</p>
+          </div>
+        </article>
+        <article class="entry">
+          <p class="when">2020 to 2024</p>
+          <div>
+            <h4>B.Tech in Computer Science and Business Systems</h4>
+            <p>SRM Institute of Science and Technology, Chennai, India. CGPA 8.58/10.</p>
+            <p>Thesis: Pediatric Autism Spectrum Disorder Identification via Deep CNNs &amp; Visual Explainability.</p>
+          </div>
+        </article>
+      </section>
+
+      <section class="group reveal">
+        <h3 class="group-title">Honors</h3>
+        <article class="entry"><p class="when">2026</p><p>3rd Place, Fish Species Recognition Challenge (FishONet), CV4Ecology/Codabench.</p></article>
+        <article class="entry"><p class="when">2026</p><p>BK21 FOUR Fellowship, National Research Foundation of Korea, 3rd and 4th semesters.</p></article>
+        <article class="entry"><p class="when">2026</p><p>Excellence Academic Scholarship, Changwon National University, 3rd and 4th semesters.</p></article>
+        <article class="entry"><p class="when">2025</p><p>Global Talent IELTS Scholarship, Changwon National University, 1st semester.</p></article>
+      </section>
+
+      <section class="group reveal">
+        <h3 class="group-title">Presentations</h3>
+        <article class="entry"><p class="when">2026</p><p>Invited exhibitor, ITRC Talent Development Expo, COEX, Seoul.</p></article>
+        <article class="entry"><p class="when">2025</p><p>Invited exhibitor, ITRC Talent Development Expo, COEX, Seoul.</p></article>
+        <article class="entry"><p class="when">2024</p><p>Oral presentation, IRCCTSD'24, Chennai: “Autism Spectrum Disorder Identification Using Deep Learning.”</p></article>
+      </section>
+
+      <section class="group reveal">
+        <h3 class="group-title">Skills</h3>
+        <article class="entry"><p class="when">Programming</p><p>Python, SQL, C/C++, MATLAB, Bash, LaTeX</p></article>
+        <article class="entry"><p class="when">ML and AI</p><p>PyTorch, Hugging Face, LeRobot, BioCLIP, open-set recognition, flow matching, neural operators, conformal prediction, CNNs, ViTs, LoRA, optimal transport</p></article>
+        <article class="entry"><p class="when">Robotics</p><p>SmolVLA, OpenVLA, LIBERO, MuJoCo, robosuite, MetaWorld, SE(3) kinematics, trajectory optimization</p></article>
+        <article class="entry"><p class="when">Systems</p><p>Linux, multi-node GPU evaluation, CUDA, Docker, Git/GitHub CI/CD, Slurm, AWS</p></article>
+        <article class="entry"><p class="when">Languages</p><p>English, Tamil, Telugu. TOEIC 910, IELTS 6.5.</p></article>
+        <article class="entry"><p class="when">Certification</p><p>Microsoft Azure AI Fundamentals</p></article>
+      </section>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <p class="soft">Changwon, South Korea</p>
+    <p class="links">
+      <a href="mailto:zailalith@gmail.com">zailalith@gmail.com</a>
+      <button id="copy" type="button">Copy email</button>
+      <a href="https://github.com/lexus-x">GitHub</a>
+      <a href="https://www.linkedin.com/in/lalith-sai-2a218a36b/">LinkedIn</a>
+    </p>
+  </footer>
+
+  <p class="toast" role="status"></p>
+</body>
+</html>
