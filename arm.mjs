@@ -1,30 +1,56 @@
-// Planar three-link arm: the subject of every image on the site.
+// Two-link planar arm, drawn by the plotter that writes the name and by the delay game.
 
-export const LINKS = [0.92, 0.78, 0.36]
-
-const clamp = (value, low, high) => Math.min(high, Math.max(low, value))
-
-// Joint angles that put the tool tip at (x, y) with the tool pointing along `tilt`.
-// Out-of-reach targets stretch the arm toward them instead of failing.
-export function solve(x, y, tilt, elbow = -1) {
-  const [a, b, c] = LINKS
-  const wristX = x - c * Math.cos(tilt)
-  const wristY = y - c * Math.sin(tilt)
-  const distance = Math.hypot(wristX, wristY) || 1e-6
-  const reach = clamp(distance, Math.abs(a - b) + 1e-3, a + b - 1e-3)
-  const bend = elbow * Math.acos(clamp((reach ** 2 - a ** 2 - b ** 2) / (2 * a * b), -1, 1))
-  const shoulder = Math.atan2(wristY, wristX) - Math.atan2(b * Math.sin(bend), a + b * Math.cos(bend))
-  return [shoulder, bend, tilt - shoulder - bend]
+// Elbow and tool tip for a base at (bx, by) reaching for (x, y). Out of reach, it stretches toward the target.
+export function reach(bx, by, x, y, a, b) {
+  const distance = Math.min(Math.max(Math.hypot(x - bx, y - by), Math.abs(a - b) + 1e-6), a + b - 1e-6)
+  const bend = Math.acos(Math.min(1, Math.max(-1, (a * a + distance * distance - b * b) / (2 * a * distance))))
+  const shoulder = Math.atan2(y - by, x - bx) - bend
+  const ex = bx + a * Math.cos(shoulder)
+  const ey = by + a * Math.sin(shoulder)
+  const forearm = Math.atan2(y - ey, x - ex)
+  return { ex, ey, tx: ex + b * Math.cos(forearm), ty: ey + b * Math.sin(forearm) }
 }
 
-// Base, elbow, wrist and tool tip, with the base at the origin.
-export function joints(q) {
-  const points = [[0, 0]]
-  let angle = 0
-  LINKS.forEach((length, i) => {
-    angle += q[i]
-    const [x, y] = points[i]
-    points.push([x + length * Math.cos(angle), y + length * Math.sin(angle)])
-  })
-  return points
+export function themeColors() {
+  const style = getComputedStyle(document.documentElement)
+  const color = name => style.getPropertyValue(name).trim()
+  return { ink: color('--ink'), soft: color('--soft'), panel: color('--panel'), hair: color('--hair'), red: color('--red'), blue: color('--blue'), serif: color('--serif') }
+}
+
+function rails(g, x0, y0, x1, y1, gap) {
+  const normal = Math.atan2(y1 - y0, x1 - x0) + Math.PI / 2
+  const ox = Math.cos(normal) * gap
+  const oy = Math.sin(normal) * gap
+  g.moveTo(x0 + ox, y0 + oy)
+  g.lineTo(x1 + ox, y1 + oy)
+  g.moveTo(x0 - ox, y0 - oy)
+  g.lineTo(x1 - ox, y1 - oy)
+}
+
+// Each link is two rails, like a technical drawing, and the tool tip glows. Returns where the tip landed.
+export function drawArm(g, colors, bx, by, x, y, a, b) {
+  const { ex, ey, tx, ty } = reach(bx, by, x, y, a, b)
+  g.save()
+  g.lineCap = 'round'
+  g.strokeStyle = colors.soft
+  g.lineWidth = 1.4
+  g.beginPath()
+  rails(g, bx, by, ex, ey, 4)
+  rails(g, ex, ey, tx, ty, 2.5)
+  g.stroke()
+  g.fillStyle = colors.panel
+  for (const [px, py, r] of [[bx, by, 9], [ex, ey, 6]]) {
+    g.beginPath()
+    g.arc(px, py, r, 0, 2 * Math.PI)
+    g.fill()
+    g.stroke()
+  }
+  g.fillStyle = colors.red
+  g.shadowColor = colors.red
+  g.shadowBlur = 14
+  g.beginPath()
+  g.arc(tx, ty, 4, 0, 2 * Math.PI)
+  g.fill()
+  g.restore()
+  return [tx, ty]
 }

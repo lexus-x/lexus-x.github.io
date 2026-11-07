@@ -1,6 +1,7 @@
-// Takes anonymous suggestions from the site and keeps only their text. Read them in the Cloudflare dashboard.
+// Takes anonymous reviews from the site and keeps only the verdict and the text. Read them in the Cloudflare dashboard.
 const ORIGIN = 'https://lexus-x.github.io'
 const MAX_LENGTH = 1000
+const VERDICTS = ['accept', 'minor revision', 'major revision', 'reject']
 const DAILY_LIMIT = 50 // shortcut: one shared cap instead of per-sender limits, because senders are never identified
 const TWO_DAYS = 172800
 
@@ -18,10 +19,11 @@ export default {
     if (request.method !== 'POST') return reply(405, 'POST only')
     if (request.headers.get('origin') !== ORIGIN) return reply(403, 'Wrong origin')
 
-    const { text, website } = await request.json().catch(() => ({}))
+    const { text, verdict = '', website } = await request.json().catch(() => ({}))
     if (website) return reply(204) // only bots fill the hidden field, so they get a quiet success
+    if (verdict && !VERDICTS.includes(verdict)) return reply(400, 'Unknown verdict')
     const note = typeof text === 'string' ? text.trim() : ''
-    if (!note || note.length > MAX_LENGTH) return reply(400, 'Empty or too long')
+    if ((!note && !verdict) || note.length > MAX_LENGTH) return reply(400, 'Empty or too long')
 
     const day = new Date().toISOString().slice(0, 10) // no finer, an exact time could be matched to a visit
     const counter = `count:${day}`
@@ -29,7 +31,7 @@ export default {
     if (today >= DAILY_LIMIT) return reply(429, 'Too many today')
 
     await env.SUGGESTIONS.put(counter, String(today + 1), { expirationTtl: TWO_DAYS })
-    await env.SUGGESTIONS.put(`note:${day}:${crypto.randomUUID()}`, note)
+    await env.SUGGESTIONS.put(`note:${day}:${crypto.randomUUID()}`, [verdict, note].filter(Boolean).join(': '))
     return reply(204)
   },
 }

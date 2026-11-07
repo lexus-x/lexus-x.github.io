@@ -26,6 +26,20 @@ test('keeps the text and nothing about the sender', async () => {
   assert.match(key, /^note:\d{4}-\d{2}-\d{2}:[0-9a-f-]+$/)
 })
 
+test('keeps a verdict with or without a comment', async () => {
+  const kv = store()
+  await worker.fetch(post({ verdict: 'minor revision', text: ' tighten the CV ' }), { SUGGESTIONS: kv })
+  await worker.fetch(post({ verdict: 'accept', text: '' }), { SUGGESTIONS: kv })
+  assert.deepEqual(notes(kv).map(key => kv.items.get(key)).sort(), ['accept', 'minor revision: tighten the CV'])
+})
+
+test('refuses a verdict that is not on the list', async () => {
+  const kv = store()
+  assert.equal((await worker.fetch(post({ verdict: 'strong accept', text: 'hi' }), { SUGGESTIONS: kv })).status, 400)
+  assert.equal((await worker.fetch(post({ verdict: 5, text: 'hi' }), { SUGGESTIONS: kv })).status, 400)
+  assert.equal(notes(kv).length, 0)
+})
+
 test('refuses other sites, empty notes and notes that are too long', async () => {
   const kv = store()
   assert.equal((await worker.fetch(post({ text: 'hi' }, 'https://evil.test'), { SUGGESTIONS: kv })).status, 403)

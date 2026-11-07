@@ -1,45 +1,53 @@
-// Haar wavelet split and rebuild, plus the synthetic motion the home page plots.
+// Orthonormal Haar wavelet for arrays whose length is a power of two, and the "keep only the largest numbers" rebuild.
 
-const ease = t => t * t * (3 - 2 * t)
-const ramp = (t, from, to, size) => size * ease(Math.min(1, Math.max(0, (t - from) / (to - from))))
-
-// Arm height through one pick and place, t in [0, 1]. Synthetic, for illustration only.
-export function pickAndPlace(t) {
-  const reach = ramp(t, 0.04, 0.3, -0.48)
-  const lift = ramp(t, 0.42, 0.62, 0.68)
-  const lower = ramp(t, 0.72, 0.85, -0.5)
-  const leave = ramp(t, 0.9, 1, 0.42)
-  const grasp = t > 0.36 ? 0.06 : 0
-  const release = t > 0.875 ? -0.07 : 0
-  const sway = t > 0.62 && t < 0.72 ? 0.012 * Math.sin(2 * Math.PI * 12 * t) : 0
-  return 0.6 + reach + lift + lower + leave + grasp + release + sway
-}
-
-// Returns bands coarsest first: [average, 1 detail, 1, 2, 4, ...]. Length of signal must be a power of 2.
 export function haar(signal) {
-  const details = []
-  let average = signal
-  while (average.length > 1) {
-    const next = []
-    const detail = []
-    for (let i = 0; i < average.length; i += 2) {
-      next.push((average[i] + average[i + 1]) / 2)
-      detail.push((average[i] - average[i + 1]) / 2)
+  const out = signal.slice()
+  for (let n = out.length; n > 1; n >>= 1) {
+    const part = out.slice(0, n)
+    for (let i = 0; i < n / 2; i++) {
+      out[i] = (part[2 * i] + part[2 * i + 1]) / Math.SQRT2
+      out[n / 2 + i] = (part[2 * i] - part[2 * i + 1]) / Math.SQRT2
     }
-    details.unshift(detail)
-    average = next
   }
-  return [average, ...details]
+  return out
 }
 
-// Inverse transform using the first `keep` bands. A fractional keep fades the next band in,
-// so scrolling morphs the line instead of jumping between levels.
-export function rebuild(bands, keep) {
-  let signal = bands[0]
-  for (let band = 1; band < bands.length; band++) {
-    const detail = bands[band]
-    const weight = Math.min(1, Math.max(0, keep - band))
-    signal = signal.flatMap((value, i) => [value + detail[i] * weight, value - detail[i] * weight])
+export function unhaar(coefficients) {
+  const out = coefficients.slice()
+  for (let n = 2; n <= out.length; n <<= 1) {
+    const part = out.slice(0, n)
+    for (let i = 0; i < n / 2; i++) {
+      out[2 * i] = (part[i] + part[n / 2 + i]) / Math.SQRT2
+      out[2 * i + 1] = (part[i] - part[n / 2 + i]) / Math.SQRT2
+    }
   }
-  return signal
+  return out
+}
+
+// n points evenly spaced along a path of at least two points
+export function resample(points, n) {
+  const along = [0]
+  for (let i = 1; i < points.length; i++) along.push(along[i - 1] + Math.hypot(points[i][0] - points[i - 1][0], points[i][1] - points[i - 1][1]))
+  const total = along.at(-1) || 1
+  const out = []
+  let j = 0
+  for (let k = 0; k < n; k++) {
+    const s = (total * k) / (n - 1)
+    while (j < points.length - 2 && along[j + 1] < s) j++
+    const f = (s - along[j]) / (along[j + 1] - along[j] || 1)
+    out.push([points[j][0] + (points[j + 1][0] - points[j][0]) * f, points[j][1] + (points[j + 1][1] - points[j][1]) * f])
+  }
+  return out
+}
+
+// Rebuilds a path from only its `keep` largest wavelet numbers, ranked across x and y together.
+export function keepLargest(points, keep, n = 64) {
+  const even = resample(points, n)
+  const xs = haar(even.map(p => p[0]))
+  const ys = haar(even.map(p => p[1]))
+  const ranked = [...xs.map((v, i) => [Math.abs(v), xs, i]), ...ys.map((v, i) => [Math.abs(v), ys, i])].sort((p, q) => q[0] - p[0])
+  for (const [, band, i] of ranked.slice(keep)) band[i] = 0
+  const x = unhaar(xs)
+  const y = unhaar(ys)
+  return x.map((value, i) => [value, y[i]])
 }
