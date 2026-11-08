@@ -37,7 +37,7 @@ export function startLines(canvas) {
     const corner = box.querySelector('.corner')
     const text = box.querySelector('.hero-text')
     top = corner ? corner.offsetTop + corner.offsetHeight + 10 : h * 0.1
-    bottom = text ? text.offsetTop - 16 : h * 0.7
+    bottom = text ? text.offsetTop - 16 : h * 0.9
     const words = { upper: 'LALITH SAI', lower: 'lalith sai' }[v('--name-case')] ?? 'Lalith Sai'
     const rows = w < h ? words.split(' ') : [words] // two rows on a phone, so every letter crosses enough lines to read
     mw = Math.ceil(w / STEP)
@@ -134,7 +134,8 @@ export function startLines(canvas) {
     frame = requestAnimationFrame(tick)
   }
 
-  new ResizeObserver(build).observe(box)
+  const observer = new ResizeObserver(build)
+  observer.observe(box)
 
   return {
     restyle: build,
@@ -142,6 +143,11 @@ export function startLines(canvas) {
       start = performance.now()
       if (calm) draw(start)
       else if (!frame) frame = requestAnimationFrame(tick)
+    },
+    stop() {
+      cancelAnimationFrame(frame)
+      frame = 0
+      observer.disconnect()
     },
   }
 }

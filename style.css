@@ -110,10 +110,13 @@ a.tile:hover { color: var(--ink); border-color: var(--ink); }
 .claim { font-size: clamp(1rem, 4.2vw, 1.3rem); line-height: 1.4; }
 .meta { color: var(--soft); font-size: 0.8125rem; }
 .corner { position: absolute; top: 0.75rem; left: 0.75rem; right: 0.75rem; z-index: 1; display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; }
-.now { display: flex; align-items: center; gap: 0.5rem; min-width: 0; padding: 0.3rem 0.75rem 0.3rem 0.45rem; border: 1px solid var(--hair); border-radius: 999px; background: var(--ground); color: var(--ink); font-size: 0.75rem; text-decoration: none; }
+.now { display: flex; align-items: center; gap: 0.5rem; min-width: 0; min-height: 2rem; padding: 0.3rem 0.6rem 0.3rem 0.45rem; border: 1px solid var(--hair); border-radius: 999px; background: var(--ground); color: var(--ink); font-size: 0.75rem; }
+.now svg { flex: none; width: 1rem; height: 1rem; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.now[aria-pressed="true"] .off, .now:not([aria-pressed="true"]) .on { display: none; }
 .now:hover { border-color: var(--ink); color: var(--ink); }
 .now span { color: var(--ink); overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
-.now i { flex: none; width: 0.9rem; height: 0.9rem; border-radius: 50%; background: radial-gradient(circle, var(--ground) 0 18%, var(--red) 20% 44%, #111 46%); animation: spin 2.4s linear infinite; }
+.now i { flex: none; width: 0.9rem; height: 0.9rem; border-radius: 50%; background: radial-gradient(circle, var(--ground) 0 18%, var(--red) 20% 44%, #111 46%); }
+.now[aria-pressed="true"] i { animation: spin 2.4s linear infinite; } /* the record turns only while the beat plays */
 @keyframes spin { to { rotate: 1turn; } }
 #shuffle { flex: none; padding: 0.3rem 0.25rem; color: var(--soft); transition: color 0.25s; }
 #shuffle:hover { color: var(--ink); }
@@ -225,6 +228,11 @@ textarea:focus-visible { border-color: var(--ink); outline: none; }
 .pill { min-height: 2.25rem; padding: 0 0.85rem; border: 1px solid var(--hair); border-radius: 999px; color: var(--soft); font-size: 0.8125rem; }
 .pill[aria-pressed="true"] { border-color: var(--ink); background: var(--ink); color: var(--ground); }
 .score { min-height: 1.6em; color: var(--ink); }
+.desk, .quiz-box { position: relative; flex: 1 1 0; min-height: 0; border: 1px solid var(--hair); border-radius: var(--round); background: var(--panel); overflow: hidden; }
+.comment { position: absolute; max-width: 62%; padding: 0.5rem 0.8rem; border: 1px solid var(--ink); border-radius: 1rem; background: var(--ground); color: var(--ink); font-size: 0.8125rem; text-align: left; box-shadow: 0 0.4rem 1rem rgb(0 0 0 / 0.25); animation: settle 0.2s ease both; }
+.comment:hover { border-color: var(--red); }
+.quiz-box { background: var(--ground); } /* wears the album being guessed; the lines read this colour to hide the hills behind */
+.game-space .quiz-box canvas { position: absolute; inset: 0; height: 100%; border: 0; border-radius: 0; }
 
 /* Every change of view: a circular reveal from where it was asked for */
 

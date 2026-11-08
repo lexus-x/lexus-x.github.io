@@ -1,5 +1,6 @@
 import { startLines } from './lines.js'
 import { ALBUMS, pick } from './albums.mjs'
+import { startBeats } from './beats.mjs'
 
 const EMAIL = 'zailalith@gmail.com'
 // shortcut: the review tile and panel stay hidden until the Worker in worker/ is deployed, then this holds its URL.
@@ -16,19 +17,18 @@ const lines = startLines(document.querySelector('#lines'))
 document.fonts?.load(`400 100px ${getComputedStyle(root).getPropertyValue('--heavy')}`).then(() => lines.restyle(), () => {}) // rebuild once the real face arrives
 lines.play()
 
-/* Album: index.html already picked one; a song from it goes in the corner, and shuffle moves to another */
+/* Album: index.html already picked one; its beat waits in the corner until tapped, and shuffle moves to another */
 
 const now = document.querySelector('#now')
 const themeColor = document.querySelector('meta[name="theme-color"]')
 const memes = [...document.querySelectorAll('.meme')]
+const beats = startBeats()
 
 function wear(id) {
   root.dataset.album = id
   const album = ALBUMS[id]
-  const track = pick(album.tracks)
-  now.href = `https://open.spotify.com/search/${encodeURIComponent(`${track} ${album.artist}`)}`
-  now.querySelector('span').textContent = `on rotation · ${track} · ${album.artist}`
-  now.setAttribute('aria-label', `On rotation: ${track} by ${album.artist}, from ${album.name}. Opens Spotify.`)
+  now.querySelector('span').textContent = `my beat · ${album.name} mood`
+  if (beats.playing) beats.play(album.beat)
   themeColor.content = getComputedStyle(root).getPropertyValue('--ground').trim()
   const meme = pick(memes)
   memes.forEach(item => { item.hidden = item !== meme })
@@ -38,6 +38,12 @@ function wear(id) {
     // private windows can refuse storage; the next visit is just random
   }
 }
+
+now.addEventListener('click', () => {
+  if (beats.playing) beats.stop()
+  else beats.play(ALBUMS[root.dataset.album].beat)
+  now.setAttribute('aria-pressed', beats.playing)
+})
 
 const shuffle = document.querySelector('#shuffle')
 shuffle.addEventListener('click', () => {
@@ -179,12 +185,13 @@ form.addEventListener('submit', async event => {
 /* Play */
 
 document.querySelectorAll('.game').forEach(button => button.addEventListener('click', async () => {
-  const { startDelay, startKeep } = await import('./games.js')
+  const games = await import('./games.js')
+  const start = { delay: games.startDelay, keep: games.startKeep, reviewer: games.startReviewer, grasp: games.startGrasp, sim: games.startSim, album: games.startAlbum }[button.dataset.game]
   gameButton = button
   reveal(() => {
     arena.hidden = false
     playPanel.inert = true
-    stopGame = (button.dataset.game === 'delay' ? startDelay : startKeep)(gameSpace)
+    stopGame = start(gameSpace)
     if (!arena.contains(document.activeElement)) leave.focus({ preventScroll: true })
   })
 }))

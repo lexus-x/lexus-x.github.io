@@ -32,3 +32,11 @@ test('text and links stay readable on every album (WCAG AA, 4.5:1)', () => {
     }
   }
 })
+
+test('every album has a beat the sequencer can play', () => {
+  for (const [id, { beat }] of Object.entries(ALBUMS)) {
+    assert.ok(beat.bpm > 0 && beat.tones.length, `${id}: needs a tempo and at least one voice`)
+    for (const part of ['kick', 'snare', 'hat']) if (beat[part]) assert.match(beat[part], /^[x.]+$/, `${id}: ${part} pattern`)
+    for (const voice of beat.tones) assert.ok([voice.notes, voice.wave, voice.cut, voice.dur, voice.gain].every(v => v !== undefined), `${id}: voice is missing a setting`)
+  }
+})

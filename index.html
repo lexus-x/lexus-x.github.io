@@ -28,7 +28,7 @@
     <section class="tile hero" aria-labelledby="name">
       <canvas id="lines" aria-hidden="true"></canvas>
       <div class="corner">
-        <a class="now" id="now" href="https://open.spotify.com/"><i aria-hidden="true"></i><span>on rotation</span></a>
+        <button class="now" id="now" type="button" aria-pressed="false"><i aria-hidden="true"></i><span>my beat</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h4l5-4v14l-5-4H4z"/><path class="on" d="M16 9a4 4 0 0 1 0 6M18.5 6.5a8 8 0 0 1 0 11"/><path class="off" d="M16 9l5 6M21 9l-5 6"/></svg></button>
         <button id="shuffle" type="button">shuffle</button>
       </div>
       <h1 id="name">Devireddy Lalith Sai</h1>
@@ -39,7 +39,7 @@
     </section>
     <a class="tile" href="#cv"><b>11.8×</b><span>smaller action head, my M.S. thesis</span></a>
     <a class="tile" href="#projects"><b>3rd</b><span>of 103 at the CV4Ecology 2026 Challenge</span></a>
-    <a class="tile play-tile" href="#play"><b>Play</b><span>two games from my research</span></a>
+    <a class="tile play-tile" href="#play"><b>Play</b><span>six small games, two from my research</span></a>
     <div class="tile meme-tile">
       <figure class="meme" role="img" aria-label="Meme. In sim, the arm goes straight to the cup. On the real robot, its path scribbles everywhere.">
         <div><p>in sim</p><svg viewBox="0 0 100 100"><path class="s" d="M12 88 28 60 44 70"/><rect class="a" x="70" y="66" width="14" height="16" rx="2"/><path class="k" d="M44 70 72 72" stroke-dasharray="3 4"/></svg></div>
@@ -154,11 +154,25 @@
   <section class="panel" id="play" aria-labelledby="play-title">
     <header class="panel-head"><h2 id="play-title" tabindex="-1">Play</h2><a class="back" href="#">back</a></header>
     <div class="panel-body">
-      <p class="lead">Two ideas from my research, as games. Neither runs the real model.</p>
+      <p class="lead">Six small games. Beat the delay and Keep 8 numbers come from my research; none of them runs the real model.</p>
       <div class="games">
         <button class="game" type="button" data-game="delay"><b>Beat the delay</b><span>Steer a robot arm that follows you late, with a slow head and one 6× faster.</span></button>
         <button class="game" type="button" data-game="keep"><b>Keep 8 numbers</b><span>Draw a line and watch it rebuilt from only its largest wavelet numbers.</span></button>
+        <button class="game" type="button" data-game="reviewer"><b>Reviewer 2</b><span>Answer the reviewer's comments before five pile up and the paper is rejected.</span></button>
+        <button class="game" type="button" data-game="grasp"><b>Grasp</b><span>Drop the gripper on the cup. Every catch makes it faster.</span></button>
+        <button class="game" type="button" data-game="sim"><b>Sim to real</b><span>Plan a path to the cup, then watch the real robot drift off it.</span></button>
+        <button class="game" type="button" data-game="album"><b>Name that album</b><span>This site wears a different album each visit. Guess which one.</span></button>
       </div>
+      <h3 class="sub">Elsewhere</h3>
+      <p class="tags">
+        <a href="https://neal.fun/not-a-robot/" target="_blank" rel="noopener">I'm Not a Robot</a>
+        <a href="https://neal.fun/perfect-circle/" target="_blank" rel="noopener">Draw a Perfect Circle</a>
+        <a href="https://neal.fun/infinite-craft/" target="_blank" rel="noopener">Infinite Craft</a>
+        <a href="https://www.decisionproblem.com/paperclips/index2.html" target="_blank" rel="noopener">Universal Paperclips</a>
+        <a href="https://quickdraw.withgoogle.com/" target="_blank" rel="noopener">Quick, Draw!</a>
+        <a href="https://www.linerider.com/" target="_blank" rel="noopener">Line Rider</a>
+        <a href="https://humanbenchmark.com/" target="_blank" rel="noopener">Human Benchmark</a>
+      </p>
     </div>
   </section>
 
