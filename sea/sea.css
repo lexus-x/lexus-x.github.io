@@ -110,3 +110,17 @@ html:not(.js) .tile img { filter: none; }
   .word span { font-size: 21cqw; }
   .word span:last-child { align-self: auto; }
 }
+
+/* buttons in the bar, the mood line, and the hero photo fading in once it has loaded */
+.ctl { display: flex; gap: 0.5rem; }
+.bar .btn { padding: 0 0.85rem; font-size: 0.78rem; }
+.mixline { margin: 0.6rem 0 0; font: 400 0.8rem/1.4 var(--mono); color: var(--soft); }
+.hero .claim { margin-top: 1.25rem; }
+.js .hero-photo img { opacity: 0; animation: show 0s 2.5s forwards; } /* failsafe: never stay hidden */
+.js .hero-photo.ready img { opacity: 1; animation: none; transition: opacity 0.6s ease; }
+@keyframes show { to { opacity: 1; } }
+
+/* pixel art is shown whole, never cropped; the notes sit under it */
+.hero-photo.pixel { height: auto; }
+.hero-photo.pixel img { height: auto; aspect-ratio: 3 / 2; }
+.hero-photo.pixel .notes { position: static; padding: 1rem; }

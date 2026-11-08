@@ -16,7 +16,10 @@
 <body>
   <header class="bar">
     <a class="mark" href="#top" aria-label="Lalith Sai, top">LS</a>
-    <button class="btn ghost" id="snd" type="button" aria-pressed="false">&#9834; Sound off</button>
+    <div class="ctl">
+      <button class="btn ghost" id="mix" type="button">&#8635; New mix</button>
+      <button class="btn ghost" id="snd" type="button" aria-pressed="false">&#9834; Sound off</button>
+    </div>
   </header>
 
   <main id="top">
@@ -25,9 +28,6 @@
       <nav class="nav" aria-label="Sections">
         <a href="#work">Work</a><a href="#play">Play</a><a href="#about">About</a><a href="#contact">Contact</a>
       </nav>
-      <p class="claim">I teach robots to act from what they see and what they&rsquo;re told.</p>
-      <p class="meta">M.S. researcher, machine learning and computer vision. Changwon, South Korea. Open to opportunities.</p>
-
       <figure class="photo hero-photo">
         <img src="img/golden.jpg" width="1920" height="1275" alt="A surfer waits in the sea under a golden sunset sky" fetchpriority="high">
         <div class="notes">
@@ -35,6 +35,9 @@
           <p class="note late"><b>3rd of 103</b>CV4Ecology 2026 Challenge<small>Team lead &middot; FishONet</small></p>
         </div>
       </figure>
+      <p class="mixline" id="mixline" aria-live="polite"></p>
+      <p class="claim">I teach robots to act from what they see and what they&rsquo;re told.</p>
+      <p class="meta">M.S. researcher, machine learning and computer vision. Changwon, South Korea. Open to opportunities.</p>
     </section>
 
     <section id="work" class="work" aria-labelledby="work-h">
@@ -122,8 +125,8 @@
   </main>
 
   <footer class="foot">
-    <p>Photos: golden hour, Evelyn Werner (CC0). Sunset, Joshua Fuller (CC0). Dusk, Ilnur Kalimullin (CC0), all via Unsplash and Wikimedia Commons. Blue hour: P. S. Kr&oslash;yer, <i>Den bl&aring; time</i>, 1908 (public domain).</p>
-    <p>Sound: a short beat made in your browser, not a recording.</p>
+    <p>Photos: golden hour, Evelyn Werner (CC0). Sunset, Joshua Fuller (CC0). Dusk, Ilnur Kalimullin (CC0). Via Unsplash and Wikimedia Commons. Coffee scene: pixel art drawn for this site. Blue hour: P. S. Kr&oslash;yer, <i>Den bl&aring; time</i>, 1908 (public domain).</p>
+    <p>Sound: keys, ocean waves and cafe clinks, all made live in your browser, not recordings. A random mood each visit.</p>
   </footer>
 </body>
 </html>

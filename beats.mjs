@@ -11,6 +11,9 @@ export function startBeats() {
   let beat = null
   let step = 0
   let at = 0
+  let nextWave = 0
+  let nextRoom = 0
+  let nextClink = 0
 
   function boot() {
     if (navigator.audioSession) navigator.audioSession.type = 'playback' // iPhones otherwise stay silent with the ringer switch off
@@ -19,7 +22,7 @@ export function startBeats() {
       master = ctx.createGain()
       master.gain.value = 0.5
       master.connect(ctx.createDynamicsCompressor()).connect(ctx.destination)
-      noise = ctx.createBuffer(1, ctx.sampleRate, ctx.sampleRate)
+      noise = ctx.createBuffer(1, ctx.sampleRate * 3, ctx.sampleRate) // 3 s, so looped sea never repeats audibly fast
       const data = noise.getChannelData(0)
       for (let i = 0; i < data.length; i++) data[i] = Math.random() * 2 - 1
       addEventListener('visibilitychange', () => {
@@ -77,8 +80,54 @@ export function startBeats() {
     }
   }
 
+  // filtered noise that swells and fades: one wave (opening filter) or a soft room (barely moving)
+  function wash(t, from, to, length, peak) {
+    const source = ctx.createBufferSource()
+    const filter = ctx.createBiquadFilter()
+    source.buffer = noise
+    source.loop = true
+    filter.type = 'lowpass'
+    filter.frequency.setValueAtTime(from, t)
+    filter.frequency.linearRampToValueAtTime(to, t + length * 0.45)
+    filter.frequency.linearRampToValueAtTime(from, t + length)
+    source.connect(filter).connect(envelope(t, peak, length, length * 0.45))
+    source.start(t, Math.random() * 2)
+    source.stop(t + length + 0.05)
+  }
+
+  // a cup touching a saucer: two bright, quickly fading pings
+  function clink(t, level) {
+    const base = 2200 + Math.random() * 1800
+    for (const ratio of [1, 1.51]) {
+      const osc = ctx.createOscillator()
+      osc.frequency.value = base * ratio
+      osc.connect(envelope(t, 0.04 * level, 0.3 + Math.random() * 0.2, 0.002))
+      osc.start(t)
+      osc.stop(t + 0.6)
+    }
+  }
+
+  function layers() {
+    const now = ctx.currentTime
+    if (beat.waves && now + LOOK_AHEAD > nextWave) {
+      wash(Math.max(nextWave, now), 250, 1100, 7 + Math.random() * 4, 0.4 * beat.waves)
+      nextWave = Math.max(nextWave, now) + 5 + Math.random() * 3
+    }
+    if (beat.cafe && now + LOOK_AHEAD > nextRoom) {
+      wash(Math.max(nextRoom, now), 300, 500, 4, 0.05 * beat.cafe)
+      nextRoom = Math.max(nextRoom, now) + 2.5
+    }
+    if (beat.cafe && now + LOOK_AHEAD > nextClink) {
+      const t = Math.max(nextClink, now)
+      clink(t, beat.cafe)
+      if (Math.random() < 0.3) hiss(t + 0.4, 3000, 0.03 * beat.cafe, 1.2) // steam
+      nextClink = t + 3 + Math.random() * 6
+    }
+  }
+
   function tick() {
     const length = 60 / beat.bpm / 4
+    layers()
     if (at < ctx.currentTime) at = ctx.currentTime + 0.05 // after a throttled pause, skip what was missed instead of playing it all at once
     while (at < ctx.currentTime + LOOK_AHEAD) {
       const hit = part => beat[part]?.[step % beat[part].length] === 'x'
@@ -112,6 +161,7 @@ export function startBeats() {
       beat = next
       step = 0
       at = ctx.currentTime + 0.05
+      nextWave = nextRoom = nextClink = ctx.currentTime
       clearInterval(timer)
       timer = setInterval(tick, 25)
       tick()
