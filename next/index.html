@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lalith Sai</title>
+  <meta name="description" content="Devireddy Lalith Sai teaches robots to act from what they see and what they're told. M.S. researcher in machine learning and computer vision.">
+  <meta name="theme-color" content="#1a1e23">
+  <meta name="robots" content="noindex">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' fill='%23000000'/%3E%3Cpath fill='none' stroke='%233d74ff' d='M3 14 7 7M4 14l4-7M5 14l4-7'/%3E%3Cpath fill='none' stroke='%23ff2a1f' d='M7 7l6-3M8 7l6-2'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;600&family=Instrument+Serif&display=swap">
+  <link rel="stylesheet" href="style.css">
+  <script>document.documentElement.classList.add('js')</script>
+  <script type="module" src="app.js"></script>
+</head>
+<body>
+  <main class="bento">
+    <section class="tile hero" aria-labelledby="name">
+      <canvas id="lines" aria-hidden="true"></canvas>
+      <div class="corner">
+        <button class="now" id="now" type="button" aria-pressed="false">♪ Sound off</button>
+        <button id="shuffle" type="button">↻ New beat</button>
+      </div>
+      <h1 id="name">Devireddy Lalith Sai</h1>
+      <div class="hero-text">
+        <p class="claim">I teach robots to act from what they see and what they're told.</p>
+        <p class="meta">M.S. researcher in machine learning and computer vision. Changwon, South Korea. Open to opportunities.</p>
+        <p class="meta" id="beat" aria-live="polite"></p>
+      </div>
+    </section>
+    <a class="tile" href="#cv"><b>11.8×</b><span>smaller action head, my M.S. thesis</span></a>
+    <a class="tile" href="#projects"><b>3rd</b><span>of 103 at the CV4Ecology 2026 Challenge</span></a>
+    <a class="tile play-tile" href="#play"><b>Play</b><span>six small games, two from my research</span></a>
+    <div class="tile meme-tile">
+      <figure class="meme" role="img" aria-label="Meme. In sim, the arm goes straight to the cup. On the real robot, its path scribbles everywhere.">
+        <div><p>in sim</p><svg viewBox="0 0 100 100"><path class="s" d="M12 88 28 60 44 70"/><rect class="a" x="70" y="66" width="14" height="16" rx="2"/><path class="k" d="M44 70 72 72" stroke-dasharray="3 4"/></svg></div>
+        <div><p>on the real robot</p><svg viewBox="0 0 100 100"><path class="s" d="M12 88 28 60 44 70"/><rect class="a" x="70" y="66" width="14" height="16" rx="2"/><path class="k" d="M44 70C70 20 90 40 60 50S20 30 50 40 96 90 30 80 60 10 40 30"/></svg></div>
+      </figure>
+      <figure class="meme" role="img" aria-label="Meme. The loss curve goes smoothly down. The robot knocks the cup over." hidden>
+        <div><p>the loss curve</p><svg viewBox="0 0 100 100"><path class="s" d="M14 16V86H90"/><path class="k" d="M18 24C30 66 48 76 86 80"/></svg></div>
+        <div><p>the robot</p><svg viewBox="0 0 100 100"><path class="s" d="M12 88 28 60 50 66"/><rect class="a" x="62" y="76" width="16" height="12" rx="2" transform="rotate(-75 70 82)"/><path class="k" d="M80 84h8M82 76l6-4M78 70l2-6"/></svg></div>
+      </figure>
+      <figure class="meme" role="img" aria-label="Meme. The bar I set beforehand was plus 5. My retry fix reached plus 3.3." hidden>
+        <div><p>the bar I set</p><svg viewBox="0 0 100 100"><path class="a" d="M10 40H90" stroke-dasharray="4 4"/><path class="s" d="M10 86H90"/><text x="12" y="35">+5.0</text></svg></div>
+        <div><p>my retry fix</p><svg viewBox="0 0 100 100"><path class="a" d="M10 40H90" stroke-dasharray="4 4"/><path class="s" d="M10 86H90"/><rect class="k" x="38" y="56" width="24" height="30"/><text x="38" y="51">+3.3</text></svg></div>
+      </figure>
+    </div>
+    <a class="tile" href="#projects"><b>Projects</b><span>FishONet and 15 more</span></a>
+    <a class="tile" href="#cv"><b>CV</b><span>study, work, papers</span></a>
+    <div class="tile mail-tile">
+      <a href="#contact"><b>zailalith@gmail.com</b></a>
+      <p class="socials"><a href="https://www.linkedin.com/in/lalith-sai-2a218a36b/">LinkedIn</a><a href="https://github.com/lexus-x">GitHub</a><a href="https://open.spotify.com/user/0br55dbe3rtqa9s58h6lwgz2p">Spotify</a><a href="https://www.instagram.com/blindinheights/">Instagram</a></p>
+    </div>
+    <a class="tile" href="#suggest" hidden><b>Review</b><span>this site, anonymously</span></a>
+  </main>
+
+  <section class="panel" id="cv" aria-labelledby="cv-title">
+    <header class="panel-head"><h2 id="cv-title" tabindex="-1">CV</h2><a class="back" href="#">← Back</a></header>
+    <div class="panel-body">
+      <p class="lead">Devireddy Lalith Sai. M.S. researcher in machine learning and computer vision, working on vision-language-action models, which turn camera images and text into robot motion.</p>
+      <dl class="cv">
+        <dt>now</dt>
+        <dd>Open to opportunities. Changwon, South Korea.</dd>
+        <dt>study</dt>
+        <dd>
+          <p><b>M.S.</b>, AI Convergence Engineering, Changwon National University, expected 2027. GPA 4.11/4.50. BK21 FOUR Fellowship. Excellence Academic Scholarship.</p>
+          <p><b>B.Tech</b>, Computer Science and Business Systems, SRM IST, 2024. CGPA 8.58/10. Thesis: autism identification with deep CNNs and visual explainability.</p>
+        </dd>
+        <dt>work</dt>
+        <dd>
+          <p>Graduate Research Assistant, Intelligent Systems Lab, Changwon, since 2025. Advisor Prof. Oh-Seol Kwon. GPU evaluation on A100, Blackwell-class, RTX A6000.</p>
+          <p>Mentored four IIT (BHU) interns across four separate VLA projects.</p>
+          <p>Invited exhibitor, ITRC Talent Development Expo, COEX, Seoul, 2025 and 2026.</p>
+        </dd>
+        <dt>thesis</dt>
+        <dd>
+          <p>Action head built on prior project work: 11.8× smaller, 62× faster per chunk, 6× faster end to end. It replaces SmolVLA's 99.88M flow expert with an 8.43M Wavelet Neural Operator.</p>
+          <p>Mixed success: 2 of 5 benchmarks passed non-inferiority. A same-size regression head could not be distinguished from mine.</p>
+        </dd>
+        <dt>papers</dt>
+        <dd>
+          <p>First author: KMMS 2026 (accepted), J. Broadcast Engineering (submitted).</p>
+          <p>Co-author: crystal system classification, Batteries (MDPI), under review.</p>
+        </dd>
+        <dt>baseline</dt>
+        <dd>SmolVLA baseline I built: 42.3% ± 2.1% over 3 seeds, 600 episodes, LIBERO-Long.</dd>
+        <dt>fail</dt>
+        <dd>Two fixes missed pre-registered gates: retry +3.3 (bar 5), feedback −11.7.</dd>
+        <dt>award</dt>
+        <dd>Led team CWNU AIX to 3rd of 103 at the CV4Ecology 2026 Challenge, with FishONet.</dd>
+        <dt>tools</dt>
+        <dd>
+          <p>Python, PyTorch, Hugging Face, LeRobot, SmolVLA, LIBERO, MuJoCo, MetaWorld.</p>
+          <p>Flow matching, neural operators, conformal prediction, open-set recognition.</p>
+          <p>Linux, CUDA, Docker, Slurm, AWS, multi-node GPU evaluation.</p>
+        </dd>
+        <dt>languages</dt>
+        <dd>English, Tamil, Telugu. TOEIC 910, IELTS 6.5.</dd>
+      </dl>
+      <p><a href="../Devireddy_Lalith_Sai_CV.pdf">CV (PDF)</a></p>
+    </div>
+  </section>
+
+  <section class="panel" id="projects" aria-labelledby="projects-title">
+    <header class="panel-head"><h2 id="projects-title" tabindex="-1">Projects</h2><a class="back" href="#">← Back</a></header>
+    <div class="panel-body">
+      <div class="cards">
+        <article class="card">
+          <small>CV4Ecology 2026 · team lead</small>
+          <p class="big">3rd of 103</p>
+          <h3><a href="https://fishonet.lalithsai00.workers.dev/">FishONet</a></h3>
+          <p>Led team CWNU AIX. 17,393 species, 11,598 with no photos. 53.761% overall, 23.77% on unseen ones.</p>
+          <p>Caught a leak: +13.374 on proxy, +0.006 for real. Removing it gained +0.213.</p>
+          <p><a href="https://github.com/lexus-x/FishONet">Code on GitHub</a></p>
+        </article>
+        <article class="card">
+          <small>M.S. thesis</small>
+          <p class="big">11.8× smaller</p>
+          <h3>Wavelet Neural Operator action head</h3>
+          <p>Built on prior project work. It replaces SmolVLA's 99.88M flow expert with 8.43M parameters: 62× faster per chunk, 6× faster end to end.</p>
+          <p>Mixed success: 2 of 5 benchmarks passed non-inferiority, and a same-size regression head could not be distinguished from mine.</p>
+        </article>
+      </div>
+      <h3 class="sub">15 more on GitHub</h3>
+      <p class="tags">
+        <a href="https://github.com/lexus-x/SE3-VLA">SE3-VLA</a>
+        <a href="https://github.com/lexus-x/GeoAct">GeoAct</a>
+        <a href="https://github.com/lexus-x/CASTLE">CASTLE</a>
+        <a href="https://github.com/lexus-x/PerturbVLA">PerturbVLA</a>
+        <a href="https://github.com/lexus-x/SimRealDiag">SimRealDiag</a>
+        <a href="https://github.com/lexus-x/Horizon">Horizon</a>
+        <a href="https://github.com/lexus-x/vla-research">VLA survey</a>
+        <a href="https://github.com/lexus-x/Hybrid-v3">Dark vessel detection</a>
+        <a href="https://github.com/lexus-x/MDL-Emergent-Language">MDL Emergent Language</a>
+        <a href="https://github.com/lexus-x/Vectron">Vectron</a>
+        <a href="https://github.com/lexus-x/QuantizeKit">QuantizeKit</a>
+        <a href="https://github.com/lexus-x/lsm-engine">lsm-engine</a>
+        <a href="https://github.com/lexus-x/CacheForge">CacheForge</a>
+        <a href="https://github.com/lexus-x/Traceweaver">Traceweaver</a>
+        <a href="https://github.com/lexus-x/linkforge">LinkForge</a>
+      </p>
+    </div>
+  </section>
+
+  <section class="panel" id="play" aria-labelledby="play-title">
+    <header class="panel-head"><h2 id="play-title" tabindex="-1">Play</h2><a class="back" href="#">← Back</a></header>
+    <div class="panel-body">
+      <p class="lead">Six small games. Beat the delay and Keep 8 numbers come from my research; none of them runs the real model.</p>
+      <div class="games">
+        <button class="game" type="button" data-game="delay"><b>Beat the delay</b><span>Steer a robot arm that follows you late, with a slow head and one 6× faster.</span></button>
+        <button class="game" type="button" data-game="keep"><b>Keep 8 numbers</b><span>Draw a line and watch it rebuilt from only its largest wavelet numbers.</span></button>
+        <button class="game" type="button" data-game="reviewer"><b>Reviewer 2</b><span>Answer the reviewer's comments before five pile up and the paper is rejected.</span></button>
+        <button class="game" type="button" data-game="grasp"><b>Grasp</b><span>Drop the gripper on the cup. Every catch makes it faster.</span></button>
+        <button class="game" type="button" data-game="sim"><b>Sim to real</b><span>Plan a path to the cup, then watch the real robot drift off it.</span></button>
+        <button class="game" type="button" data-game="album"><b>Name that album</b><span>This site wears a different album each visit. Guess which one.</span></button>
+      </div>
+      <h3 class="sub">Elsewhere</h3>
+      <p class="tags">
+        <a href="https://neal.fun/not-a-robot/" target="_blank" rel="noopener">I'm Not a Robot</a>
+        <a href="https://neal.fun/perfect-circle/" target="_blank" rel="noopener">Draw a Perfect Circle</a>
+        <a href="https://neal.fun/infinite-craft/" target="_blank" rel="noopener">Infinite Craft</a>
+        <a href="https://www.decisionproblem.com/paperclips/index2.html" target="_blank" rel="noopener">Universal Paperclips</a>
+        <a href="https://quickdraw.withgoogle.com/" target="_blank" rel="noopener">Quick, Draw!</a>
+        <a href="https://www.linerider.com/" target="_blank" rel="noopener">Line Rider</a>
+        <a href="https://humanbenchmark.com/" target="_blank" rel="noopener">Human Benchmark</a>
+      </p>
+    </div>
+  </section>
+
+  <section class="panel" id="contact" aria-labelledby="contact-title">
+    <header class="panel-head"><h2 id="contact-title" tabindex="-1">Contact</h2><a class="back" href="#">← Back</a></header>
+    <div class="panel-body contact">
+      <button class="mail" id="mail" type="button" aria-label="Copy the email address zailalith@gmail.com"><span class="mail-text">zailalith<br>@gmail.com</span><span class="mail-hint">tap to copy</span><span class="flash" aria-hidden="true">copied</span></button>
+      <p class="sr" id="mail-status" role="status"></p>
+      <p class="links"><a href="mailto:zailalith@gmail.com">Email</a><a href="https://www.linkedin.com/in/lalith-sai-2a218a36b/">LinkedIn</a><a href="https://github.com/lexus-x">GitHub</a><a href="https://open.spotify.com/user/0br55dbe3rtqa9s58h6lwgz2p">Spotify</a><a href="https://www.instagram.com/blindinheights/">Instagram</a><a href="../Devireddy_Lalith_Sai_CV.pdf">CV (PDF)</a></p>
+    </div>
+  </section>
+
+  <section class="panel" id="suggest" aria-labelledby="suggest-title" hidden>
+    <header class="panel-head"><h2 id="suggest-title" tabindex="-1">Review</h2><a class="back" href="#">← Back</a></header>
+    <div class="panel-body">
+      <p class="lead">Peer review is anonymous. So is this. Review this site like a paper.</p>
+      <form class="review" id="review">
+        <fieldset class="verdicts">
+          <legend>Your verdict</legend>
+          <label><input type="radio" name="verdict" value="accept"><span>accept</span></label>
+          <label><input type="radio" name="verdict" value="minor revision"><span>minor revision</span></label>
+          <label><input type="radio" name="verdict" value="major revision"><span>major revision</span></label>
+          <label><input type="radio" name="verdict" value="reject"><span>reject</span></label>
+        </fieldset>
+        <label for="note">Comments to the author</label>
+        <textarea id="note" name="text" rows="6" maxlength="1000"></textarea>
+        <input class="trap" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <button class="send" type="submit">submit review</button>
+        <span id="sent" role="status"></span>
+      </form>
+      <p class="small">No name or email needed. I store only the verdict, the comment and the date, never your IP.</p>
+    </div>
+  </section>
+
+  <div class="arena" id="arena" hidden>
+    <button id="leave" type="button">← Games</button>
+    <div class="game-space" id="game"></div>
+  </div>
+</body>
+</html>

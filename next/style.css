@@ -1,0 +1,232 @@
+:root {
+  --serif: "Instrument Serif", Georgia, "Times New Roman", serif;
+  --heavy: "Archivo Black", "Arial Black", Impact, sans-serif;
+  --sans: "IBM Plex Sans", system-ui, Arial, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
+  --edge: clamp(0.75rem, 2.2vw, 1.5rem);
+  --gap: 0.5rem;
+  --round: 14px;
+}
+
+/* One calm palette (slate and sand). Contrast: text 13:1, soft 7:1, accent 8:1. --red is the accent, --blue the link colour. */
+
+:root {
+  color-scheme: dark;
+  --ground: #1a1e23; --panel: #232931; --hair: #343b45; --ink: #e8e4dc; --soft: #a4aab2; --red: #c9b48a; --blue: #8fa8bb;
+  --letters: #c9b48a #8fa8bb; --name-case: none;
+}
+
+/* Only the Name that album game wears these: the five albums, toned down to one family. */
+[data-album="up"] { --ground: #141414; --panel: #1c1c1c; --hair: #2e2e2e; --ink: #e6e3dc; --soft: #9e9c96; --red: #cfcac0; --blue: #cfcac0; --letters: #cfcac0; --name-case: none; }
+[data-album="mm"] { --ground: #2a1718; --panel: #341d1e; --hair: #4a2b2c; --ink: #ecddd8; --soft: #b9a09b; --red: #d27a71; --blue: #d27a71; --letters: #d27a71; --name-case: upper; }
+[data-album="dsotm"] { --ground: #131416; --panel: #1b1c1f; --hair: #2c2d31; --ink: #e4e2de; --soft: #9d9c99; --red: #cf7d72; --blue: #6f93b5; --letters: #cf7d72 #cdb06b #86a77c #6f93b5 #9a84b4; --name-case: none; }
+[data-album="brat"] { --ground: #262b1c; --panel: #2f3524; --hair: #414a31; --ink: #e5e9d8; --soft: #aab194; --red: #afc377; --blue: #afc377; --letters: #afc377; --name-case: lower; }
+[data-album="cur"] { --ground: #241b33; --panel: #2d2340; --hair: #43365a; --ink: #eee5eb; --soft: #b3a8c0; --red: #d6927a; --blue: #d6927a; --letters: #d6927a #c78fa8; --name-case: none; }
+
+*, *::before, *::after { box-sizing: border-box; }
+[hidden] { display: none !important; }
+
+body {
+  margin: 0;
+  background: var(--ground);
+  color: var(--ink);
+  font: 400 1rem/1.6 var(--sans);
+  -webkit-font-smoothing: antialiased;
+  -webkit-text-size-adjust: 100%;
+}
+
+h1, h2, h3, p, dl, dd, fieldset { margin: 0; }
+b { font-weight: 500; }
+a { color: var(--blue); text-decoration-thickness: 1px; text-underline-offset: 0.22em; transition: color 0.25s; }
+a:hover { color: var(--red); }
+button { padding: 0; border: 0; background: none; color: inherit; font: inherit; cursor: pointer; }
+:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
+[tabindex="-1"]:focus { outline: none; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
+/* Bento: the hero, then one tile per panel */
+
+.bento { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--gap); padding: var(--edge); }
+
+.tile {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 0.75rem;
+  min-height: 8rem;
+  padding: 1rem 1.1rem;
+  border: 1px solid var(--hair);
+  border-radius: var(--round);
+  background: var(--panel);
+  color: var(--ink);
+  text-decoration: none;
+  overflow: hidden;
+  transition: border-color 0.25s;
+}
+a.tile:hover { color: var(--ink); border-color: var(--ink); }
+.tile b { font: 400 clamp(2.4rem, 11vw, 4rem)/0.95 var(--serif); letter-spacing: -0.01em; }
+.tile span { color: var(--soft); font-size: 0.8125rem; line-height: 1.45; }
+.hero, .play-tile, .mail-tile, .meme-tile { grid-column: 1 / -1; }
+.mail-tile b { font-size: clamp(1.6rem, 8vw, 3rem); overflow-wrap: anywhere; }
+.mail-tile > a { color: inherit; text-decoration: none; }
+.mail-tile > a:hover b { color: var(--red); }
+.socials { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.socials a { display: inline-flex; align-items: center; min-height: 2.75rem; padding: 0 1rem; border: 1px solid var(--hair); border-radius: 999px; color: var(--ink); font-size: 0.8125rem; text-decoration: none; transition: border-color 0.25s; }
+.socials a:hover { border-color: var(--ink); color: var(--ink); }
+
+/* Memes: drawn here, one per visit */
+.meme-tile { padding: 0.5rem; aspect-ratio: 2 / 1; }
+.meme { display: grid; grid-template-columns: 1fr 1fr; gap: 0.35rem; height: 100%; margin: 0; }
+.meme > div { position: relative; min-height: 0; border: 1px solid var(--hair); border-radius: 9px; background: var(--ground); overflow: hidden; }
+.meme svg { position: absolute; inset: 1.4rem 0 0; width: 100%; height: calc(100% - 1.4rem); fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+.meme .k { stroke: var(--ink); }
+.meme .s { stroke: var(--soft); }
+.meme .a { stroke: var(--red); }
+.meme text { fill: var(--ink); stroke: none; font: 500 9px var(--mono); }
+.meme p { position: absolute; inset: 0.35rem 0.25rem auto; color: #fff; font: 400 clamp(0.7rem, 3.4vw, 0.95rem)/1.05 var(--heavy); text-align: center; text-transform: uppercase; -webkit-text-stroke: 3px #000; paint-order: stroke fill; }
+
+.hero { min-height: 64svh; justify-content: flex-end; padding: 1.25rem; }
+#lines { position: absolute; inset: 0; width: 100%; height: 100%; }
+.hero h1 { font: 400 clamp(3.5rem, 16vw, 7rem)/1 var(--serif); }
+.js .hero h1 { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; } /* the canvas writes the name */
+.hero-text { position: relative; display: grid; gap: 0.5rem; max-width: 36ch; }
+.claim { font-size: clamp(1rem, 4.2vw, 1.3rem); line-height: 1.4; }
+.meta { color: var(--soft); font-size: 0.8125rem; }
+.corner { position: absolute; top: 0.75rem; left: 0.75rem; right: 0.75rem; z-index: 1; display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; }
+html:not(.js) #lines, html:not(.js) .corner, html:not(.js) .mail-hint { display: none; }
+
+/* Wide screens: the whole bento on one screen */
+
+@media (min-width: 62.5rem) and (min-height: 36rem) {
+  .bento { height: 100svh; grid-template-columns: repeat(4, minmax(0, 1fr)); grid-template-rows: repeat(3, minmax(0, 1fr)); }
+  .tile { min-height: 0; }
+  .hero { grid-column: 1 / 3; grid-row: 1 / 3; min-height: 0; padding: 1.5rem; }
+  .mail-tile { grid-column: 1 / 3; grid-row: 3; }
+  .play-tile { grid-column: 3; }
+  .meme-tile { grid-column: 4; aspect-ratio: auto; }
+  .meme p { font-size: clamp(0.65rem, 1vw, 0.9rem); }
+  .tile b { font-size: clamp(3rem, 5vw, 5rem); }
+  .mail-tile b { font-size: clamp(2rem, 3.6vw, 3.4rem); }
+}
+
+/* Panels: full screen, opened by a tile */
+
+.panel {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 0 var(--edge) 3rem;
+  background: var(--ground);
+}
+html:not(.js) .panel:target, .js .panel.open { display: block; }
+html:has(.panel.open), html:has(.panel:target), html:has(.arena:not([hidden])) { overflow: hidden; }
+
+.panel-head { position: sticky; top: 0; z-index: 1; display: flex; flex-direction: row-reverse; align-items: center; justify-content: space-between; gap: 1rem; padding-block: 1rem 1.25rem; background: var(--ground); }
+.panel h2 { font: 400 clamp(2.75rem, 10vw, 5rem)/1 var(--serif); }
+
+.panel-body { display: grid; gap: 1.5rem; max-width: 56rem; }
+.lead { font-size: clamp(1rem, 3.6vw, 1.2rem); line-height: 1.5; max-width: 52ch; }
+.small { color: var(--soft); font-size: 0.8125rem; }
+.sub { font: 400 clamp(1.6rem, 6vw, 2.4rem)/1 var(--serif); }
+
+.cv { display: grid; grid-template-columns: 7rem minmax(0, 1fr); }
+.cv dt, .cv dd { padding-block: 0.9rem; border-top: 1px solid var(--hair); }
+.cv dt { padding-top: 1.05rem; color: var(--soft); font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; }
+.cv dd p + p { margin-top: 0.4rem; }
+
+@media (max-width: 32rem) {
+  .cv { grid-template-columns: minmax(0, 1fr); }
+  .cv dt { padding-bottom: 0; }
+  .cv dd { padding-top: 0.2rem; border-top: 0; }
+}
+
+.cards { display: grid; gap: var(--gap); }
+.card { display: grid; align-content: start; gap: 0.5rem; padding: 1.1rem; border: 1px solid var(--hair); border-radius: var(--round); background: var(--panel); }
+.card small { color: var(--soft); font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; }
+.card .big { color: var(--red); font: 400 clamp(2.4rem, 9vw, 3.5rem)/1 var(--serif); }
+.card h3 { font-size: 1rem; font-weight: 500; }
+.card p:not(.big) { color: var(--soft); }
+.tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.tags a { display: inline-flex; align-items: center; min-height: 2.75rem; padding: 0 1rem; border: 1px solid var(--hair); border-radius: 999px; color: var(--ink); font-size: 0.8125rem; text-decoration: none; transition: border-color 0.25s, color 0.25s; }
+.tags a:hover { border-color: var(--red); color: var(--red); }
+
+.games { display: grid; gap: var(--gap); }
+.game { display: grid; align-content: space-between; gap: 1.5rem; min-height: 10rem; padding: 1.1rem; border: 1px solid var(--hair); border-radius: var(--round); background: var(--panel); text-align: left; transition: border-color 0.25s; }
+.game:hover { border-color: var(--ink); }
+.game b { font: 400 clamp(2rem, 8vw, 3rem)/1 var(--serif); }
+.game span { color: var(--soft); }
+
+@media (min-width: 48rem) {
+  .cards, .games { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+/* Contact: the address is the page */
+
+.contact { min-height: calc(100svh - 8rem); align-content: center; }
+.mail { position: relative; display: grid; gap: 1rem; width: 100%; padding: 1rem 0; overflow: hidden; border-radius: var(--round); text-align: left; container-type: inline-size; }
+.mail-text { font: 400 16cqi/1 var(--serif); overflow-wrap: anywhere; }
+.mail-hint { color: var(--soft); font-size: 0.8125rem; }
+.flash { position: absolute; inset: 0; display: grid; place-items: center; background: var(--red); color: var(--ground); font-size: 1rem; clip-path: circle(0 at var(--x, 50%) var(--y, 50%)); transition: clip-path 0.55s cubic-bezier(.7, 0, .2, 1); pointer-events: none; }
+.copied .flash { clip-path: circle(150% at var(--x, 50%) var(--y, 50%)); }
+.links { display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem; }
+
+/* Review */
+
+.review { display: grid; gap: 0.75rem; max-width: 40rem; }
+.verdicts { display: flex; flex-wrap: wrap; gap: 0.4rem; padding: 0; border: 0; }
+.verdicts legend { margin-bottom: 0.5rem; color: var(--soft); }
+.verdicts label { position: relative; }
+.verdicts input { position: absolute; opacity: 0; }
+.verdicts span { display: inline-block; padding: 0.4rem 0.85rem; border: 1px solid var(--hair); border-radius: 999px; cursor: pointer; }
+.verdicts input:checked + span { border-color: var(--ink); background: var(--ink); color: var(--ground); }
+.verdicts input:focus-visible + span { outline: 2px solid var(--blue); outline-offset: 2px; }
+.review > label { color: var(--soft); }
+textarea { width: 100%; padding: 0.6rem 0.75rem; border: 1px solid var(--hair); border-radius: 10px; background: var(--panel); color: var(--ink); font: inherit; resize: vertical; }
+textarea:focus-visible { border-color: var(--ink); outline: none; }
+.send { justify-self: start; min-height: 2.5rem; padding: 0 1.1rem; border-radius: 999px; background: var(--ink); color: var(--ground); }
+.trap { position: absolute; left: -100vw; }
+
+/* Games, full screen */
+
+.arena { position: fixed; inset: 0; z-index: 20; display: flex; flex-direction: column; gap: 0.6rem; padding: 1rem var(--edge) 1.25rem; background: var(--ground); }
+#leave { align-self: flex-start; }
+.game-space { flex: 1; min-height: 0; display: flex; flex-direction: column; gap: 0.6rem; }
+.game-space canvas { flex: 1 1 0; min-height: 0; width: 100%; border: 1px solid var(--hair); border-radius: var(--round); background: var(--panel); touch-action: none; }
+.game-space canvas:focus-visible { outline: none; border-color: var(--ink); } /* the canvas takes focus for the arrow keys; a ring around the whole game is noise */
+.game-bar { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.pill { min-height: 3rem; padding: 0 1.1rem; border: 2px solid var(--soft); border-radius: 999px; color: var(--soft); font-size: 0.8125rem; }
+.pill[aria-pressed="true"] { border-color: var(--ink); background: var(--ink); color: var(--ground); }
+.score { min-height: 1.6em; color: var(--ink); }
+.desk, .quiz-box { position: relative; flex: 1 1 0; min-height: 0; border: 1px solid var(--hair); border-radius: var(--round); background: var(--panel); overflow: hidden; }
+.comment { position: absolute; max-width: 62%; padding: 0.5rem 0.8rem; border: 1px solid var(--ink); border-radius: 1rem; background: var(--ground); color: var(--ink); font-size: 0.8125rem; text-align: left; box-shadow: 0 0.4rem 1rem rgb(0 0 0 / 0.25); animation: settle 0.2s ease both; }
+.comment:hover { border-color: var(--red); }
+.quiz-box { background: var(--ground); } /* wears the album being guessed; the lines read this colour to hide the hills behind */
+.game-space .quiz-box canvas { position: absolute; inset: 0; height: 100%; border: 0; border-radius: 0; }
+
+/* Every change of view: a circular reveal from where it was asked for */
+
+html[data-vt="reveal"]::view-transition-old(root), html[data-vt="reveal"]::view-transition-new(root) { animation: none; mix-blend-mode: normal; }
+html[data-vt="reveal"]::view-transition-old(root) { z-index: 1; }
+html[data-vt="reveal"]::view-transition-new(root) { z-index: 2; }
+
+@keyframes settle {
+  from { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .js .panel.open { animation: settle 0.25s ease both; }
+  .flash { transition: none; }
+}
+
+/* Real buttons: 48 px tall, a border you can see, an icon and a word; the accent fills them when on */
+.back, #leave, .now, #shuffle { display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; min-height: 3rem; padding: 0 1.25rem; border: 2px solid var(--soft); border-radius: 999px; background: var(--ground); color: var(--ink); font: 600 1rem/1 var(--sans); text-decoration: none; transition: border-color 0.2s, background 0.2s; }
+.back:hover, #leave:hover, .now:hover, #shuffle:hover { border-color: var(--ink); color: var(--ink); }
+.now[aria-pressed="true"] { border-color: var(--red); background: var(--red); color: var(--ground); }
+.now[aria-pressed="true"]:hover { color: var(--ground); }
+.corner .now, .corner #shuffle { flex: none; }
+.play-tile::after, .game::after { content: "\25B6  Play"; justify-self: start; align-self: start; display: inline-flex; align-items: center; min-height: 3rem; padding: 0 1.25rem; border-radius: 999px; background: var(--red); color: var(--ground); font: 600 1rem/1 var(--sans); }
+.panel h2, .game b, .tile b, .sub { font-family: var(--serif); }
