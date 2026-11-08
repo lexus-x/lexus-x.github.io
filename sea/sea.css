@@ -1,0 +1,112 @@
+/* Paper, ink and one amber. Contrast: ink on paper 12:1, soft on paper 5.6:1, paper on ink 12:1. */
+:root {
+  color-scheme: light;
+  --paper: #ece4d3; --ink: #1c2330; --soft: #5b5f66; --sun: #c0843f; --dusk: #31445c;
+  --display: "Anton", Impact, "Arial Narrow", sans-serif;
+  --sans: "IBM Plex Sans", system-ui, Arial, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
+}
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; background: var(--paper); color: var(--ink); font: 400 1rem/1.55 var(--sans); }
+img { display: block; max-width: 100%; }
+a { color: inherit; }
+:focus-visible { outline: 3px solid var(--sun); outline-offset: 3px; }
+
+/* paper grain over everything */
+body::after { content: ""; position: fixed; inset: 0; z-index: 50; pointer-events: none; opacity: 0.16; mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E"); }
+
+.bar { position: sticky; top: 0; z-index: 10; display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 0.5rem 1rem; background: var(--paper); border-bottom: 2px solid var(--ink); }
+.mark { font: 400 1.75rem/1 var(--display); text-decoration: none; letter-spacing: 0.02em; }
+
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; min-height: 3rem; padding: 0 1.25rem; border: 2px solid var(--ink); border-radius: 0; background: var(--ink); color: var(--paper); font: 500 0.9rem/1 var(--mono); text-transform: uppercase; letter-spacing: 0.04em; text-decoration: none; cursor: pointer; }
+.btn.ghost { background: transparent; color: var(--ink); }
+.btn.light { background: var(--paper); color: var(--ink); border-color: var(--paper); }
+.btn[aria-pressed="true"] { background: var(--sun); border-color: var(--sun); color: var(--ink); }
+.btn:hover { background: var(--sun); border-color: var(--sun); color: var(--ink); }
+
+/* the name fills the width */
+.hero { max-width: 75rem; margin: 0 auto; padding: 1rem 1rem 0; container-type: inline-size; }
+.word { margin: 0; display: flex; flex-direction: column; font: 400 1em/0.86 var(--display); text-transform: uppercase; letter-spacing: 0.01em; }
+.word span { display: block; font-size: 41cqw; }
+.word span:last-child { align-self: flex-end; }
+.nav { display: flex; margin: 1rem 0 0; border: 2px solid var(--ink); }
+.nav a { flex: 1; display: flex; align-items: center; justify-content: center; min-height: 3rem; font: 500 0.85rem/1 var(--mono); text-transform: uppercase; letter-spacing: 0.04em; text-decoration: none; }
+.nav a + a { border-left: 2px solid var(--ink); }
+.nav a:hover { background: var(--ink); color: var(--paper); }
+.claim { margin: 1.5rem 0 0.5rem; font: 600 clamp(1.5rem, 6vw, 2.5rem)/1.15 var(--sans); max-width: 22ch; }
+.meta { margin: 0 0 1.5rem; font: 400 0.85rem/1.5 var(--mono); color: var(--soft); max-width: 46ch; }
+
+/* a photo is shown plain: scan lines and warm light on top */
+.photo { position: relative; margin: 0; overflow: hidden; background: var(--dusk); }
+.photo img { width: 100%; height: 100%; object-fit: cover; }
+.photo::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.13) 0 1px, transparent 1px 3px); }
+.hero-photo { margin: 0 -1rem; height: min(78svh, 40rem); }
+.notes { position: absolute; z-index: 2; left: 1rem; right: 1rem; bottom: 1rem; display: flex; flex-direction: column; gap: 0.6rem; }
+.note { margin: 0; width: min(19rem, 86%); padding: 0.75rem 0.9rem; background: rgba(236, 228, 211, 0.92); color: var(--ink); font: 400 0.9rem/1.35 var(--sans); }
+.note b { display: block; font: 400 1.9rem/1 var(--display); text-transform: uppercase; letter-spacing: 0.01em; }
+.note small { display: block; margin-top: 0.4rem; font: 400 0.7rem/1 var(--mono); text-transform: uppercase; letter-spacing: 0.06em; color: var(--soft); }
+.note.late { align-self: flex-end; }
+
+.label { display: flex; justify-content: space-between; align-items: baseline; margin: 0 0 1.25rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--ink); font: 400 clamp(2.5rem, 10vw, 4.5rem)/1 var(--display); text-transform: uppercase; }
+.label span { font: 500 0.85rem/1 var(--mono); }
+.label.small { font-size: 1.5rem; margin-top: 3rem; }
+section:not(.hero):not(.contact) { max-width: 75rem; margin: 0 auto; padding: 4rem 1rem 0; scroll-margin-top: 4rem; }
+
+/* work: a quiet stream; the card in the middle of the screen warms up */
+.stream { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 3rem; }
+.card { display: grid; gap: 0.35rem; text-decoration: none; max-width: 34rem; margin: 0 auto; width: 100%; }
+.tile { aspect-ratio: 4 / 5; margin-bottom: 0.65rem; }
+.tile img { filter: grayscale(1) brightness(0.8) contrast(0.95); transition: filter 0.7s ease; }
+.js .card:not(.lit) .tile img { filter: grayscale(1) brightness(0.8) contrast(0.95); }
+.card.lit .tile img, .card:hover .tile img, .card:focus-visible .tile img { filter: none; }
+.num { font: 500 0.85rem/1 var(--mono); color: var(--soft); }
+.card b { font: 400 2.4rem/1 var(--display); text-transform: uppercase; letter-spacing: 0.01em; }
+.tags { font: 400 0.75rem/1.4 var(--mono); text-transform: uppercase; letter-spacing: 0.06em; color: var(--soft); }
+.line { margin-top: 0.35rem; }
+html:not(.js) .tile img { filter: none; }
+
+.list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: 1fr; }
+.list a { display: flex; align-items: center; justify-content: space-between; min-height: 3rem; border-bottom: 1px solid var(--ink); text-decoration: none; font-weight: 600; }
+.list a::after { content: "\2197"; font-family: var(--mono); }
+.list a:hover { color: var(--sun); }
+
+.play .claim, .about .claim { margin-top: 0; }
+.play .btn, .about .btn { margin-top: 1.5rem; }
+.about dl { margin: 1.5rem 0 0; display: grid; grid-template-columns: 6rem 1fr; gap: 0.75rem 1rem; }
+.about dt { font: 500 0.75rem/1.6 var(--mono); text-transform: uppercase; letter-spacing: 0.06em; color: var(--soft); }
+.about dd { margin: 0; }
+
+/* the day ends: contact sits on the dusk photo */
+.contact { position: relative; margin-top: 5rem; min-height: 28rem; display: flex; align-items: flex-end; color: var(--paper); background: var(--dusk); overflow: hidden; }
+.contact > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: brightness(0.6); }
+.over { position: relative; width: 100%; max-width: 75rem; margin: 0 auto; padding: 3rem 1rem; }
+.over .label { border-color: var(--paper); }
+.mail { display: block; font: 400 clamp(1.5rem, 8vw, 3.5rem)/1.1 var(--display); text-transform: uppercase; letter-spacing: 0.01em; text-decoration: none; word-break: break-all; }
+.mail:hover { color: var(--sun); }
+.links { display: flex; flex-wrap: wrap; gap: 0.75rem; margin: 1.5rem 0 0; }
+
+.foot { max-width: 75rem; margin: 0 auto; padding: 1.5rem 1rem 6rem; font: 400 0.75rem/1.6 var(--mono); color: var(--soft); }
+.foot p { margin: 0 0 0.5rem; }
+
+@media (min-width: 52rem) {
+  .list { grid-template-columns: 1fr 1fr; column-gap: 2rem; }
+  .hero-photo { margin: 0; }
+  .notes { flex-direction: row; align-items: flex-end; justify-content: space-between; }
+  .note.late { align-self: flex-end; }
+  .stream { gap: 5rem; }
+  .card:nth-child(odd) { margin-left: 0; }
+  .stream li:nth-child(even) .card { margin-right: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .tile img { transition: none; }
+}
+
+.mark, .mail { display: inline-flex; align-items: center; min-height: 3rem; }
+@media (min-width: 52rem) {
+  .word { flex-direction: row; justify-content: space-between; align-items: flex-end; }
+  .word span { font-size: 21cqw; }
+  .word span:last-child { align-self: auto; }
+}
