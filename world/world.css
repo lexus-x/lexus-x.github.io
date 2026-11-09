@@ -104,7 +104,7 @@ a.tile:hover .box b, a.tile:focus-visible .box b { color: var(--accent); }
 .stage { position: fixed; inset: 0; overflow: hidden; background: var(--ground); }
 .scene { display: none; position: relative; z-index: 1; padding: 56svh var(--edge) 3rem; }
 html:not(.js) .scene:target, .scene.open { display: block; }
-.sheet { max-width: 46rem; margin: 0 auto; padding: 1.25rem; border: 2px solid var(--ink); background: rgb(var(--tint) / 0.92); box-shadow: 6px 6px 0 #000; }
+.sheet { max-width: 46rem; margin: 0 auto; padding: 1.25rem; border: 2px solid var(--ink); background: rgb(var(--tint)); box-shadow: 6px 6px 0 #000; } /* solid, so the scene never shows through the text */
 .scene.open .sheet { animation: lift 0.6s cubic-bezier(.2, .8, .2, 1) 0.15s both; }
 @keyframes lift { from { opacity: 0; transform: translateY(2.5rem); } }
 .sheet h2 { margin-bottom: 1.1rem; font: 400 clamp(1.1rem, 5vw, 1.75rem)/1.3 var(--pixel); color: var(--accent); }
@@ -112,9 +112,13 @@ html:not(.js) .scene:target, .scene.open { display: block; }
 .sheet h3 { font-size: 1.05rem; font-weight: 500; }
 .sheet .sub { margin: 1.5rem 0 0.75rem; font: 400 0.75rem/1.4 var(--pixel); color: var(--accent); }
 .lead { margin-bottom: 1.25rem; font-size: 1.05rem; }
-.cv { display: grid; gap: 0.35rem 1.25rem; margin-bottom: 1.25rem; }
-.cv dt { margin-top: 0.75rem; font: 400 0.625rem/1.4 var(--pixel); color: var(--accent); text-transform: uppercase; }
-.cv dd p + p { margin-top: 0.4rem; }
+.cv { display: grid; margin-bottom: 1.5rem; }
+.cv dt { padding-top: 1.1rem; border-top: 1px solid rgb(236 228 211 / 0.14); font: 400 0.6875rem/1.6 var(--pixel); color: var(--accent); text-transform: uppercase; }
+.cv dd { padding: 0.5rem 0 1.1rem; }
+.cv dd p { display: grid; gap: 0.15rem; }
+.cv dd p + p { margin-top: 0.85rem; }
+.cv dd b { color: var(--ink); }
+.cv dd span { color: var(--soft); font-size: 0.9rem; line-height: 1.55; }
 .card { display: grid; gap: 0.5rem; margin-bottom: 0.9rem; padding: 1rem; border: 2px solid var(--hair); background: rgb(0 0 0 / 0.2); }
 .card small { color: var(--soft); }
 .big { font: 400 clamp(1rem, 5vw, 1.5rem)/1.35 var(--pixel); color: var(--accent); }
@@ -134,8 +138,8 @@ html:not(.js) .scene:target, .scene.open { display: block; }
 @media (min-width: 900px) {
   .scene { padding-top: 62vh; }
   .stats, .games { grid-template-columns: 1fr 1fr; }
-  .cv { grid-template-columns: 7rem 1fr; }
-  .cv dt { margin-top: 0.3rem; }
+  .cv { grid-template-columns: 9rem 1fr; } /* no column gap, so each divider runs unbroken */
+  .cv dd { padding-top: 1.1rem; border-top: 1px solid rgb(236 228 211 / 0.14); } /* the line runs under the label and the entry */
 }
 
 /* Games, full screen (the same rules the old site gave them) */
