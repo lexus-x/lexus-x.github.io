@@ -84,23 +84,13 @@ a.tile:hover .box b, a.tile:focus-visible .box b { color: var(--accent); }
 .links a, .tags a { display: inline-flex; align-items: center; min-height: 44px; padding: 0 0.85rem; border: 2px solid var(--hair); background: rgb(0 0 0 / 0.25); color: var(--ink); text-decoration: none; font-size: 0.875rem; }
 .links a:hover, .tags a:hover { border-color: var(--accent); }
 
-.meme-tile { padding: 0.5rem; min-height: 12rem; }
-.meme { display: grid; grid-template-columns: 1fr 1fr; gap: 0.4rem; height: 100%; flex: 1; }
-.meme > div { position: relative; min-height: 10rem; border: 2px solid #000; background: var(--ground); overflow: hidden; }
-.meme svg { position: absolute; inset: 1.8rem 0 0; width: 100%; height: calc(100% - 1.8rem); fill: none; stroke-width: 3; stroke-linecap: square; stroke-linejoin: miter; }
-.meme .k { stroke: var(--ink); }
-.meme .s { stroke: var(--soft); }
-.meme .a { stroke: var(--red); }
-.meme p { position: absolute; inset: 0.5rem 0.25rem auto; color: var(--ink); font: 400 clamp(0.55rem, 2.6vw, 0.75rem)/1.4 var(--pixel); text-align: center; text-transform: uppercase; }
-
 .foot { max-width: 1400px; margin: 0 auto; padding: 1rem var(--edge) 2.5rem; color: var(--soft); font-size: 0.8125rem; }
 .foot p + p { margin-top: 0.4rem; }
 
 @media (min-width: 900px) {
   .hub { grid-template-columns: repeat(4, minmax(0, 1fr)); grid-auto-rows: minmax(16rem, 1fr); }
   .hero { grid-column: 1 / 3; grid-row: 1 / 3; min-height: 0; }
-  .mail { grid-column: 1 / 3; }
-  .meme-tile { grid-column: 3 / 5; }
+  .mail { grid-column: 1 / -1; }
 }
 
 /* A place: its scene fills the screen behind, the sheet slides over it */
