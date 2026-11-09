@@ -448,7 +448,7 @@ const LIGHT = {
   },
 }
 
-/* Menu: the night sky behind the name, where eight small stories take turns: four fun ones, four from history, played by animals. */
+/* Menu: the night sky behind the name, where fifteen small stories take turns: four fun ones, eleven from history, played by animals. */
 
 const UFO = [
   '.........AAAAAAA.........',
@@ -538,8 +538,8 @@ const FLYER = [
   '....yyyyyyyyyyyyyyyyyy........',
   '....G...G...G...G...G.........',
   'Y...G...G...G...G...G.....Y...',
-  'YY..G...G.oooo..G...G.....YY..',
-  'YY..G...G.okoo..G...G....YYYY.',
+  'YY..G...G.BbbB..G...G.....YY..',
+  'YY..G...G.bkbb..G...G....YYYY.',
   '....yyyyyyyyyyyyyyyyyyGGGGG...',
   '......G.........G.............',
   '.....GGGGGGGGGGGGGGGGGGGG.....',
@@ -588,6 +588,63 @@ const DOG = [
   ['.....BB..', '....Bbbb.', '....bkbbk', '.B..bbbb.', 'Bb..bbb..', '.bbbbbb..', '.bbbbbb..', '.bb..bb..'],
   ['.....BB..', '....Bbbb.', '....bkbbk', '....bbbb.', 'BB..bbb..', '.bbbbbb..', '.bbbbbb..', '.bb..bb..'],
 ]
+const V2_NOSE = ['...w...', '..wGw..', '..GwG..', '.wwAww.', '.GwwwG.', '.wwwww.'] // the V-2's black and white checks
+const V2_BODY = ['.GGwww.', '.GGwww.', '.wwwGG.', '.wwwGG.', '.GGwww.', '.GGwww.', '.wwwGG.', '.wwwGG.', '.wwwww.', 'GGwwwGG', 'G.....G']
+const CHUTE = ['....wwwww....', '..wwpppppww..', '.wpppppppppw.', 'wpppwpppwpppw', 'w...w...w...w']
+const CONE = ['....GgggG....', '...GgggggG...', '..GgggggggG..', '.GgggggggggG.', 'GgggggggggggG', 'YYYYYYYYYYYYY', '.YYYYYYYYYYY.']
+const MONKEY = ['.bbb.', 'bWWWb', 'WkWkW', '.WWW.', '..b..']
+const FELICETTE = [ // she was a black and white cat
+  'k.....k.....',
+  'kk...kk.....',
+  'kkkkkkk.....',
+  'kvkkkvk.....',
+  'kkkwkkk.....',
+  '.kwpwk......',
+  '..kwk...kk..',
+  '.kkwwkkk..k.',
+  'kkkwwwkkk..k',
+  'kkkwwwkkk..k',
+  '.kkwwkkk....',
+  '.w.w..w.w...',
+]
+const ZOND = ['.....GGG.....', '....GgggG....', '...GAAAAAG...', '..GAeAAAeAG..', '..GEEEAEEEG..', '.GgggggggggG.', 'GgggggggggggG', 'YYYYYYYYYYYYY']
+const HUBBLE = [
+  '..uuuu..............',
+  '..uGuG..............',
+  '..uuuu..............',
+  '..uGuG..............',
+  '..uuuu..............',
+  '...GG...............',
+  'ggggggggggggggggggg.',
+  'gwWWWWWWWWWWWWWWWWg.',
+  'gwWWWWWGWWWWWWWWWWg.',
+  'gwWWWWWGWWWWWWWWWWg.',
+  'gwWWWWWWWWWWWWWWWWg.',
+  'ggggggggggggggggggg.',
+  '...GG...............',
+  '..uuuu..............',
+  '..uGuG..............',
+  '..uuuu..............',
+  '..uGuG..............',
+  '..uuuu..............',
+]
+const CAT_RIGHT = CAT.map(row => [...row].reverse().join(''))
+const RABBIT = ['....ww...', '.....ww..', '.....www.', '....wwkw.', '....wwwwp', '.wwwwww..', 'wwwwwww..', '.wwwwWW..', '.ww..ww..']
+const ROVER = [
+  '...........GG...',
+  '...........gg...',
+  '...........G....',
+  '.gggggggggggggg.',
+  'gWWWWWWWWWWWWWWg',
+  '.gggggggggggggg.',
+  '..G....G....G...',
+  '.GgG..GgG..GgG..',
+  '..G....G....G...',
+]
+const HELI = [
+  ['GGGGGGGGGGG', '.....G.....', '..GGGGGGG..', '.....G.....', '...ggggg...', '...gWWWg...', '...ggggg...', '...G...G...', '..G.....G..'],
+  ['...GGGGG...', '.....G.....', 'GGGGGGGGGGG', '.....G.....', '...ggggg...', '...gWWWg...', '...ggggg...', '...G...G...', '..G.....G..'],
+]
 
 const slide = p => (p < 0.12 ? 1 - p / 0.12 : p > 0.88 ? -(p - 0.88) / 0.12 : 0) // in from the right, out to the left
 const cross = (B, p, w) => Math.round(-w + p * (B.w + w)) // from off the left edge to off the right
@@ -616,6 +673,34 @@ const STORIES = [
       sprite(B, FLYER, x, y, c)
       const spin = Math.floor(t * 12) % 2 // pusher propellers behind the wings
       rect(B, x + 2, y + (spin ? 1 : 3), 1, spin ? 5 : 1, c.G)
+    },
+  },
+  {
+    title: '1947 · Fruit flies, first animals in space',
+    draw(B, p, t, cy, c) {
+      const x = Math.round(B.w * 0.5) - 3
+      const top = cy - 34 // the highest point of the flight
+      if (p < 0.45) { // up on a V-2, slowing toward the top
+        const u = p / 0.45
+        const y = Math.round(B.h + 4 - (B.h + 4 - top) * (1 - (1 - u) ** 2))
+        for (let k = 0; k < 8; k++) dot(B, x + 3 + Math.round(Math.sin(k * 1.7 + t * 3) * k * 0.5), y + 20 + k * 3, c.dim) // smoke
+        rect(B, x + 2, y + 17, 3, 2 + (Math.floor(t * 12) % 3), c.flame)
+        sprite(B, V2_BODY, x, y + 6, c)
+        sprite(B, V2_NOSE, x, y, c)
+        return
+      }
+      const u = (p - 0.45) / 0.55
+      sprite(B, V2_BODY, x, top + 6 + Math.round(u * u * B.h), c) // the empty rocket falls away
+      const nx = x + Math.round(Math.sin(t * 1.5) * 2)
+      const ny = top + Math.round(u * 30)
+      if (p > 0.5) { // the nose comes home under a parachute
+        const chx = nx - 3
+        const chy = ny - 13
+        for (const ex of [0, 6, 12]) for (let s = 0; s <= 8; s++) dot(B, Math.round(chx + ex + ((nx + 3 - chx - ex) * s) / 8), Math.round(chy + 4 + ((ny - chy - 4) * s) / 8), c.dim)
+        sprite(B, CHUTE, chx, chy, c)
+      }
+      sprite(B, V2_NOSE, nx, ny, c)
+      for (let i = 0; i < 2; i++) sprite(B, FLY[(Math.floor(t * 10) + i) % 2], nx + 2 + Math.round(Math.cos(t * 4 + i * 3) * 6), ny + 2 + Math.round(Math.sin(t * 5 + i * 3) * 3), { w: c.A, k: c.g }) // the flies, alive
     },
   },
   {
@@ -660,6 +745,70 @@ const STORIES = [
         dot(B, ex + dx, cy + dy, land ? c.land : c.sea)
       }
       if (!behind) capsule()
+    },
+  },
+  {
+    title: '1959 · Able and Baker, two monkeys home safe',
+    draw(B, p, t, cy, c) {
+      const gx = Math.round(slide(p) * B.w * 0.8)
+      const sea = cy + 12
+      const x0 = gx + Math.round(B.w * 0.06)
+      const x1 = gx + Math.round(B.w * 0.94)
+      rect(B, x0, sea, x1 - x0, 7, c.sea)
+      for (let x = x0; x < x1; x++) if ((x + Math.floor(t * 4)) % 7 === 0) dot(B, x, sea, c.A) // little waves
+      const land = x0 + Math.round((x1 - x0) * 0.45)
+      if (p < 0.55) { // falling home, the heat shield glowing
+        const u = p / 0.55
+        const x = Math.round(B.w + 8 - (B.w + 8 - land) * u)
+        const y = Math.round(cy - 46 + (sea - 6 - (cy - 46)) * u)
+        for (let k = 1; k < 16; k++) dot(B, x + 6 + k * 2, y - 1 - k, k < 4 ? c.v : k < 10 ? c.flame : c.dim)
+        sprite(B, CONE, x, y, c)
+        return
+      }
+      const y = sea - 6 + Math.round(Math.sin(t * 3))
+      if (p < 0.66) { // splash
+        const s = (p - 0.55) / 0.11
+        for (let k = -3; k <= 3; k++) dot(B, land + 6 + k * 3, sea - 1 - Math.round(Math.sin(s * Math.PI) * (5 - Math.abs(k))), c.A)
+      }
+      if (p > 0.62) { // the hatch opens and both wave
+        const wave = Math.floor(t * 4) % 2
+        sprite(B, MONKEY, land + 1, y - 5, c)
+        sprite(B, MONKEY, land + 7, y - 5, c)
+        rect(B, land, y - 4 - wave * 2, 1, 2, c.b)
+        rect(B, land + 12, y - 2 - wave * 2, 1, 2, c.b)
+      }
+      sprite(B, CONE, land, y, c)
+    },
+  },
+  {
+    title: '1963 · Félicette, the first cat in space',
+    draw(B, p, t, cy, c) {
+      const x = Math.round(B.w * 0.5 + slide(p) * B.w * 0.8)
+      const r = 17
+      disc(B, x, cy, r + 3, c.G)
+      disc(B, x, cy, r + 2, c.g)
+      disc(B, x, cy, r, c.G) // through the porthole, the lit cabin, so her black fur shows
+      disc(B, x, cy, r, c.j, cy + Math.round(r * 0.55))
+      for (let k = 0; k < 8; k++) dot(B, x + Math.round(Math.cos((k * Math.PI) / 4) * (r + 1.5)), cy + Math.round(Math.sin((k * Math.PI) / 4) * (r + 1.5)), c.G) // bolts
+      let rows = FELICETTE
+      for (let i = 0; i < Math.floor(t * 0.8) % 4; i++) rows = turn(rows) // floating, slowly turning over
+      sprite(B, rows, x - 6 + Math.round(Math.sin(t) * 2), cy - 8 + Math.round(Math.sin(t * 1.3) * 2), c)
+      for (let k = 0; k < 5; k++) blend(B, x - 10 + k, cy - 6 - k, c.w, 0.25) // glare on the glass
+    },
+  },
+  {
+    title: '1968 · Two tortoises loop the Moon',
+    draw(B, p, t, cy, c) {
+      const mx = Math.round(B.w * 0.5 + slide(p) * B.w * 0.8)
+      const a = p * Math.PI * 2 + 0.3 // one slow loop, slow and steady
+      const sx = Math.round(mx + Math.cos(a) * Math.min(40, B.w * 0.36))
+      const sy = Math.round(cy + Math.sin(a) * 9)
+      const ship = () => sprite(B, ZOND, sx - 6, sy - 4 + Math.round(Math.sin(t * 2)), c)
+      const behind = Math.sin(a) < 0
+      if (behind) ship()
+      disc(B, mx, cy, 11, c.m)
+      for (const [dx, dy, r] of [[-4, -3, 2], [3, 2, 3], [5, -5, 1], [-5, 5, 1]]) disc(B, mx + dx, cy + dy, r, c.M) // craters
+      if (!behind) ship()
     },
   },
   {
@@ -724,15 +873,76 @@ const STORIES = [
       if (Math.floor(t * 1.5) % 3 === 0) dot(B, x + 11, y + 4, c.w) // the golden record catches the light
     },
   },
+  {
+    title: '1990 · Hubble opens its eyes',
+    draw(B, p, t, cy, c) {
+      const x = Math.round(B.w * 0.2 + slide(p) * B.w * 0.8)
+      const y = cy - 9 + Math.round(Math.sin(t * 0.9) * 1.5)
+      const open = Math.min(1, Math.max(0, (p - 0.25) / 0.15))
+      if (p > 0.4) { // first light: a galaxy appears ahead
+        const n = Math.round(Math.min(1, (p - 0.4) / 0.2) * 36)
+        for (let i = 0; i < n; i++) for (const arm of [0, Math.PI]) {
+          const a = i * 0.3 + arm + t * 0.4
+          dot(B, x + 44 + Math.round(Math.cos(a) * i * 0.3), y + 8 + Math.round(Math.sin(a) * i * 0.18), i < 6 ? c.w : i % 3 ? c.p : c.A)
+        }
+      }
+      sprite(B, HUBBLE, x, y, c)
+      const ang = Math.PI / 2 - open * ((3 * Math.PI) / 4) // the aperture door swings up
+      for (let s = 0; s < 6; s++) dot(B, x + 19 + Math.round(Math.cos(ang) * s), y + 6 + Math.round(Math.sin(ang) * s), c.W)
+      sprite(B, CAT_RIGHT, x + 8, y - 4, { ...c, k: open === 1 ? c.v : c.k }) // a cat rides along; its eyes light up
+    },
+  },
+  {
+    title: '1998 · The space station, piece by piece',
+    draw(B, p, t, cy, c) {
+      const x = Math.round(B.w * 0.5 + slide(p) * B.w * 0.8)
+      const y = cy - 3 + Math.round(Math.sin(t * 0.8))
+      const piece = (px, w) => {
+        rect(B, px, y, w, 7, c.g)
+        rect(B, px, y + 5, w, 2, c.G)
+        for (let k = 3; k < w; k += 5) rect(B, px + k, y, 1, 7, c.G)
+      }
+      const len = Math.round(Math.min(1, Math.max(0, (p - 0.5) / 0.2)) * 13)
+      for (const [py, dir] of [[y - 1, -1], [y + 7, 1]]) for (let k = 0; k < len; k++) rect(B, x + 6, py + dir * k, 6, 1, k % 3 === 2 ? c.G : c.u) // solar wings unfold
+      piece(x, 18) // the first piece, already up
+      rect(B, x - 2, y + 2, 2, 3, c.G)
+      const ux = Math.round(x - 14 - (1 - Math.min(1, p / 0.45)) ** 2 * (x + 10)) // the second piece arrives from the left
+      piece(ux, 12)
+      const away = Math.max(0, p - 0.45) // then the rabbit who pushed it floats off
+      sprite(B, RABBIT, ux - 9 - Math.round(away * 30), y - 1 - Math.round(away * 40), c)
+      if (p > 0.72 && Math.floor(t * 2) % 2) dot(B, x + 17, y - 1, c.l1)
+    },
+  },
+  {
+    title: '2021 · First flight on another planet',
+    draw(B, p, t, cy, c) {
+      const gx = Math.round(slide(p) * B.w * 0.8)
+      const ground = cy + 10
+      const x0 = gx + Math.round(B.w * 0.06)
+      const x1 = gx + Math.round(B.w * 0.94)
+      rect(B, x0, ground, x1 - x0, 7, c.x)
+      rect(B, x0 + 2, ground + 7, x1 - x0 - 4, 2, c.X)
+      for (let i = 0; i < 6; i++) rect(B, x0 + Math.round(rnd(i + 60) * (x1 - x0 - 6)), ground + 2 + (i % 3) * 2, 2 + (i % 2) * 2, 1, c.X)
+      const rx = x0 + Math.round((x1 - x0) * 0.1)
+      const spinning = p > 0.1 && p < 0.92
+      sprite(B, ROVER, rx, ground - 9, c)
+      sprite(B, DOG[Math.floor(t * (spinning ? 8 : 2)) % 2], rx + 1, ground - 14, c) // a dog on the rover, watching, tail going
+      const lift = p < 0.2 ? 0 : p < 0.35 ? ((p - 0.2) / 0.15) * 22 : p < 0.7 ? 22 + Math.sin(t * 3) * 1.5 : p < 0.85 ? ((0.85 - p) / 0.15) * 22 : 0
+      const hx = rx + Math.round((x1 - x0) * 0.45)
+      if (spinning && lift < 6) for (let k = 0; k < 4; k++) dot(B, hx + 1 + k * 3 + (Math.floor(t * 8) % 2), ground - 1 - (k % 2), c.X) // dust
+      sprite(B, HELI[spinning ? Math.floor(t * 14) % 2 : 0], hx, Math.round(ground - 9 - lift), c)
+    },
+  },
 ]
 
 const STORY = 8 // seconds each
-const storyAt = t => STORIES[Math.floor(t / STORY) % STORIES.length]
+const START = Math.floor(Math.random() * STORIES.length) * STORY // each visit begins at a different story
+const storyAt = t => STORIES[Math.floor((t + START) / STORY) % STORIES.length]
 
 const MENU = {
   res: 2, // twice the pixels of the other scenes, so the little figures can carry faces and shading
   sky: stops(['#10121f', '#161a2e', '#1f2440', '#2b2f52', '#3d3a5e']),
-  c: pal({ star: '#e6e1d0', dim: '#6b7096', ridge: '#141728', streak: '#ece4d3', k: '#2a2436', w: '#e6e0d2', W: '#b9b4aa', g: '#a9adb8', G: '#6e7385', a: '#7f9fae', A: '#b8d0d4', e: '#9cc08a', E: '#5e7e52', o: '#c4956a', O: '#9a6e48', b: '#8a6a4e', B: '#5e4636', y: '#cfb27a', Y: '#9c8452', r: '#b0675c', u: '#6f8fb5', p: '#c99aa0', v: '#d9bd7c', j: '#7d8fae', d: '#5a3d2e', m: '#cfcab8', M: '#a8a393', s: '#d9bd7c', l1: '#d9bd7c', l2: '#c98a7e', beam: '#d8e0c0', rod: '#8a6a4e', flame: '#d9a072', sea: '#4c6487', land: '#6c8a6b' }),
+  c: pal({ star: '#e6e1d0', dim: '#6b7096', ridge: '#141728', streak: '#ece4d3', k: '#2a2436', w: '#e6e0d2', W: '#b9b4aa', g: '#a9adb8', G: '#6e7385', a: '#7f9fae', A: '#b8d0d4', e: '#9cc08a', E: '#5e7e52', o: '#c4956a', O: '#9a6e48', b: '#8a6a4e', B: '#5e4636', y: '#cfb27a', Y: '#9c8452', r: '#b0675c', u: '#6f8fb5', p: '#c99aa0', v: '#d9bd7c', j: '#7d8fae', d: '#5a3d2e', m: '#cfcab8', M: '#a8a393', s: '#d9bd7c', l1: '#d9bd7c', l2: '#c98a7e', beam: '#d8e0c0', rod: '#8a6a4e', flame: '#d9a072', sea: '#4c6487', land: '#6c8a6b', x: '#a8705a', X: '#7e5444' }),
   caption: t => storyAt(t).title,
   draw(B, t, v) {
     const { c } = MENU

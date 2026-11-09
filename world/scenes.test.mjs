@@ -8,7 +8,7 @@ const sizes = [[98, 211], [211, 100], [154, 96], [40, 30]] // phone, desktop, ti
 test('every scene paints every pixel at every size, at any time and lean', () => {
   for (const [name, scene] of Object.entries(SCENES)) {
     for (const [w, h] of sizes) {
-      for (const t of [0, 7.3, 13, 20, 28, 36, 44, 52, 60, 1234.5]) { // 0-64 s walks through all eight menu stories, 8 s each
+      for (const t of [0, 1234.5, ...Array.from({ length: 16 }, (_, i) => i * 8 + 3.3)]) { // 16 turns of 8 s cover all fifteen menu stories, whichever one a visit starts on
         const B = buffer(w, h)
         scene.draw(B, t, { x: t ? 1 : -1 })
         assert.equal(B.px.indexOf(0), -1, `${name} ${w}x${h} at t=${t} left a hole`)
