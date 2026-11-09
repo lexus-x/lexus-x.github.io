@@ -165,8 +165,7 @@ html[data-vt="reveal"]::view-transition-old(root) { z-index: 1; }
 html[data-vt="reveal"]::view-transition-new(root) { z-index: 2; }
 
 @media (prefers-reduced-motion: reduce) {
-  .press, .load span, .start { animation: none; }
-  .tag { animation: none; }
+  .start { animation: none; }
   .scene.open .sheet { animation: settle 0.4s ease both; }
   a.tile:hover, a.tile:focus-visible { transform: none; }
 }

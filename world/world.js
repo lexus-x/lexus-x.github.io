@@ -58,7 +58,7 @@ async function music(name, loop = true) {
     if (!loop) music(place) // no jingle: go straight to the place's music
     return
   }
-  if (!soundOn || (loop && name !== place)) return // the visitor moved on while it loaded
+  if (!soundOn || (loop && name !== place) || playing?.name === name) return // the visitor moved on, or the same track already started, while it loaded
   fadeOut()
   const gain = ctx.createGain()
   gain.gain.setValueAtTime(0.0001, ctx.currentTime)
@@ -250,7 +250,7 @@ function ready() {
   start.hidden = false
   $('#with').focus({ preventScroll: true })
 }
-const wait = setTimeout(ready, calm ? 0 : 3300)
+const wait = setTimeout(ready, 3300) // the opening plays even with reduced motion: typing and squares reveal in place, nothing travels
 intro.addEventListener('pointerdown', e => {
   if (e.target.closest('button')) return
   clearTimeout(wait)
@@ -259,10 +259,6 @@ intro.addEventListener('pointerdown', e => {
 
 // the intro breaks into squares that vanish in random order, like an old game screen
 function dissolve(done) {
-  if (calm) {
-    intro.animate({ opacity: [1, 0] }, { duration: 400 }).finished.then(() => { intro.remove(); done() })
-    return
-  }
   const cell = 24
   const cols = Math.ceil(innerWidth / cell)
   const rows = Math.ceil(innerHeight / cell)
