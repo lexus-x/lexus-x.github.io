@@ -85,7 +85,10 @@ a.tile:hover .box b, a.tile:focus-visible .box b { color: var(--accent); }
 .links a:hover, .tags a:hover { border-color: var(--accent); }
 
 .foot { max-width: 1400px; margin: 0 auto; padding: 1rem var(--edge) 2.5rem; color: var(--soft); font-size: 0.8125rem; }
-.foot p + p { margin-top: 0.4rem; }
+.cc summary { display: inline-flex; align-items: center; min-height: 44px; padding: 0 0.8rem; border: 2px solid var(--hair); color: var(--soft); font: 400 0.625rem/1 var(--pixel); list-style: none; cursor: pointer; }
+.cc summary::-webkit-details-marker { display: none; }
+.cc[open] summary { border-color: var(--accent); color: var(--ink); }
+.cc p { margin-top: 0.6rem; }
 
 @media (min-width: 900px) {
   .hub { grid-template-columns: repeat(4, minmax(0, 1fr)); grid-auto-rows: minmax(16rem, 1fr); }

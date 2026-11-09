@@ -350,6 +350,96 @@ const GARDEN = {
   },
 }
 
+/* Lighthouse: the Now tile. A beam sweeps a night sea while two cargo ships cross. */
+
+// light added over what is already drawn, so the beam glows instead of painting a block
+function blend(B, x, y, c, a) {
+  x = Math.round(x)
+  y = Math.round(y)
+  if (x < 0 || y < 0 || x >= B.w || y >= B.h || a <= 0) return
+  const i = y * B.w + x
+  const p = B.px[i]
+  const k = Math.min(1, a)
+  B.px[i] = pack([p & 255, (p >> 8) & 255, (p >> 16) & 255].map((v, j) => Math.round(v + (c[j] - v) * k)))
+}
+
+const SHIP = [
+  '..m...........................',
+  '..k...........................',
+  '.kkkk.........................',
+  '.kwwk..aabbcca.bbccaab........',
+  '.kkkk..ccaabbc.aabbcca........',
+  '.kwwk..bbccaab.ccaabbc........',
+  'hhhhhhhhhhhhhhhhhhhhhhhhhhhhhh',
+  'hhhhhhhhhhhhhhhhhhhhhhhhhhhhh.',
+  '.hhhhhhhhhhhhhhhhhhhhhhhhhhh..',
+  '..llllllllllllllllllllllllll..',
+]
+const SHIP_LEFT = SHIP.map(row => [...row].reverse().join(''))
+
+const LIGHT = {
+  a: stops(['#0b0f22', '#111833', '#1a2446', '#26335a', '#35406a']),
+  b: stops(['#0a0d1e', '#0f152e', '#172040', '#222e53', '#303a62']),
+  sea: stops(['#16203d', '#111930', '#0d1426']),
+  c: pal({ star: '#e6e1d0', dim: '#7d86b0', rock: '#0a0d19', white: '#b8b2a4', red: '#7c4a46', dark: '#23283d', lamp: '#f0d9a0', beam: '#ecdcae', h: '#3a4260', l: '#5e3f40', k: '#2e3550', w: '#d8bb7a', m: '#ece4d3', a: '#8a5a4a', b: '#557a7e', cc: '#9a8656', port: '#b86a5e', stbd: '#7fa88a', shine: '#c9b48a' }),
+  draw(B, t, v) {
+    const { c } = LIGHT
+    const o = lean(v)
+    const hz = horizon(B, 0.66)
+    gradient(B, LIGHT.a.map((x, i) => mix(x, LIGHT.b[i], drift(t, 34))), 0, hz + 1)
+    for (let i = 0; i < Math.round(B.w * hz / 60); i++) {
+      const on = rnd(i + Math.floor(t * 0.7 + rnd(i) * 10)) > 0.25
+      dot(B, Math.floor(rnd(i * 1.7) * B.w) + o(0.5), Math.floor(rnd(i * 2.9) * hz * 0.85), on ? c.star : c.dim)
+    }
+    gradient(B, LIGHT.sea, hz, B.h)
+    for (let i = 0; i < Math.round(B.w * (B.h - hz) / 28); i++) { // starlight on the water
+      const y = hz + 2 + Math.floor(rnd(i * 3.3) * (B.h - hz - 2))
+      const x = Math.floor(rnd(i * 1.9) * B.w + Math.sin(t * 0.7 + i) * 2) + o(3)
+      if (rnd(i + Math.floor(t * 1.5)) > 0.55) rect(B, x, y, 1 + Math.floor(rnd(i) * 2), 1, c.dim)
+    }
+    const ships = [ // one far out heading right, one nearer heading left
+      { rows: SHIP, speed: 1.6, start: 0.05, y: hz - 8, d: 1.5 },
+      { rows: SHIP_LEFT, speed: -1, start: 0.6, y: hz - 2, d: 2.5 },
+    ]
+    ships.forEach(({ rows, speed, start, y, d }, i) => {
+      const x = wrap(start * B.w + t * speed, B.w + 64) - 32 + o(d)
+      sprite(B, rows, x, y, { ...c, c: c.cc })
+      if (Math.floor(t * 1.2 + i) % 2) dot(B, speed > 0 ? x + 29 : x, y + 6, speed > 0 ? c.stbd : c.port) // the side light blinks
+      for (let k = 0; k < 4; k++) if (rnd(i * 7 + k + Math.floor(t * 2)) > 0.35) rect(B, x + 3 + k * 7, y + 11 + (k % 2), 2, 1, c.shine) // its lights in the water
+    })
+    const lx = Math.round(B.w * 0.82) + o(4)
+    for (let x = lx - 14; x <= lx + 14; x++) { // a small rocky island under the lighthouse
+      const h = Math.round(Math.max(0, 6 - Math.abs(x - lx) * 0.45 + Math.sin(x * 0.9) * 0.8))
+      if (h > 0) rect(B, x, hz + 2 - h, 1, h + 2, c.rock)
+    }
+    const height = Math.max(12, Math.round(hz * 0.5))
+    const base = hz - 3
+    for (let i = 0; i < height; i++) { // a tapering tower in muted red and white bands
+      const w = Math.round(6 - 2 * (i / height))
+      rect(B, lx - Math.floor(w / 2), base - i, w, 1, Math.floor(i / 3) % 2 ? c.red : c.white)
+    }
+    const top = base - height
+    rect(B, lx - 3, top, 7, 1, c.dark)
+    rect(B, lx - 2, top - 3, 5, 3, c.lamp)
+    rect(B, lx - 1, top - 4, 3, 1, c.dark)
+    dot(B, lx, top - 5, c.dark)
+    const turn = t * 0.8
+    const ly = top - 2
+    const side = Math.cos(turn) < 0 ? -1 : 1
+    const reach = Math.abs(Math.cos(turn)) * B.w * 0.95 // the beam looks longest side-on, shortest pointing at you
+    for (let s = 3; s < reach; s++) {
+      const half = 0.5 + s * 0.07
+      for (let dy = -Math.ceil(half); dy <= Math.ceil(half); dy++) blend(B, lx + side * s, ly + dy, c.beam, 0.42 * (1 - s / B.w) * (1 - Math.abs(dy) / (half + 0.5)))
+    }
+    const face = Math.max(0, Math.sin(turn)) // it flashes when it turns toward you
+    const r = 3 + face * 5
+    for (let dy = -Math.ceil(r); dy <= r; dy++) for (let dx = -Math.ceil(r); dx <= r; dx++) {
+      const d = Math.hypot(dx, dy) / r
+      if (d < 1) blend(B, lx + dx, ly + dy, c.beam, (1 - d) * (0.25 + face * 0.55))
+    }
+  },
+}
+
 /* Menu: the night sky behind the name, with a shooting star now and then. */
 
 const MENU = {
@@ -375,6 +465,7 @@ const MENU = {
 
 export const SCENES = {
   menu: { ...MENU, track: 'menu' },
+  lighthouse: { ...LIGHT, track: 'menu' }, // it lives on the grid, so it shares the grid's music
   sunset: { ...SUNSET, track: 'sunset' },
   coffee: { ...COFFEE, track: 'coffee' },
   bluehour: { ...BLUE, track: 'bluehour' },
