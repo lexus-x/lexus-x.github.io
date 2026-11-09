@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lalith Sai</title>
+  <meta name="description" content="Devireddy Lalith Sai teaches robots to act from what they see and what they're told. M.S. researcher in machine learning and computer vision.">
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#10121f">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Press+Start+2P&display=swap">
+  <link rel="stylesheet" href="world.css">
+  <script>document.documentElement.classList.add('js')</script>
+  <script type="module" src="world.js"></script>
+</head>
+<body>
+  <div class="intro" id="intro">
+    <p class="press" aria-hidden="true">LALITH SAI</p>
+    <div class="load" aria-hidden="true"><span></span></div>
+    <p class="tag">a portfolio &middot; 2026</p>
+    <div class="start" id="start" hidden>
+      <button class="btn big" id="with" type="button">&#9654; Start with sound</button>
+      <button class="btn big ghost" id="without" type="button">Start without sound</button>
+    </div>
+  </div>
+
+  <header class="bar">
+    <a class="btn back" id="back" href="#" hidden>&larr; Back</a>
+    <button class="btn" id="snd" type="button" aria-pressed="false">&#9834; Sound off</button>
+  </header>
+
+  <main class="hub" id="hub">
+    <section class="tile hero" data-scene="menu" aria-labelledby="name">
+      <div class="art"><canvas aria-hidden="true"></canvas></div>
+      <h1 id="name" tabindex="-1">Lalith Sai</h1>
+      <div class="box">
+        <p class="claim">I teach robots to act from what they see and what they're told.</p>
+        <p class="meta">M.S. researcher in machine learning and computer vision. Changwon, South Korea. Open to opportunities.</p>
+      </div>
+    </section>
+    <a class="tile" href="#cv" data-scene="sunset"><div class="art"><canvas aria-hidden="true"></canvas></div><span class="box"><b>CV</b><span>study, work, papers</span></span></a>
+    <a class="tile" href="#projects" data-scene="coffee"><div class="art"><canvas aria-hidden="true"></canvas></div><span class="box"><b>Projects</b><span>FishONet and 15 more</span></span></a>
+    <a class="tile" href="#wins" data-scene="bluehour"><div class="art"><canvas aria-hidden="true"></canvas></div><span class="box"><b>3rd of 103</b><span>at the CV4Ecology 2026 Challenge, and an 11.8&times; smaller action head</span></span></a>
+    <a class="tile" href="#play" data-scene="shore"><div class="art"><canvas aria-hidden="true"></canvas></div><span class="box"><b>Play</b><span>five small games, two from my research</span></span></a>
+    <div class="tile mail" data-scene="garden">
+      <div class="art"><canvas aria-hidden="true"></canvas></div>
+      <div class="box">
+        <a href="#contact"><b>zailalith<wbr>@gmail.com</b></a>
+        <p class="links"><a href="https://www.linkedin.com/in/lalith-sai-2a218a36b/">LinkedIn</a><a href="https://github.com/lexus-x">GitHub</a><a href="https://open.spotify.com/user/0br55dbe3rtqa9s58h6lwgz2p">Spotify</a><a href="https://www.instagram.com/blindinheights/">Instagram</a></p>
+      </div>
+    </div>
+    <div class="tile meme-tile">
+      <figure class="meme" role="img" aria-label="Meme. In sim, the arm goes straight to the cup. On the real robot, its path scribbles everywhere.">
+        <div><p>in sim</p><svg viewBox="0 0 100 100"><path class="s" d="M12 88 28 60 44 70"/><rect class="a" x="70" y="66" width="14" height="16"/><path class="k" d="M44 70 72 72" stroke-dasharray="3 4"/></svg></div>
+        <div><p>on the real robot</p><svg viewBox="0 0 100 100"><path class="s" d="M12 88 28 60 44 70"/><rect class="a" x="70" y="66" width="14" height="16"/><path class="k" d="M44 70C70 20 90 40 60 50S20 30 50 40 96 90 30 80 60 10 40 30"/></svg></div>
+      </figure>
+    </div>
+  </main>
+
+  <footer class="foot" id="foot">
+    <p>Every picture here is pixel art drawn for this site. No photos.</p>
+    <p id="credits">Music, all CC0 from OpenGameArt: opening, <a href="https://opengameart.org/content/glorious-victory-fanfare-nes">Glorious victory fanfare NES</a> by congusbongus; grid, <a href="https://opengameart.org/content/since-2-am">Since 2 A.M.</a> by TAD; sunset, <a href="https://opengameart.org/content/chill-lofi-inspired">Chill lofi inspired</a> by omfgdude; coffee shop, <a href="https://opengameart.org/content/coffee-house-bump">Coffee House Bump</a> by OatCog; blue hour, <a href="https://opengameart.org/content/lights-at-night">Lights at Night</a> by Tsorthan Grove; sea shore, <a href="https://opengameart.org/content/vintage-hawaii">vintage hawaii</a> by Tarush Singhal; garden, <a href="https://opengameart.org/content/bluebonnet">Bluebonnet</a> by Kistol.</p>
+  </footer>
+
+  <div class="stage" id="stage" hidden><canvas aria-hidden="true"></canvas></div>
+
+  <section class="scene" id="cv" data-scene="sunset" aria-labelledby="cv-title">
+    <div class="sheet">
+      <h2 id="cv-title" tabindex="-1">CV</h2>
+      <p class="lead">Devireddy Lalith Sai. M.S. researcher in machine learning and computer vision, working on vision-language-action models, which turn camera images and text into robot motion.</p>
+      <dl class="cv">
+        <dt>now</dt>
+        <dd>Open to opportunities. Changwon, South Korea.</dd>
+        <dt>study</dt>
+        <dd>
+          <p><b>M.S.</b>, AI Convergence Engineering, Changwon National University, expected 2027. GPA 4.11/4.50. BK21 FOUR Fellowship. Excellence Academic Scholarship.</p>
+          <p><b>B.Tech</b>, Computer Science and Business Systems, SRM IST, 2024. CGPA 8.58/10. Thesis: autism identification with deep CNNs and visual explainability.</p>
+        </dd>
+        <dt>work</dt>
+        <dd>
+          <p>Graduate Research Assistant, Intelligent Systems Lab, Changwon, since 2025. Advisor Prof. Oh-Seol Kwon. GPU evaluation on A100, Blackwell-class, RTX A6000.</p>
+          <p>Mentored four IIT (BHU) interns across four separate VLA projects.</p>
+          <p>Invited exhibitor, ITRC Talent Development Expo, COEX, Seoul, 2025 and 2026.</p>
+        </dd>
+        <dt>thesis</dt>
+        <dd>
+          <p>Action head built on prior project work: 11.8&times; smaller, 62&times; faster per chunk, 6&times; faster end to end. It replaces SmolVLA's 99.88M flow expert with an 8.43M Wavelet Neural Operator.</p>
+          <p>Mixed success: 2 of 5 benchmarks passed non-inferiority. A same-size regression head could not be distinguished from mine.</p>
+        </dd>
+        <dt>papers</dt>
+        <dd>
+          <p>First author: KMMS 2026 (accepted), J. Broadcast Engineering (submitted).</p>
+          <p>Co-author: crystal system classification, Batteries (MDPI), under review.</p>
+        </dd>
+        <dt>baseline</dt>
+        <dd>SmolVLA baseline I built: 42.3% &plusmn; 2.1% over 3 seeds, 600 episodes, LIBERO-Long.</dd>
+        <dt>tools</dt>
+        <dd>
+          <p>Python, PyTorch, Hugging Face, LeRobot, SmolVLA, LIBERO, MuJoCo, MetaWorld.</p>
+          <p>Flow matching, neural operators, conformal prediction, open-set recognition.</p>
+          <p>Linux, CUDA, Docker, Slurm, AWS, multi-node GPU evaluation.</p>
+        </dd>
+        <dt>languages</dt>
+        <dd>English, Tamil, Telugu. TOEIC 910, IELTS 6.5.</dd>
+      </dl>
+      <p><a class="btn" href="../Devireddy_Lalith_Sai_CV.pdf">CV (PDF)</a></p>
+    </div>
+  </section>
+
+  <section class="scene" id="projects" data-scene="coffee" aria-labelledby="projects-title">
+    <div class="sheet">
+      <h2 id="projects-title" tabindex="-1">Projects</h2>
+      <article class="card">
+        <small>CV4Ecology 2026 &middot; team lead</small>
+        <p class="big">3rd of 103</p>
+        <h3><a href="https://fishonet.lalithsai00.workers.dev/">FishONet</a></h3>
+        <p>Led team CWNU AIX. 17,393 species, 11,598 with no photos. 53.761% overall, 23.77% on unseen ones.</p>
+        <p>Caught a leak: +13.374 on proxy, +0.006 for real. Removing it gained +0.213.</p>
+        <p><a href="https://github.com/lexus-x/FishONet">Code on GitHub</a></p>
+      </article>
+      <article class="card">
+        <small>M.S. thesis</small>
+        <p class="big">11.8&times; smaller</p>
+        <h3>Wavelet Neural Operator action head</h3>
+        <p>Built on prior project work. It replaces SmolVLA's 99.88M flow expert with 8.43M parameters: 62&times; faster per chunk, 6&times; faster end to end.</p>
+        <p>Mixed success: 2 of 5 benchmarks passed non-inferiority, and a same-size regression head could not be distinguished from mine.</p>
+      </article>
+      <article class="card">
+        <small>Pre-registered &middot; negative result</small>
+        <p class="big">Two fixes that failed</p>
+        <p>Retry reached +3.3 against a bar of +5. Feedback ended at &minus;11.7. Both gates held.</p>
+      </article>
+      <h3 class="sub">15 more on GitHub</h3>
+      <p class="tags">
+        <a href="https://github.com/lexus-x/SE3-VLA">SE3-VLA</a>
+        <a href="https://github.com/lexus-x/GeoAct">GeoAct</a>
+        <a href="https://github.com/lexus-x/CASTLE">CASTLE</a>
+        <a href="https://github.com/lexus-x/PerturbVLA">PerturbVLA</a>
+        <a href="https://github.com/lexus-x/SimRealDiag">SimRealDiag</a>
+        <a href="https://github.com/lexus-x/Horizon">Horizon</a>
+        <a href="https://github.com/lexus-x/vla-research">VLA survey</a>
+        <a href="https://github.com/lexus-x/Hybrid-v3">Dark vessel detection</a>
+        <a href="https://github.com/lexus-x/MDL-Emergent-Language">MDL Emergent Language</a>
+        <a href="https://github.com/lexus-x/Vectron">Vectron</a>
+        <a href="https://github.com/lexus-x/QuantizeKit">QuantizeKit</a>
+        <a href="https://github.com/lexus-x/lsm-engine">lsm-engine</a>
+        <a href="https://github.com/lexus-x/CacheForge">CacheForge</a>
+        <a href="https://github.com/lexus-x/Traceweaver">Traceweaver</a>
+        <a href="https://github.com/lexus-x/linkforge">LinkForge</a>
+      </p>
+    </div>
+  </section>
+
+  <section class="scene" id="wins" data-scene="bluehour" aria-labelledby="wins-title">
+    <div class="sheet">
+      <h2 id="wins-title" tabindex="-1">Achievements</h2>
+      <div class="stats">
+        <p><b>3rd of 103</b><span>CV4Ecology 2026 Challenge, team lead</span></p>
+        <p><b>11.8&times;</b><span>smaller action head, my M.S. thesis</span></p>
+      </div>
+      <dl class="cv">
+        <dt>award</dt>
+        <dd>Led team CWNU AIX to 3rd of 103 at the CV4Ecology 2026 Challenge, with FishONet.</dd>
+        <dt>thesis</dt>
+        <dd>Action head built on prior project work: 11.8&times; smaller, 62&times; faster per chunk, 6&times; faster end to end. Mixed success: 2 of 5 benchmarks passed non-inferiority.</dd>
+        <dt>papers</dt>
+        <dd>
+          <p>First author: KMMS 2026 (accepted), J. Broadcast Engineering (submitted).</p>
+          <p>Co-author: crystal system classification, Batteries (MDPI), under review.</p>
+        </dd>
+        <dt>funding</dt>
+        <dd>BK21 FOUR Fellowship. Excellence Academic Scholarship.</dd>
+        <dt>shows</dt>
+        <dd>Invited exhibitor, ITRC Talent Development Expo, COEX, Seoul, 2025 and 2026.</dd>
+        <dt>english</dt>
+        <dd>TOEIC 910, IELTS 6.5.</dd>
+      </dl>
+    </div>
+  </section>
+
+  <section class="scene" id="play" data-scene="shore" aria-labelledby="play-title">
+    <div class="sheet">
+      <h2 id="play-title" tabindex="-1">Play</h2>
+      <p class="lead">Five small games. Beat the delay and Keep 8 numbers come from my research; none of them runs the real model.</p>
+      <div class="games">
+        <button class="game" type="button" data-game="delay"><b>Beat the delay</b><span>Steer a robot arm that follows you late, with a slow head and one 6&times; faster.</span></button>
+        <button class="game" type="button" data-game="keep"><b>Keep 8 numbers</b><span>Draw a line and watch it rebuilt from only its largest wavelet numbers.</span></button>
+        <button class="game" type="button" data-game="reviewer"><b>Reviewer 2</b><span>Answer the reviewer's comments before five pile up and the paper is rejected.</span></button>
+        <button class="game" type="button" data-game="grasp"><b>Grasp</b><span>Drop the gripper on the cup. Every catch makes it faster.</span></button>
+        <button class="game" type="button" data-game="sim"><b>Sim to real</b><span>Plan a path to the cup, then watch the real robot drift off it.</span></button>
+      </div>
+      <h3 class="sub">Elsewhere</h3>
+      <p class="tags">
+        <a href="https://neal.fun/not-a-robot/" target="_blank" rel="noopener">I'm Not a Robot</a>
+        <a href="https://neal.fun/perfect-circle/" target="_blank" rel="noopener">Draw a Perfect Circle</a>
+        <a href="https://neal.fun/infinite-craft/" target="_blank" rel="noopener">Infinite Craft</a>
+        <a href="https://www.decisionproblem.com/paperclips/index2.html" target="_blank" rel="noopener">Universal Paperclips</a>
+        <a href="https://quickdraw.withgoogle.com/" target="_blank" rel="noopener">Quick, Draw!</a>
+        <a href="https://www.linerider.com/" target="_blank" rel="noopener">Line Rider</a>
+        <a href="https://humanbenchmark.com/" target="_blank" rel="noopener">Human Benchmark</a>
+      </p>
+    </div>
+  </section>
+
+  <section class="scene" id="contact" data-scene="garden" aria-labelledby="contact-title">
+    <div class="sheet">
+      <h2 id="contact-title" tabindex="-1">Contact</h2>
+      <a class="mail-big" href="mailto:zailalith@gmail.com">zailalith<wbr>@gmail.com</a>
+      <p class="tags"><a href="https://www.linkedin.com/in/lalith-sai-2a218a36b/">LinkedIn</a><a href="https://github.com/lexus-x">GitHub</a><a href="https://open.spotify.com/user/0br55dbe3rtqa9s58h6lwgz2p">Spotify</a><a href="https://www.instagram.com/blindinheights/">Instagram</a><a href="../Devireddy_Lalith_Sai_CV.pdf">CV (PDF)</a></p>
+    </div>
+  </section>
+
+  <div class="arena" id="arena" hidden>
+    <button class="btn" id="leave" type="button">&larr; Games</button>
+    <div class="game-space" id="game"></div>
+  </div>
+</body>
+</html>

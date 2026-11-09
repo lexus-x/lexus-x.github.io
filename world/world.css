@@ -1,0 +1,172 @@
+/* One calm family: a night ground, warm off-white text, and a muted accent per place. The games read these on :root. */
+
+:root {
+  color-scheme: dark;
+  --ground: #12141f; --panel: #1b1e2c; --hair: #3a3e54; --ink: #ece4d3; --soft: #b3b0bd; --red: #d9a072; --blue: #a9bad6;
+  --serif: "IBM Plex Mono", ui-monospace, Consolas, monospace;
+  --mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
+  --pixel: "Press Start 2P", ui-monospace, Consolas, monospace;
+  --edge: clamp(1rem, 3vw, 1.5rem);
+  --accent: #c9b48a; --tint: 22 25 40;
+}
+[data-scene="sunset"] { --accent: #ddab7c; --tint: 44 34 54; }
+[data-scene="coffee"] { --accent: #c9a46a; --tint: 43 32 31; }
+[data-scene="bluehour"] { --accent: #a9bad6; --tint: 17 22 44; }
+[data-scene="shore"] { --accent: #9cc2bf; --tint: 32 48 58; }
+[data-scene="garden"] { --accent: #bccb94; --tint: 34 46 34; }
+
+*, *::before, *::after { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html { scroll-behavior: auto; }
+body { margin: 0; background: var(--ground); color: var(--ink); font: 400 1rem/1.65 var(--mono); -webkit-font-smoothing: antialiased; -webkit-text-size-adjust: 100%; overflow-x: hidden; }
+h1, h2, h3, p, dl, dd, figure { margin: 0; }
+a { color: var(--accent); text-underline-offset: 0.22em; }
+b { font-weight: 500; }
+canvas { display: block; image-rendering: pixelated; image-rendering: crisp-edges; }
+.small { color: var(--soft); font-size: 0.8125rem; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
+/* Real buttons: 48 px, a hard pixel shadow, pressed in when tapped */
+
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; min-height: 48px; padding: 0 1rem; border: 2px solid var(--ink); background: var(--ground); color: var(--ink); font: 400 0.75rem/1.4 var(--pixel); text-decoration: none; box-shadow: 3px 3px 0 #000; cursor: pointer; transition: transform 0.12s, box-shadow 0.12s, background 0.2s, color 0.2s; }
+.btn:hover { border-color: var(--accent); }
+.btn:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 #000; }
+.btn[aria-pressed="true"] { background: var(--ink); color: var(--ground); }
+.btn.big { min-height: 56px; padding: 0 1.25rem; font-size: clamp(0.75rem, 3.4vw, 1rem); }
+.btn.ghost { border-color: var(--soft); color: var(--soft); }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+
+/* The opening: a blank screen, a name typed in pixels, a loading bar, then the choice */
+
+.intro { display: none; }
+.js .intro { position: fixed; inset: 0; z-index: 50; display: grid; place-content: center; justify-items: center; gap: 1.5rem; padding: var(--edge); background: #000; color: var(--ink); text-align: center; }
+.intro::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: repeating-linear-gradient(transparent 0 2px, rgb(0 0 0 / 0.28) 2px 4px); } /* faint scanlines, like an old screen */
+.press { width: 10ch; overflow: hidden; white-space: nowrap; font: 400 clamp(1.5rem, 8vw, 4rem)/1.2 var(--pixel); color: var(--ink); text-shadow: 0.12em 0.12em 0 #4b4468; animation: type 1.1s steps(10) 0.6s both; }
+.load { width: min(16rem, 70vw); height: 14px; padding: 2px; border: 2px solid var(--soft); }
+.load span { display: block; height: 100%; background: var(--red); animation: fill 1.3s steps(12) 1.8s both; }
+.tag { font: 400 0.625rem/1 var(--pixel); color: var(--soft); text-transform: uppercase; letter-spacing: 0.1em; animation: blink 1.2s steps(1) 3.2s infinite; }
+.intro.ready .load, .intro.ready .tag { display: none; }
+.start { display: grid; gap: 0.9rem; animation: rise 0.35s steps(4) both; }
+@keyframes type { from { width: 0; } }
+@keyframes fill { from { width: 0; } }
+@keyframes blink { 50% { opacity: 0; } }
+@keyframes rise { from { opacity: 0; transform: translateY(8px); } }
+.dissolve { position: fixed; top: 0; left: 0; z-index: 60; pointer-events: none; }
+
+/* The bar: Back on the left inside a place, sound on the right, always */
+
+.bar { position: fixed; inset: 0 0 auto; z-index: 30; display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem var(--edge); pointer-events: none; }
+.bar > * { pointer-events: auto; }
+#snd { margin-left: auto; }
+
+/* The grid */
+
+.hub { display: grid; gap: 0.9rem; max-width: 1400px; margin: 0 auto; padding: 5rem var(--edge) 1rem; }
+.tile { position: relative; isolation: isolate; display: flex; flex-direction: column; overflow: hidden; border: 2px solid #000; background: rgb(var(--tint)); color: var(--ink); text-decoration: none; box-shadow: 4px 4px 0 #000; transition: transform 0.25s ease, box-shadow 0.25s ease; }
+a.tile:hover, a.tile:focus-visible { transform: translate(-2px, -2px); box-shadow: 6px 6px 0 #000; }
+.art { position: relative; flex: 1; min-height: 12rem; overflow: hidden; } /* the scene above, its label below, so nothing hides the picture */
+.art canvas { position: absolute; top: 0; left: 0; }
+.box { display: block; padding: 0.8rem 0.9rem; border-top: 2px solid #000; background: rgb(var(--tint)); transition: background 0.25s; }
+.hero .art { position: absolute; inset: 0; z-index: -1; }
+.hero .box { margin: 0.75rem; border: 2px solid var(--ink); background: rgb(var(--tint) / 0.88); box-shadow: 3px 3px 0 #000; }
+.box b { display: block; margin-bottom: 0.4rem; font: 400 clamp(0.95rem, 4.2vw, 1.35rem)/1.35 var(--pixel); color: var(--ink); overflow-wrap: anywhere; }
+.box > span, .meta { color: var(--soft); font-size: 0.875rem; }
+a.tile .box b::after { content: " \25B6"; color: var(--accent); }
+a.tile:hover .box b, a.tile:focus-visible .box b { color: var(--accent); }
+.mail .box b { font-size: clamp(0.75rem, 3.6vw, 1.2rem); }
+.hero { min-height: 74svh; justify-content: space-between; }
+.hero h1 { margin: 2.5rem 0.75rem 0; font: 400 clamp(2rem, 11vw, 5.5rem)/1.15 var(--pixel); color: var(--ink); text-shadow: 0.08em 0.08em 0 #000; }
+.hero h1:focus { outline: none; }
+.claim { font-size: 1.05rem; margin-bottom: 0.5rem; }
+.mail .box > a { text-decoration: none; }
+.mail .box > a b::after { content: " \25B6"; color: var(--accent); }
+.links, .tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.links a, .tags a { display: inline-flex; align-items: center; min-height: 44px; padding: 0 0.85rem; border: 2px solid var(--hair); background: rgb(0 0 0 / 0.25); color: var(--ink); text-decoration: none; font-size: 0.875rem; }
+.links a:hover, .tags a:hover { border-color: var(--accent); }
+
+.meme-tile { padding: 0.5rem; min-height: 12rem; }
+.meme { display: grid; grid-template-columns: 1fr 1fr; gap: 0.4rem; height: 100%; flex: 1; }
+.meme > div { position: relative; min-height: 10rem; border: 2px solid #000; background: var(--ground); overflow: hidden; }
+.meme svg { position: absolute; inset: 1.8rem 0 0; width: 100%; height: calc(100% - 1.8rem); fill: none; stroke-width: 3; stroke-linecap: square; stroke-linejoin: miter; }
+.meme .k { stroke: var(--ink); }
+.meme .s { stroke: var(--soft); }
+.meme .a { stroke: var(--red); }
+.meme p { position: absolute; inset: 0.5rem 0.25rem auto; color: var(--ink); font: 400 clamp(0.55rem, 2.6vw, 0.75rem)/1.4 var(--pixel); text-align: center; text-transform: uppercase; }
+
+.foot { max-width: 1400px; margin: 0 auto; padding: 1rem var(--edge) 2.5rem; color: var(--soft); font-size: 0.8125rem; }
+.foot p + p { margin-top: 0.4rem; }
+
+@media (min-width: 900px) {
+  .hub { grid-template-columns: repeat(4, minmax(0, 1fr)); grid-auto-rows: minmax(16rem, 1fr); }
+  .hero { grid-column: 1 / 3; grid-row: 1 / 3; min-height: 0; }
+  .mail { grid-column: 1 / 3; }
+  .meme-tile { grid-column: 3 / 5; }
+}
+
+/* A place: its scene fills the screen behind, the sheet slides over it */
+
+.stage { position: fixed; inset: 0; overflow: hidden; background: var(--ground); }
+.scene { display: none; position: relative; z-index: 1; padding: 56svh var(--edge) 3rem; }
+html:not(.js) .scene:target, .scene.open { display: block; }
+.sheet { max-width: 46rem; margin: 0 auto; padding: 1.25rem; border: 2px solid var(--ink); background: rgb(var(--tint) / 0.92); box-shadow: 6px 6px 0 #000; }
+.scene.open .sheet { animation: lift 0.6s cubic-bezier(.2, .8, .2, 1) 0.15s both; }
+@keyframes lift { from { opacity: 0; transform: translateY(2.5rem); } }
+.sheet h2 { margin-bottom: 1.1rem; font: 400 clamp(1.1rem, 5vw, 1.75rem)/1.3 var(--pixel); color: var(--accent); }
+.sheet h2:focus { outline: none; }
+.sheet h3 { font-size: 1.05rem; font-weight: 500; }
+.sheet .sub { margin: 1.5rem 0 0.75rem; font: 400 0.75rem/1.4 var(--pixel); color: var(--accent); }
+.lead { margin-bottom: 1.25rem; font-size: 1.05rem; }
+.cv { display: grid; gap: 0.35rem 1.25rem; margin-bottom: 1.25rem; }
+.cv dt { margin-top: 0.75rem; font: 400 0.625rem/1.4 var(--pixel); color: var(--accent); text-transform: uppercase; }
+.cv dd p + p { margin-top: 0.4rem; }
+.card { display: grid; gap: 0.5rem; margin-bottom: 0.9rem; padding: 1rem; border: 2px solid var(--hair); background: rgb(0 0 0 / 0.2); }
+.card small { color: var(--soft); }
+.big { font: 400 clamp(1rem, 5vw, 1.5rem)/1.35 var(--pixel); color: var(--accent); }
+.stats { display: grid; gap: 0.9rem; margin-bottom: 1rem; }
+.stats p { padding: 1rem; border: 2px solid var(--hair); background: rgb(0 0 0 / 0.2); }
+.stats b { display: block; margin-bottom: 0.4rem; font: 400 clamp(1.25rem, 7vw, 2.25rem)/1.25 var(--pixel); color: var(--accent); }
+.stats span { color: var(--soft); }
+.mail-big { display: block; margin: 0.5rem 0 1.25rem; font: 400 clamp(1rem, 5.5vw, 2rem)/1.5 var(--pixel); color: var(--ink); overflow-wrap: anywhere; }
+.games { display: grid; gap: 0.75rem; }
+.game { display: grid; gap: 0.6rem; padding: 1rem; border: 2px solid var(--ink); background: var(--ground); color: var(--ink); font: inherit; text-align: left; box-shadow: 3px 3px 0 #000; cursor: pointer; transition: transform 0.12s, box-shadow 0.12s, border-color 0.2s; }
+.game:hover { border-color: var(--accent); }
+.game:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 #000; }
+.game b { font: 400 0.875rem/1.4 var(--pixel); }
+.game b::before { content: "\25B6  "; color: var(--accent); }
+.game span { color: var(--soft); font-size: 0.875rem; }
+
+@media (min-width: 900px) {
+  .scene { padding-top: 62vh; }
+  .stats, .games { grid-template-columns: 1fr 1fr; }
+  .cv { grid-template-columns: 7rem 1fr; }
+  .cv dt { margin-top: 0.3rem; }
+}
+
+/* Games, full screen (the same rules the old site gave them) */
+
+.arena { position: fixed; inset: 0; z-index: 40; display: flex; flex-direction: column; gap: 0.6rem; padding: 0.75rem var(--edge) 1.25rem; background: var(--ground); }
+#leave { align-self: flex-start; }
+.game-space { flex: 1; min-height: 0; display: flex; flex-direction: column; gap: 0.6rem; }
+.game-space canvas { flex: 1 1 0; min-height: 0; width: 100%; border: 2px solid var(--hair); background: var(--panel); touch-action: none; image-rendering: auto; }
+.game-space canvas:focus-visible { outline: none; border-color: var(--ink); }
+.game-bar { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.pill { min-height: 48px; padding: 0 1.1rem; border: 2px solid var(--soft); background: none; color: var(--soft); font: 400 0.8125rem/1 var(--mono); cursor: pointer; }
+.pill[aria-pressed="true"] { border-color: var(--ink); background: var(--ink); color: var(--ground); }
+.score { min-height: 1.6em; color: var(--ink); }
+.desk { position: relative; flex: 1 1 0; min-height: 0; border: 2px solid var(--hair); background: var(--panel); overflow: hidden; }
+.comment { position: absolute; max-width: 62%; padding: 0.5rem 0.8rem; border: 2px solid var(--ink); background: var(--ground); color: var(--ink); font: 400 0.8125rem/1.4 var(--mono); text-align: left; box-shadow: 3px 3px 0 #000; animation: settle 0.2s ease both; cursor: pointer; }
+.comment:hover { border-color: var(--red); }
+@keyframes settle { from { opacity: 0; } }
+
+/* Every change of place opens as a circle from where it was asked for */
+
+html[data-vt="reveal"]::view-transition-old(root), html[data-vt="reveal"]::view-transition-new(root) { animation: none; mix-blend-mode: normal; }
+html[data-vt="reveal"]::view-transition-old(root) { z-index: 1; }
+html[data-vt="reveal"]::view-transition-new(root) { z-index: 2; }
+
+@media (prefers-reduced-motion: reduce) {
+  .press, .load span, .start { animation: none; }
+  .tag { animation: none; }
+  .scene.open .sheet { animation: settle 0.4s ease both; }
+  a.tile:hover, a.tile:focus-visible { transform: none; }
+}
