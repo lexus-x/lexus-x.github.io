@@ -54,6 +54,16 @@ function disc(B, cx, cy, r, c, below = Infinity, stripes = false) {
   }
 }
 
+// a crescent moon: one disc minus another
+function crescent(B, cx, cy, r, c) {
+  for (let dy = -r; dy <= r; dy++) for (let dx = -r; dx <= r; dx++) {
+    if (dx * dx + dy * dy <= r * r && (dx - r * 0.5) ** 2 + (dy + r * 0.3) ** 2 > r * r * 0.8) dot(B, cx + dx, cy + dy, c)
+  }
+}
+
+// a sprite turned a quarter clockwise, for things that tumble
+const turn = rows => rows[0].split('').map((_, c) => rows.map(r => r[c]).reverse().join(''))
+
 // a hill line made of two slow waves, filled down to the bottom
 function ridge(B, base, amp, seed, freq, off, c) {
   for (let x = 0; x < B.w; x++) {
@@ -246,9 +256,7 @@ const BLUE = {
     const mx = Math.round(B.w * 0.78) + o(1)
     const my = Math.round(hz * 0.22)
     const r = Math.max(3, Math.round(Math.min(B.w, B.h) * 0.06))
-    for (let dy = -r; dy <= r; dy++) for (let dx = -r; dx <= r; dx++) { // a crescent: one disc minus another
-      if (dx * dx + dy * dy <= r * r && (dx - r * 0.5) ** 2 + (dy + r * 0.3) ** 2 > r * r * 0.8) dot(B, mx + dx, my + dy, c.moon)
-    }
+    crescent(B, mx, my, r, c.moon)
     skyline(B, hz, 5, 4, Math.round(hz * 0.3), o(2), c.far, [c.farLit], t, 0.12)
     skyline(B, hz, 13, 3, Math.round(hz * 0.2), o(4), c.near, [c.warm, c.warm, c.cool], t, 0.3)
     gradient(B, [c.w1, c.w2], hz + 1, B.h)
@@ -440,11 +448,70 @@ const LIGHT = {
   },
 }
 
-/* Menu: the night sky behind the name, with a shooting star now and then. */
+/* Menu: the night sky behind the name, where four small stories take turns. */
+
+const UFO = ['.....aaa.....', '....aeaea....', '...aaaaaaa...', '.sssssssssss.', 'sslssslssslss', '.sssssssssss.']
+const COW = ['.......kk', 'wwkkwwwww', 'wkkwwwwkw', 'wwwwkkww.', '.k.k.k.k.']
+const BOT = ['....a....', '....k....', '..ggggg..', '..gvgvg..', '..ggggg..', '...kkk...', '.jggggg..', '.jgkgkg..', '.jggggg..', '..gg.gg..']
+const MUG = ['dddd..', 'wwwwww', 'wwww.w', 'wwwwww', 'wwww..']
+const ASTRO = ['..www..', '.wooow.', '.wooow.', '..www..', '.wwwww.', 'w.www.w', '..w.w..', '..w.w..']
+const CAT = ['k...k..', 'kkkkk..', 'kwkwk..', 'kkkkk.k', '.kkkkkk']
+const STAR = ['.s.', 'sws', '.s.']
+
+// each story enters and leaves within its own ten seconds, so the hand-over is clean; p runs 0 to 1
+const STORIES = [
+  (B, p, t, cy, c) => { // aliens: a saucer stops, beams up a cow, and zooms off
+    const mid = Math.round(B.w * 0.55)
+    const x = Math.round(p < 0.25 ? -14 + (mid + 14) * (p / 0.25) : p < 0.75 ? mid : mid + (B.w + 20 - mid) * ((p - 0.75) / 0.25) ** 2)
+    const y = cy - 12 + Math.round(Math.sin(t * 2))
+    if (p > 0.28 && p < 0.72) {
+      for (let dy = 6; dy < 23; dy++) for (let dx = -2 - Math.floor(dy / 3); dx <= 2 + dy / 3; dx++) blend(B, x + 6 + dx, y + dy, c.beam, 0.2)
+      const rise = (p - 0.3) / 0.38
+      if (rise < 1) sprite(B, COW, x + 2, y + 18 - Math.round(Math.max(0, rise) * 13), c)
+    }
+    sprite(B, UFO, x, y, { ...c, l: Math.floor(t * 4) % 2 ? c.l1 : c.l2 })
+  },
+  (B, p, t, cy, c) => { // robots: a jetpack robot reaches for a floating cup and always just misses
+    const mx = Math.round(-8 + p * (B.w + 30))
+    const my = cy - 3 + Math.round(Math.sin(t * 1.5) * 2)
+    const reach = Math.max(0, Math.sin(t * 2.5))
+    const rx = mx - 16 - Math.round(reach * 2)
+    const ry = cy - 7 + Math.round(Math.sin(t * 1.2 + 1) * 2)
+    sprite(B, BOT, rx, ry, { ...c, a: Math.floor(t * 3) % 2 ? c.l1 : c.dim, v: c.l1 })
+    rect(B, rx + 7, ry + 7, 1 + Math.round(reach * 8), 1, c.g) // the arm stops a pixel or two short, every time
+    if (Math.floor(t * 8) % 2) dot(B, rx + 1, ry + 9, c.flame)
+    dot(B, rx + 1, ry + 10, c.flame)
+    sprite(B, MUG, mx, my, c)
+    for (let i = 0; i < 2; i++) if (Math.floor(t * 3 + i) % 2) dot(B, mx + 1 + i * 2, my - 2 - i, c.dim)
+  },
+  (B, p, t, cy, c) => { // humans: an astronaut tumbles past on a tether from a station out of sight
+    const x = Math.round(-10 + p * (B.w + 20))
+    const y = Math.round(cy + 4 - p * 14 + Math.sin(t) * 2)
+    let rows = ASTRO
+    for (let i = 0; i < Math.floor(t * 1.5) % 4; i++) rows = turn(rows)
+    for (let k = 0; k < x; k += 2) dot(B, k, y + 4 + Math.round(Math.sin(k * 0.3 + t) * 1.5), c.dim)
+    sprite(B, rows, x, y, c)
+  },
+  (B, p, t, cy, c) => { // animals: a cat on the moon fishes a star out of the sky
+    const slide = p < 0.15 ? 1 - p / 0.15 : p > 0.85 ? -(p - 0.85) / 0.15 : 0
+    const mx = Math.round(B.w * 0.35 + slide * B.w * 0.75)
+    const my = cy - 2
+    crescent(B, mx, my, 6, c.moon)
+    sprite(B, CAT, mx - 3, my - 10, { k: c.ginger, w: c.k })
+    for (let i = 0; i < 4; i++) dot(B, mx + 3 + i, my - 8 - i, c.rod)
+    const tipX = mx + 6
+    const tipY = my - 11
+    const length = p < 0.4 ? (p / 0.4) * 20 : p < 0.5 ? 20 : Math.max(3, 20 - ((p - 0.5) / 0.3) * 17)
+    for (let i = 0; i < length; i++) dot(B, tipX, tipY + i, c.dim)
+    const caught = p >= 0.4
+    const sx = caught ? tipX - 1 : Math.round(B.w * 0.35 + 7 + Math.sin(t * 2) * 2) - 1
+    sprite(B, STAR, sx, caught ? tipY + Math.round(length) : tipY + 20 + Math.round(Math.sin(t * 3)), { s: c.l1, w: c.w })
+  },
+]
 
 const MENU = {
   sky: stops(['#10121f', '#161a2e', '#1f2440', '#2b2f52', '#3d3a5e']),
-  c: pal({ star: '#e6e1d0', dim: '#6b7096', ridge: '#141728', streak: '#ece4d3' }),
+  c: pal({ star: '#e6e1d0', dim: '#6b7096', ridge: '#141728', streak: '#ece4d3', a: '#7f9fae', e: '#9cc08a', s: '#a9adb8', l1: '#d9bd7c', l2: '#c98a7e', beam: '#d8e0c0', w: '#e6e0d2', k: '#3a3440', g: '#a9adb8', v: '#9fc0c4', j: '#7d8fae', o: '#cfb27a', d: '#5a3d2e', moon: '#dcd8c4', rod: '#8a6a4e', flame: '#d9a072', ginger: '#c4956a' }),
   draw(B, t, v) {
     const { c } = MENU
     const o = lean(v)
@@ -459,6 +526,8 @@ const MENU = {
       const sy = Math.round(B.h * 0.15 + shot * 12)
       for (let k = 0; k < 6; k++) dot(B, sx - k * 2, sy - k, k < 2 ? c.streak : c.dim)
     }
+    const story = 10 // seconds each, in the gap between the name and the text box
+    STORIES[Math.floor(t / story) % STORIES.length](B, (t % story) / story, t, Math.round(B.h * 0.56), c)
     ridge(B, Math.round(B.h * 0.9), 2, 3, 0.05, o(3), c.ridge)
   },
 }
