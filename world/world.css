@@ -78,6 +78,8 @@ a.tile:hover .box b, a.tile:focus-visible .box b { color: var(--accent); }
 .claim { font-size: 1.05rem; margin-bottom: 0.5rem; }
 .mail .box > a { text-decoration: none; }
 .mail .box > a b::after { content: " \25B6"; color: var(--accent); }
+.now-tile p { color: var(--soft); font-size: 0.875rem; }
+.now-tile .doing { color: var(--ink); }
 .links, .tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
 .links a, .tags a { display: inline-flex; align-items: center; min-height: 44px; padding: 0 0.85rem; border: 2px solid var(--hair); background: rgb(0 0 0 / 0.25); color: var(--ink); text-decoration: none; font-size: 0.875rem; }
 .links a:hover, .tags a:hover { border-color: var(--accent); }
@@ -88,7 +90,8 @@ a.tile:hover .box b, a.tile:focus-visible .box b { color: var(--accent); }
 @media (min-width: 900px) {
   .hub { grid-template-columns: repeat(4, minmax(0, 1fr)); grid-auto-rows: minmax(16rem, 1fr); }
   .hero { grid-column: 1 / 3; grid-row: 1 / 3; min-height: 0; }
-  .mail { grid-column: 1 / -1; }
+  .mail { grid-column: 1 / 3; }
+  .now-tile { grid-column: 3 / 5; }
 }
 
 /* A place: its scene fills the screen behind, the sheet slides over it */

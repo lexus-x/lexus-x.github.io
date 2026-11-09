@@ -46,6 +46,7 @@ function fadeOut() {
   gain.gain.setTargetAtTime(0, ctx.currentTime, 0.35)
   src.stop(ctx.currentTime + 1.6)
   playing = null
+  showTrack()
 }
 
 async function music(name, loop = true) {
@@ -69,8 +70,31 @@ async function music(name, loop = true) {
   src.connect(gain).connect(master)
   src.start()
   playing = { name, src, gain }
+  showTrack()
   if (!loop) src.onended = () => playing?.src === src && ((playing = null), music(place))
 }
+
+/* Now: the track that is playing and the time in Changwon, kept live */
+
+const nowTrack = $('#now-track')
+const nowTime = $('#now-time')
+const clock = new Intl.DateTimeFormat('en-GB', { timeZone: 'Asia/Seoul', hour: '2-digit', minute: '2-digit' })
+let titles = {}
+
+function showTrack() {
+  nowTrack.textContent = playing ? `♪ ${titles[playing.name] ?? playing.name}` : '♪ sound off'
+}
+
+const tickClock = () => { nowTime.textContent = `@ Changwon, ${clock.format(new Date())} KST` }
+tickClock()
+setInterval(tickClock, 15000)
+fetch('music/credits.json')
+  .then(r => r.json())
+  .then(list => {
+    titles = Object.fromEntries(list.map(c => [c.file.replace('.mp3', ''), `${c.title}, ${c.author}`]))
+    showTrack()
+  })
+  .catch(() => {}) // without the list, the file name still shows
 
 function setSound(on, first = place) {
   soundOn = on
