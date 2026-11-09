@@ -120,7 +120,7 @@ function fit(canvas) {
   const box = canvas.parentElement.getBoundingClientRect()
   if (!box.width || !box.height) return
   const dpr = devicePixelRatio || 1
-  const scale = Math.max(2, Math.round((Math.min(box.width, box.height) * dpr) / 100))
+  const scale = Math.max(2, Math.round((Math.min(box.width, box.height) * dpr) / (100 * (view.scene.res ?? 1))))
   const w = Math.ceil((box.width * dpr) / scale)
   const h = Math.ceil((box.height * dpr) / scale)
   canvas.width = w
@@ -167,8 +167,13 @@ function frame(ms) {
   if (ms - lastPaint < 50) return // pixel scenes move at 20 fps, which reads as retro
   lastPaint = ms
   if (!stage.hidden) paint(stageCanvas, t)
-  else if (!hub.hidden) live.forEach(canvas => paint(canvas, t))
+  else if (!hub.hidden) {
+    live.forEach(canvas => paint(canvas, t))
+    const title = SCENES.menu.caption(t) // names the story playing in the name tile's sky
+    if (caption.textContent !== title) caption.textContent = title
+  }
 }
+const caption = $('#story')
 requestAnimationFrame(frame)
 
 /* Places: a tile opens its scene full screen, as a circle from where it was tapped */

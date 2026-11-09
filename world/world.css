@@ -75,6 +75,8 @@ a.tile:hover .box b, a.tile:focus-visible .box b { color: var(--accent); }
 .hero { min-height: 74svh; justify-content: space-between; }
 .hero h1 { margin: 2.5rem 0.75rem 0; font: 400 clamp(2rem, 11vw, 5.5rem)/1.15 var(--pixel); color: var(--ink); text-shadow: 0.08em 0.08em 0 #000; }
 .hero h1:focus { outline: none; }
+.story { min-height: 1.5em; margin: 0.6rem 0.75rem 0; color: var(--soft); font: 400 clamp(0.55rem, 2.4vw, 0.75rem)/1.5 var(--pixel); text-shadow: 0.15em 0.15em 0 #000; }
+.story::before { content: "\25B6  "; color: var(--accent); }
 .claim { font-size: 1.05rem; margin-bottom: 0.5rem; }
 .mail .box > a { text-decoration: none; }
 .mail .box > a b::after { content: " \25B6"; color: var(--accent); }

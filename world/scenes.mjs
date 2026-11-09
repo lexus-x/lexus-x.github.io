@@ -448,87 +448,308 @@ const LIGHT = {
   },
 }
 
-/* Menu: the night sky behind the name, where four small stories take turns. */
+/* Menu: the night sky behind the name, where eight small stories take turns: four fun ones, four from history, played by animals. */
 
-const UFO = ['.....aaa.....', '....aeaea....', '...aaaaaaa...', '.sssssssssss.', 'sslssslssslss', '.sssssssssss.']
-const COW = ['.......kk', 'wwkkwwwww', 'wkkwwwwkw', 'wwwwkkww.', '.k.k.k.k.']
-const BOT = ['....a....', '....k....', '..ggggg..', '..gvgvg..', '..ggggg..', '...kkk...', '.jggggg..', '.jgkgkg..', '.jggggg..', '..gg.gg..']
-const MUG = ['dddd..', 'wwwwww', 'wwww.w', 'wwwwww', 'wwww..']
-const ASTRO = ['..www..', '.wooow.', '.wooow.', '..www..', '.wwwww.', 'w.www.w', '..w.w..', '..w.w..']
-const CAT = ['k...k..', 'kkkkk..', 'kwkwk..', 'kkkkk.k', '.kkkkkk']
-const STAR = ['.s.', 'sws', '.s.']
+const UFO = [
+  '.........AAAAAAA.........',
+  '.......AAaaaaaaaAA.......',
+  '......Aaaa.eee.aaaA......',
+  '.....Aaaa.eEeEe.aaaA.....',
+  '.....Aaaaa.eee.aaaaA.....',
+  '...gggggggggggggggggggg..',
+  '.ggGGlGGGGlGGGGlGGGGlGGg.',
+  'ggggggggggggggggggggggggg',
+  '.GGGGGGGGGGGGGGGGGGGGGGG.',
+  '......GGG.......GGG......',
+]
+const COW = [
+  '.............WW...',
+  '............wwwwW.',
+  '..k.........wkwww.',
+  '.k.wwwwwwwwwwwwwpp',
+  '.kwwkkkwwwwkkwwwpp',
+  '..wkkkkwwwwkkkwww.',
+  '..wwkkwwwwwwkwww..',
+  '..wwwwwwwwwwwwww..',
+  '...WpW......WW....',
+  '...k.k......k.k...',
+  '...k.k......k.k...',
+]
+const BOT = [
+  '.......l.......',
+  '.......G.......',
+  '....ggggggg....',
+  '...gGGGGGGGg...',
+  '...gGvvGvvGg...',
+  '...gGvvGvvGg...',
+  '...gGGGGGGGg...',
+  '...gGkkkkkGg...',
+  '....ggggggg....',
+  '......GGG......',
+  '.jj.ggggggggg..',
+  'jjjgGGGGGGGGGg.',
+  'jjjgGlGyGrGGGg.',
+  'jjjgGGGGGGGGGg.',
+  '.jj.ggggggggg..',
+  '.....gg...gg...',
+  '.....GG...GG...',
+  '....GGG...GGG..',
+]
+const MUG = [
+  'WWWWWWWW..',
+  'WddddddW..',
+  'WwwwwwwWWW',
+  'WwwwwwwW.W',
+  'WwwwwwwW.W',
+  'WwwwwwwWWW',
+  'WwwwwwwW..',
+  '.WWWWWW...',
+]
+const ASTRO = [
+  '....wwwwww....',
+  '...wwwwwwww...',
+  '..wwyyyyyyww..',
+  '..wwyyyyYYww..',
+  '..wwwyyYYwww..',
+  '...wwwwwwww...',
+  '..WWwwwwwwWW..',
+  '.wWwwwuuwwwWw.',
+  'ww.wwwrrwww.ww',
+  'w..wwwwwwww..w',
+  '...wwwwwwww...',
+  '...www..www...',
+  '...www..www...',
+  '...WWW..WWW...',
+]
+const CAT = [
+  '.o...o......',
+  '.oo.oo......',
+  '.ooooo......',
+  'ookoko......',
+  '.ooppo......',
+  '..ooo.......',
+  '.ooooo.....o',
+  'oooOooo...o.',
+  'oooOOooo.o..',
+  '.ooooooooo..',
+]
+const STAR = ['..s..', '.sws.', 'swwws', '.sws.', '..s..']
+const FLYER = [
+  '....yyyyyyyyyyyyyyyyyy........',
+  '....G...G...G...G...G.........',
+  'Y...G...G...G...G...G.....Y...',
+  'YY..G...G.oooo..G...G.....YY..',
+  'YY..G...G.okoo..G...G....YYYY.',
+  '....yyyyyyyyyyyyyyyyyyGGGGG...',
+  '......G.........G.............',
+  '.....GGGGGGGGGGGGGGGGGGGG.....',
+]
+const DOGFACE = ['B...B', 'BbbbB', 'bkbkb', '.bkb.']
+const LM = [
+  '.....GGGGGGG.....',
+  '....GgggggggG....',
+  '...GggaagggggG...',
+  '...GggaaggggGG...',
+  '..yyyyyyyyyyyyy..',
+  '..yYyYyYyYyYyYy..',
+  '..yyyyyyyyyyyyy..',
+  '...G.........G...',
+  '..G...........G..',
+  '.G.............G.',
+  'GG.............GG',
+]
+const CATSTRO = [
+  '..aaaaaa..',
+  '.aoaaaaoa.',
+  '.aooooooa.',
+  '.aokookoa.',
+  '.aaoppoaa.',
+  '..aaaaaa..',
+  '..wwwwww..',
+  '.wwwwwwww.',
+  'w.wwwwww.w',
+  '..ww..ww..',
+  '..ww..ww..',
+  '..WW..WW..',
+]
+const FLAG = ['Gwwwwwww', 'Gwrwrwrw', 'Gwwrrrww', 'Gwwrrrww', 'Gwwwwwww', 'G.......', 'G.......', 'G.......', 'G.......', 'G.......']
+const VOY = [
+  '.....wwwwwwwwwwwwww.....',
+  '...wwWWWWWWWWWWWWWWww...',
+  '....wwwwwwwwwwwwwwww....',
+  '..........GGGG..........',
+  '.........GyyyyG.........',
+  'GGGGGGGGGGyYYyGGGGGGGGGG',
+  '.........GyyyyG.........',
+  '..........GGGG..........',
+  '...........GG...........',
+]
+const DOG = [
+  ['.....BB..', '....Bbbb.', '....bkbbk', '.B..bbbb.', 'Bb..bbb..', '.bbbbbb..', '.bbbbbb..', '.bb..bb..'],
+  ['.....BB..', '....Bbbb.', '....bkbbk', '....bbbb.', 'BB..bbb..', '.bbbbbb..', '.bbbbbb..', '.bb..bb..'],
+]
 
-// each story enters and leaves within its own ten seconds, so the hand-over is clean; p runs 0 to 1
+const slide = p => (p < 0.12 ? 1 - p / 0.12 : p > 0.88 ? -(p - 0.88) / 0.12 : 0) // in from the right, out to the left
+const cross = (B, p, w) => Math.round(-w + p * (B.w + w)) // from off the left edge to off the right
+
+// each story enters and leaves within its own turn, so the hand-over is clean; p runs 0 to 1
 const STORIES = [
-  (B, p, t, cy, c) => { // aliens: a saucer stops, beams up a cow, and zooms off
-    const mid = Math.round(B.w * 0.55)
-    const x = Math.round(p < 0.25 ? -14 + (mid + 14) * (p / 0.25) : p < 0.75 ? mid : mid + (B.w + 20 - mid) * ((p - 0.75) / 0.25) ** 2)
-    const y = cy - 12 + Math.round(Math.sin(t * 2))
-    if (p > 0.28 && p < 0.72) {
-      for (let dy = 6; dy < 23; dy++) for (let dx = -2 - Math.floor(dy / 3); dx <= 2 + dy / 3; dx++) blend(B, x + 6 + dx, y + dy, c.beam, 0.2)
-      const rise = (p - 0.3) / 0.38
-      if (rise < 1) sprite(B, COW, x + 2, y + 18 - Math.round(Math.max(0, rise) * 13), c)
-    }
-    sprite(B, UFO, x, y, { ...c, l: Math.floor(t * 4) % 2 ? c.l1 : c.l2 })
+  {
+    title: 'Close encounter of the cow kind',
+    draw(B, p, t, cy, c) {
+      const mid = Math.round(B.w * 0.5) - 12
+      const x = Math.round(p < 0.25 ? -26 + (mid + 26) * (p / 0.25) : p < 0.75 ? mid : mid + (B.w + 30 - mid) * ((p - 0.75) / 0.25) ** 2)
+      const y = cy - 24 + Math.round(Math.sin(t * 2) * 1.5)
+      if (p > 0.28 && p < 0.72) {
+        for (let dy = 10; dy < 44; dy++) for (let dx = -3 - Math.floor(dy / 3); dx <= 3 + dy / 3; dx++) blend(B, x + 12 + dx, y + dy, c.beam, 0.18)
+        const rise = Math.max(0, (p - 0.3) / 0.38)
+        if (rise < 1) sprite(B, COW, x + 4, y + 33 - Math.round(rise * 26), c)
+      }
+      sprite(B, UFO, x, y, { ...c, l: Math.floor(t * 4) % 2 ? c.l1 : c.l2 })
+    },
   },
-  (B, p, t, cy, c) => { // robots: a jetpack robot reaches for a floating cup and always just misses
-    const mx = Math.round(-8 + p * (B.w + 30))
-    const my = cy - 3 + Math.round(Math.sin(t * 1.5) * 2)
-    const reach = Math.max(0, Math.sin(t * 2.5))
-    const rx = mx - 16 - Math.round(reach * 2)
-    const ry = cy - 7 + Math.round(Math.sin(t * 1.2 + 1) * 2)
-    sprite(B, BOT, rx, ry, { ...c, a: Math.floor(t * 3) % 2 ? c.l1 : c.dim, v: c.l1 })
-    rect(B, rx + 7, ry + 7, 1 + Math.round(reach * 8), 1, c.g) // the arm stops a pixel or two short, every time
-    if (Math.floor(t * 8) % 2) dot(B, rx + 1, ry + 9, c.flame)
-    dot(B, rx + 1, ry + 10, c.flame)
-    sprite(B, MUG, mx, my, c)
-    for (let i = 0; i < 2; i++) if (Math.floor(t * 3 + i) % 2) dot(B, mx + 1 + i * 2, my - 2 - i, c.dim)
+  {
+    title: '1903 · First flight, at Kitty Hawk',
+    draw(B, p, t, cy, c) {
+      const x = cross(B, p, 30)
+      const y = cy - 6 + Math.round(Math.sin(t * 1.7) * 2)
+      sprite(B, FLYER, x, y, c)
+      const spin = Math.floor(t * 12) % 2 // pusher propellers behind the wings
+      rect(B, x + 2, y + (spin ? 1 : 3), 1, spin ? 5 : 1, c.G)
+    },
   },
-  (B, p, t, cy, c) => { // humans: an astronaut tumbles past on a tether from a station out of sight
-    const x = Math.round(-10 + p * (B.w + 20))
-    const y = Math.round(cy + 4 - p * 14 + Math.sin(t) * 2)
-    let rows = ASTRO
-    for (let i = 0; i < Math.floor(t * 1.5) % 4; i++) rows = turn(rows)
-    for (let k = 0; k < x; k += 2) dot(B, k, y + 4 + Math.round(Math.sin(k * 0.3 + t) * 1.5), c.dim)
-    sprite(B, rows, x, y, c)
+  {
+    title: 'Almost had it',
+    draw(B, p, t, cy, c) {
+      const mx = Math.round(-10 + p * (B.w + 40))
+      const my = cy - 4 + Math.round(Math.sin(t * 1.5) * 2)
+      const reach = Math.max(0, Math.sin(t * 2.5))
+      const rx = mx - 26 - Math.round(reach * 3)
+      const ry = cy - 12 + Math.round(Math.sin(t * 1.2 + 1) * 2)
+      sprite(B, BOT, rx, ry, { ...c, l: Math.floor(t * 3) % 2 ? c.l1 : c.dim })
+      const arm = 1 + Math.round(reach * 11) // the claw stops a few pixels short, every time
+      rect(B, rx + 14, ry + 12, arm, 1, c.g)
+      rect(B, rx + 14 + arm, ry + 11, 1, 3, c.G)
+      rect(B, rx + 1, ry + 15, 2, 1 + (Math.floor(t * 8) % 2), c.flame)
+      sprite(B, MUG, mx, my, c)
+      for (let i = 0; i < 3; i++) if (Math.floor(t * 3 + i) % 2) dot(B, mx + 2 + i * 2, my - 2 - (i % 2) * 2, c.dim)
+    },
   },
-  (B, p, t, cy, c) => { // animals: a cat on the moon fishes a star out of the sky
-    const slide = p < 0.15 ? 1 - p / 0.15 : p > 0.85 ? -(p - 0.85) / 0.15 : 0
-    const mx = Math.round(B.w * 0.35 + slide * B.w * 0.75)
-    const my = cy - 2
-    crescent(B, mx, my, 6, c.moon)
-    sprite(B, CAT, mx - 3, my - 10, { k: c.ginger, w: c.k })
-    for (let i = 0; i < 4; i++) dot(B, mx + 3 + i, my - 8 - i, c.rod)
-    const tipX = mx + 6
-    const tipY = my - 11
-    const length = p < 0.4 ? (p / 0.4) * 20 : p < 0.5 ? 20 : Math.max(3, 20 - ((p - 0.5) / 0.3) * 17)
-    for (let i = 0; i < length; i++) dot(B, tipX, tipY + i, c.dim)
-    const caught = p >= 0.4
-    const sx = caught ? tipX - 1 : Math.round(B.w * 0.35 + 7 + Math.sin(t * 2) * 2) - 1
-    sprite(B, STAR, sx, caught ? tipY + Math.round(length) : tipY + 20 + Math.round(Math.sin(t * 3)), { s: c.l1, w: c.w })
+  {
+    title: '1957 · Laika, first animal in orbit',
+    draw(B, p, t, cy, c) {
+      const ex = Math.round(B.w * 0.5 + slide(p) * B.w * 0.8)
+      const a = p * Math.PI * 3 + 2
+      const sx = Math.round(ex + Math.cos(a) * Math.min(42, B.w * 0.38))
+      const sy = Math.round(cy + Math.sin(a) * 10)
+      const capsule = () => {
+        for (let k = 0; k < 4; k++) for (let s = 6; s < 16; s += 1) dot(B, sx - Math.round(s * Math.cos(0.25 * k - 0.4)), sy - Math.round(s * Math.sin(0.25 * k - 0.4)), c.G) // four trailing antennas
+        disc(B, sx, sy, 6, c.g)
+        disc(B, sx + 1, sy + 1, 5, c.G)
+        disc(B, sx, sy, 5, c.g)
+        disc(B, sx, sy, 3, c.a)
+        sprite(B, DOGFACE, sx - 2, sy - 2, c)
+        if (Math.floor(t * 2) % 2) for (const r of [9, 12]) for (let d = -2; d <= 2; d++) dot(B, sx + r, sy + d, c.dim) // beep
+      }
+      const behind = Math.sin(a) < 0
+      if (behind) capsule()
+      const r = 12
+      for (let dy = -r; dy <= r; dy++) for (let dx = -r; dx <= r; dx++) { // Earth, its land drifting past
+        if (dx * dx + dy * dy > r * r) continue
+        const land = rnd(Math.floor((dx + t * 3) / 4) * 13 + Math.floor(dy / 4) * 7) > 0.62
+        dot(B, ex + dx, cy + dy, land ? c.land : c.sea)
+      }
+      if (!behind) capsule()
+    },
+  },
+  {
+    title: 'Spacewalk',
+    draw(B, p, t, cy, c) {
+      const x = cross(B, p, 16)
+      const y = Math.round(cy - 2 - p * 20 + Math.sin(t) * 2)
+      let rows = ASTRO
+      for (let i = 0; i < Math.floor(t * 1.5) % 4; i++) rows = turn(rows)
+      for (let k = 0; k < x; k += 2) dot(B, k, y + 7 + Math.round(Math.sin(k * 0.2 + t) * 2), c.dim) // a tether back to a station out of sight
+      sprite(B, rows, x, y, c)
+    },
+  },
+  {
+    title: '1969 · One small step, for a cat',
+    draw(B, p, t, cy, c) {
+      const gx = Math.round(slide(p) * B.w * 0.8)
+      const ground = cy + 10
+      const x0 = gx + Math.round(B.w * 0.06)
+      const x1 = gx + Math.round(B.w * 0.94)
+      rect(B, x0, ground, x1 - x0, 7, c.m)
+      rect(B, x0 + 2, ground + 7, x1 - x0 - 4, 2, c.M)
+      for (let i = 0; i < 6; i++) rect(B, x0 + Math.round(rnd(i + 40) * (x1 - x0 - 6)), ground + 2 + (i % 3) * 2, 3 + (i % 2) * 2, 1, c.M)
+      const lx = x0 + Math.round((x1 - x0) * 0.12)
+      sprite(B, LM, lx, ground - 11, c)
+      const fx = lx + 46
+      let cx
+      let top
+      if (p < 0.3) { cx = lx + 15; top = ground - 16 } // waiting on the ladder
+      else if (p < 0.45) { const u = (p - 0.3) / 0.15; cx = lx + 15 + u * 7; top = ground - 12 - 4 * (1 - u) - Math.sin(Math.PI * u) * 9 } // the small step, in low gravity
+      else if (p < 0.65) { const u = (p - 0.45) / 0.2; cx = lx + 22 + u * (fx - lx - 34); top = ground - 12 - Math.abs(Math.sin(u * Math.PI * 3)) * 3 }
+      else { cx = fx - 12; top = ground - 12 - Math.abs(Math.sin(t * 3)) * 4 } // a happy bounce by the flag
+      if (p > 0.45) for (let x = lx + 24; x < cx; x += 4) dot(B, x, ground + 1, c.M) // paw prints
+      if (p > 0.68) sprite(B, FLAG, fx, ground - 10, c)
+      sprite(B, CATSTRO, Math.round(cx), Math.round(top), c)
+    },
+  },
+  {
+    title: 'Gone fishing',
+    draw(B, p, t, cy, c) {
+      const mx = Math.round(B.w * 0.35 + slide(p) * B.w * 0.8)
+      const my = cy + 2
+      crescent(B, mx, my, 11, c.m)
+      sprite(B, CAT, mx - 9, my - 19, c)
+      for (let i = 0; i < 8; i++) dot(B, mx - 3 + i, my - 13 - i, c.rod)
+      const tipX = mx + 5
+      const tipY = my - 21
+      const length = p < 0.4 ? (p / 0.4) * 36 : p < 0.5 ? 36 : Math.max(4, 36 - ((p - 0.5) / 0.3) * 32)
+      for (let i = 0; i < length; i++) dot(B, tipX, tipY + i, c.dim)
+      const caught = p >= 0.4
+      const sy = caught ? tipY + Math.round(length) - 2 : tipY + 34 + Math.round(Math.sin(t * 3))
+      sprite(B, STAR, (caught ? tipX : Math.round(B.w * 0.35 + 5 + Math.sin(t * 2) * 3)) - 2, sy, c)
+    },
+  },
+  {
+    title: '1977 · Voyager carries our record',
+    draw(B, p, t, cy, c) {
+      const x = Math.round(B.w + 4 - p * (B.w + 30))
+      const y = cy - 2 + Math.round(Math.sin(t * 0.8) * 2)
+      sprite(B, VOY, x, y, c)
+      sprite(B, DOG[Math.floor(t * 3) % 2], x + 8, y - 8, c) // a dog rides the dish, tail going
+      if (Math.floor(t * 1.5) % 3 === 0) dot(B, x + 11, y + 4, c.w) // the golden record catches the light
+    },
   },
 ]
 
+const STORY = 8 // seconds each
+const storyAt = t => STORIES[Math.floor(t / STORY) % STORIES.length]
+
 const MENU = {
+  res: 2, // twice the pixels of the other scenes, so the little figures can carry faces and shading
   sky: stops(['#10121f', '#161a2e', '#1f2440', '#2b2f52', '#3d3a5e']),
-  c: pal({ star: '#e6e1d0', dim: '#6b7096', ridge: '#141728', streak: '#ece4d3', a: '#7f9fae', e: '#9cc08a', s: '#a9adb8', l1: '#d9bd7c', l2: '#c98a7e', beam: '#d8e0c0', w: '#e6e0d2', k: '#3a3440', g: '#a9adb8', v: '#9fc0c4', j: '#7d8fae', o: '#cfb27a', d: '#5a3d2e', moon: '#dcd8c4', rod: '#8a6a4e', flame: '#d9a072', ginger: '#c4956a' }),
+  c: pal({ star: '#e6e1d0', dim: '#6b7096', ridge: '#141728', streak: '#ece4d3', k: '#2a2436', w: '#e6e0d2', W: '#b9b4aa', g: '#a9adb8', G: '#6e7385', a: '#7f9fae', A: '#b8d0d4', e: '#9cc08a', E: '#5e7e52', o: '#c4956a', O: '#9a6e48', b: '#8a6a4e', B: '#5e4636', y: '#cfb27a', Y: '#9c8452', r: '#b0675c', u: '#6f8fb5', p: '#c99aa0', v: '#d9bd7c', j: '#7d8fae', d: '#5a3d2e', m: '#cfcab8', M: '#a8a393', s: '#d9bd7c', l1: '#d9bd7c', l2: '#c98a7e', beam: '#d8e0c0', rod: '#8a6a4e', flame: '#d9a072', sea: '#4c6487', land: '#6c8a6b' }),
+  caption: t => storyAt(t).title,
   draw(B, t, v) {
     const { c } = MENU
     const o = lean(v)
     gradient(B, MENU.sky, 0, B.h)
-    for (let i = 0; i < Math.round(B.w * B.h / 90); i++) {
+    for (let i = 0; i < Math.round(B.w * B.h / 320); i++) {
       const on = rnd(i + Math.floor(t * 0.6 + rnd(i) * 10)) > 0.3
       dot(B, Math.floor(rnd(i) * B.w) + o(1), Math.floor(rnd(i * 1.3) * B.h * 0.85), on ? c.star : c.dim)
     }
     const shot = t % 9 // a shooting star every nine seconds, for one second
     if (shot < 1) {
-      const sx = Math.round(B.w * (0.2 + rnd(Math.floor(t / 9)) * 0.5) + shot * 30)
-      const sy = Math.round(B.h * 0.15 + shot * 12)
-      for (let k = 0; k < 6; k++) dot(B, sx - k * 2, sy - k, k < 2 ? c.streak : c.dim)
+      const sx = Math.round(B.w * (0.2 + rnd(Math.floor(t / 9)) * 0.5) + shot * 60)
+      const sy = Math.round(B.h * 0.12 + shot * 24)
+      for (let k = 0; k < 12; k++) dot(B, sx - k * 2, sy - k, k < 4 ? c.streak : c.dim)
     }
-    const story = 10 // seconds each, in the gap between the name and the text box
-    STORIES[Math.floor(t / story) % STORIES.length](B, (t % story) / story, t, Math.round(B.h * 0.56), c)
-    ridge(B, Math.round(B.h * 0.9), 2, 3, 0.05, o(3), c.ridge)
+    storyAt(t).draw(B, (t % STORY) / STORY, t, Math.round(B.h * 0.56), c)
+    ridge(B, Math.round(B.h * 0.92), 3, 3, 0.03, o(3), c.ridge)
   },
 }
 
